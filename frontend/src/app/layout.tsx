@@ -3,6 +3,7 @@ import "./globals.css";
 import { MiniKitProvider } from "@/components/MiniKitProvider";
 import { SwipeNavigationProvider } from "@/components/SwipeNavigationProvider";
 import ClientProviders from "@/components/ClientProviders";
+import { ConnectionProvider } from "@/contexts/ConnectionContext";
 
 const sora = Sora({ subsets: ["latin"] });
 
@@ -15,6 +16,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link
           rel="preconnect"
@@ -53,17 +55,19 @@ export default function RootLayout({
             <ClientProviders>
               <MiniKitProvider>
                 <SwipeNavigationProvider>
-                  <div
-                    className="app-container"
-                    style={{
-                      height: "100%",
-                      position: "relative",
-                      overflowY: "auto",
-                      overflowX: "hidden",
-                    }}
-                  >
-                    {children}
-                  </div>
+                  <ConnectionProvider>
+                    <div
+                      className="app-container"
+                      style={{
+                        height: "100%",
+                        position: "relative",
+                        overflowY: "auto",
+                        overflowX: "hidden",
+                      }}
+                    >
+                      {children}
+                    </div>
+                  </ConnectionProvider>
                 </SwipeNavigationProvider>
               </MiniKitProvider>
             </ClientProviders>
