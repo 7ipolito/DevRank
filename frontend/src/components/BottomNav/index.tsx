@@ -45,13 +45,16 @@ export default function BottomNav() {
       icon: ChallengesIcon,
       href: "/challenges",
       label: "Challenges",
-      disabled: !isConnected,
+      disabled: false,
+      //disabled: !isConnected,
     },
     {
       icon: LeaderboardIcon,
       href: "/leaderboards",
       label: "Leaderboards",
-      disabled: !isConnected,
+      disabled: false,
+      //disabled: !isConnected,
+
     },
   ];
 
