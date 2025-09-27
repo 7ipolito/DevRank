@@ -1,12 +1,11 @@
-import { Page } from '@/components/PageLayout';
-import { AuthButton } from '../components/AuthButton';
+import LoginPage from "./login/page";
 
-export default function Home() {
+const Page = async () => {
   return (
-    <Page>
-      <Page.Main className="flex flex-col items-center justify-center">
-        <AuthButton />
-      </Page.Main>
-    </Page>
+    <div className="bg-white text-black min-h-full p-5">
+      <LoginPage />
+    </div>
   );
-}
+};
+
+export default Page;
