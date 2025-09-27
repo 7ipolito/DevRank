@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { getBottomSpace, isIOSDevice } from "@/utils/device";
 import { HomeIcon } from "@/shared/icons/Home";
 import { ChallengesIcon } from "@/shared/icons/Challenges";
-import { LeaderboardIcon } from "@/shared/icons/Leaderboard";
+import { NotificationsIcon } from "@/shared/icons/Notifications";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { useHapticFeedback } from "@/hooks/useHapticFeedback";
@@ -52,12 +52,10 @@ export default function BottomNav() {
       //disabled: !isConnected,
     },
     {
-      icon: LeaderboardIcon,
-      href: "/leaderboards",
-      label: "Leaderboards",
+      icon: NotificationsIcon,
+      href: "/notifications",
+      label: "Notifications",
       disabled: false,
-      //disabled: !isConnected,
-
     },
   ];
 
@@ -133,6 +131,12 @@ export default function BottomNav() {
                   size={24}
                   className={styles.icon}
                 />
+                {/* Badge de notificação para o ícone de notifications */}
+                {item.href === "/notifications" && !isActive && (
+                  <div className={styles.notificationBadge}>
+                    <span className={styles.badgeNumber}>1</span>
+                  </div>
+                )}
               </IconWrapper>
               <span className={styles.label}>
                 {item.label}

@@ -18,7 +18,7 @@ export default function ChallengeResultsView({ challengeId }: ChallengeResultsVi
   // Mock data - em produção viria de uma API baseada no challengeId
   const resultsData = {
     title: "MiniApp(Results)",
-    challengeName: "Semanal Challenge",
+    challengeName: "Weekly Challenge",
     rankings: [
       { 
         position: 1, 

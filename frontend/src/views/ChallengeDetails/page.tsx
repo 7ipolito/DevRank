@@ -21,15 +21,15 @@ export default function ChallengeDetailsView({ challengeId }: ChallengeDetailsVi
 
   // Mock data - em produção viria de uma API baseada no challengeId
   const challengeData = {
-    title: "Entrar no Desafio",
+    title: "Join Challenge",
     currentStep: currentStep,
     totalSteps: 2,
     details: {
-      frequency: "Ao menos ?XP/ 1.5h por dia",
-      duration: "7 dias",
+      frequency: "At least ?XP/ 1.5h per day",
+      duration: "7 days",
       participants: 2,
       totalDeposited: "2 WLD",
-      endDate: new Date(Date.now() + 1 * 24 * 60 * 60 * 1000), // 21 dias a partir de agora
+      endDate: new Date(Date.now() + 1 * 24 * 60 * 60 * 1000), // 21 days from now
     }
   };
 
@@ -92,35 +92,35 @@ export default function ChallengeDetailsView({ challengeId }: ChallengeDetailsVi
           <>
             {/* Título da seção */}
             <h2 className={styles.sectionTitle}>
-              {t("challenge_details", { defaultValue: "Detalhes do Desafio" })}
+              {t("challenge_details", { defaultValue: "Challenge Details" })}
             </h2>
 
             {/* Grid de informações */}
             <div className={styles.infoGrid}>
               <ChallengeInfoCard
-                title="Diariamente"
+                title="Daily"
                 value={challengeData.details.frequency}
                 icon={<InfoIcon />}
               />
               
               <ChallengeInfoCard
-                title="Duração"
+                title="Duration"
                 value={challengeData.details.duration}
               />
               
               <ChallengeInfoCard
-                title="Participantes"
+                title="Participants"
                 value={challengeData.details.participants.toString()}
               />
               
               <ChallengeInfoCard
-                title="Total depositado"
+                title="Total Deposited"
                 value={challengeData.details.totalDeposited}
                 highlight={true}
               />
               
               <CountdownTimer
-                title="Primeiro dia termina"
+                title="First day ends"
                 targetDate={challengeData.details.endDate}
               />
             </div>
@@ -139,8 +139,8 @@ export default function ChallengeDetailsView({ challengeId }: ChallengeDetailsVi
           onClick={handleNext}
         >
           {currentStep === 1 
-            ? t("next", { defaultValue: "Próximo" })
-            : t("enter", { defaultValue: "Entrar" })
+            ? t("next", { defaultValue: "Next" })
+            : t("enter", { defaultValue: "Enter" })
           }
         </button>
       </div>

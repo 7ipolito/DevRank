@@ -64,56 +64,56 @@ function DashboardView() {
             
 
             <form onSubmit={handleFormSubmit} className={styles.form}>
-              <div className={styles.formGroup}>
-                <label htmlFor="username" className={styles.label}>
-                  {t("username_label", { defaultValue: "Nome de usuário CodeStats" })} *
-                </label>
-                <input
-                  type="text"
-                  id="username"
-                  value={username}
-                  onChange={(e) => setUsername(e.target.value)}
-                  placeholder={t("username_placeholder", { defaultValue: "Digite seu nome de usuário" })}
-                  className={styles.input}
-                  required
-                />
-              </div>
+                  <div className={styles.formGroup}>
+                    <label htmlFor="username" className={styles.label}>
+                      {t("username_label", { defaultValue: "CodeStats Username" })} *
+                    </label>
+                    <input
+                      type="text"
+                      id="username"
+                      value={username}
+                      onChange={(e) => setUsername(e.target.value)}
+                      placeholder={t("username_placeholder", { defaultValue: "Enter your username" })}
+                      className={styles.input}
+                      required
+                    />
+                  </div>
 
             
 
-              <div className={styles.apiHint}>
-                <p className={styles.hintText}>
-                  {t("api_hint", {
-                    defaultValue: "Você pode encontrar sua chave da API nas configurações da sua conta CodeStats."
-                  })}
-                </p>
-              </div>
+                  <div className={styles.apiHint}>
+                    <p className={styles.hintText}>
+                      {t("api_hint", {
+                        defaultValue: "You can find your API key in your CodeStats account settings."
+                      })}
+                    </p>
+                  </div>
 
               <div className={styles.formActions}>
-                <button
-                  type="button"
-                  onClick={handleCancel}
-                  className={styles.cancelButton}
-                >
-                  {t("cancel", { defaultValue: "Cancelar" })}
-                </button>
-                <button
-                  type="submit"
-                  className={styles.submitButton}
-                  disabled={!username.trim()}
-                >
-                  {t("connect", { defaultValue: "Conectar" })}
-                </button>
+                    <button
+                      type="button"
+                      onClick={handleCancel}
+                      className={styles.cancelButton}
+                    >
+                      {t("cancel", { defaultValue: "Cancel" })}
+                    </button>
+                    <button
+                      type="submit"
+                      className={styles.submitButton}
+                      disabled={!username.trim()}
+                    >
+                      {t("connect", { defaultValue: "Connect" })}
+                    </button>
               </div>
             </form>
 
-            <footer className={styles.formFooter}>
-              <p className={styles.securityNote}>
-                {t("security_note", {
-                  defaultValue: "Suas credenciais são armazenadas de forma segura e usadas apenas para acessar suas estatísticas públicas."
-                })}
-              </p>
-            </footer>
+                  <footer className={styles.formFooter}>
+                    <p className={styles.securityNote}>
+                      {t("security_note", {
+                        defaultValue: "Your credentials are stored securely and used only to access your public statistics."
+                      })}
+                    </p>
+                  </footer>
           </div>
         )}
 
@@ -121,10 +121,10 @@ function DashboardView() {
           <div className={styles.detailsWrapper}>
             <DashInfo />
 {/* 
-            <div className={styles.languagesCard}>
-              <h2 className={styles.languagesTitle}>
-                {t("languages_title", { defaultValue: "Languages more useful" })}
-              </h2>
+                <div className={styles.languagesCard}>
+                  <h2 className={styles.languagesTitle}>
+                    {t("languages_title", { defaultValue: "Most Used Languages" })}
+                  </h2>
 
               <ul className={styles.languageList}>
                 <li className={styles.languageItem}>
@@ -150,10 +150,7 @@ function DashboardView() {
 
         {connectionStep !== 'form' && (
           <footer className={styles.footer}>
-          
-             
-              Uma vez conectado, sua conta será vinculada ao seu usuário do CodeStats.
-            
+              Once connected, your account will be linked to your CodeStats user.
           </footer>
         )}
       </div>

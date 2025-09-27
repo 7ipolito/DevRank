@@ -48,9 +48,9 @@ export default function DashInfo() {
             style={{ width: `${progressPercentage}%` }}
           />
         </div>
-        <div className={styles.scorePercentage}>
-          {Math.round(progressPercentage)}% do máximo
-        </div>
+            <div className={styles.scorePercentage}>
+              {Math.round(progressPercentage)}% of maximum
+            </div>
       </div>
     </div>
     </div>

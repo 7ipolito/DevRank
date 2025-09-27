@@ -20,9 +20,9 @@ export default function StakeSelection({ onStakeSelect, selectedStake }: StakeSe
   return (
     <div className={styles.container}>
       <div className={styles.header}>
-        <h2 className={styles.title}>Apostar & Entrar</h2>
+        <h2 className={styles.title}>Bet & Enter</h2>
         <p className={styles.subtitle}>
-          Quanto mais você aposta, mais pode ganhar!
+          The more you bet, the more you can win!
         </p>
         <div className={styles.infoIcon}>
           <InfoIcon />
@@ -30,7 +30,7 @@ export default function StakeSelection({ onStakeSelect, selectedStake }: StakeSe
       </div>
 
       <div className={styles.stakeSection}>
-        <h3 className={styles.stakeTitle}>Valor do Depósito (WLD)</h3>
+        <h3 className={styles.stakeTitle}>Deposit Amount (WLD)</h3>
         
         <div className={styles.stakeOptions}>
           {stakeOptions.map((amount) => (
@@ -47,12 +47,12 @@ export default function StakeSelection({ onStakeSelect, selectedStake }: StakeSe
         </div>
 
         <p className={styles.stakeRange}>
-          Depósito necessário 0.1 - 20 WLD
+          Required deposit 0.1 - 20 WLD
         </p>
 
         <div className={styles.disclaimer}>
           <p className={styles.disclaimerText}>
-            Você pode cancelar sua participação e sacar o valor apostado até o final do primeiro dia do desafio.
+            You can cancel your participation and withdraw the bet amount until the end of the first day of the challenge.
           </p>
         </div>
       </div>

@@ -58,6 +58,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  position: relative;
 }
 
 .icon {
@@ -68,6 +69,29 @@
 .label {
   font-size: clamp(0.7rem, 2.5vw, 0.75rem);
   font-weight: 500;
+  line-height: 1;
+}
+
+.notificationBadge {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  background: #ef4444;
+  border-radius: 50%;
+  min-width: clamp(14px, 4vw, 18px);
+  height: clamp(14px, 4vw, 18px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid #ffffff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+}
+
+.badgeNumber {
+  font-size: clamp(8px, 2.5vw, 11px);
+  font-weight: 700;
+  color: white;
   line-height: 1;
 }
 

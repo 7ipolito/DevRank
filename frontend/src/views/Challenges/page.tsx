@@ -16,7 +16,7 @@ export default function ChallengesView() {
   const challenges = [
     {
       id: 1,
-      title: "Semanal Challenge",
+      title: "Weekly Challenge",
       stake: "0.01WLD",
       participants: 5,
       prizePool: "5WLD",

@@ -1,0 +1,174 @@
+.main {
+  min-height: 100vh;
+  min-height: 100dvh;
+  background: linear-gradient(180deg, #f8fafc 0%, #eef2ff 100%);
+  color: #1f2937;
+  padding: clamp(0.75rem, 4vw, 1.5rem);
+  padding-bottom: clamp(5rem, 8vw, 6rem);
+  box-sizing: border-box;
+}
+
+.container {
+  width: 100%;
+  max-width: min(95vw, 32rem);
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(1rem, 3vw, 1.5rem);
+  box-sizing: border-box;
+}
+
+.notificationsList {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(0.875rem, 3vw, 1.25rem);
+}
+
+.emptyState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: clamp(2rem, 8vw, 4rem) clamp(1rem, 4vw, 2rem);
+  background: #ffffff;
+  border: 2px solid #e5e7eb;
+  border-radius: clamp(1rem, 4vw, 1.5rem);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  gap: clamp(0.75rem, 3vw, 1rem);
+}
+
+.emptyIcon {
+  font-size: clamp(2.5rem, 10vw, 4rem);
+  opacity: 0.5;
+  margin-bottom: clamp(0.5rem, 2vw, 1rem);
+}
+
+.emptyTitle {
+  font-size: clamp(1.125rem, 5vw, 1.5rem);
+  font-weight: 600;
+  color: #1f2937;
+  margin: 0;
+  line-height: 1.3;
+}
+
+.emptyMessage {
+  font-size: clamp(0.875rem, 4vw, 1rem);
+  color: #6b7280;
+  margin: 0;
+  line-height: 1.5;
+  max-width: 24rem;
+}
+
+/* Media queries para responsividade */
+@media (min-width: 768px) {
+  .main {
+    padding: clamp(1.5rem, 3vw, 2.5rem);
+    padding-bottom: 6rem;
+  }
+  
+  .container {
+    max-width: min(85vw, 36rem);
+    gap: 1.5rem;
+  }
+  
+  .notificationsList {
+    gap: 1.25rem;
+  }
+  
+  .emptyState {
+    padding: 4rem 2rem;
+    gap: 1rem;
+  }
+  
+  .emptyIcon {
+    font-size: 4rem;
+    margin-bottom: 1rem;
+  }
+  
+  .emptyTitle {
+    font-size: 1.5rem;
+  }
+  
+  .emptyMessage {
+    font-size: 1rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .main {
+    padding: 2rem;
+    padding-bottom: 6rem;
+  }
+  
+  .container {
+    max-width: min(75vw, 40rem);
+    gap: 2rem;
+  }
+  
+  .notificationsList {
+    gap: 1.5rem;
+  }
+}
+
+/* Mobile específico */
+@media (max-width: 480px) {
+  .main {
+    padding: 1rem;
+    padding-bottom: 5.5rem;
+  }
+  
+  .container {
+    max-width: 100%;
+    gap: 1rem;
+  }
+  
+  .notificationsList {
+    gap: 1rem;
+  }
+  
+  .emptyState {
+    padding: 2rem 1rem;
+    gap: 0.75rem;
+  }
+}
+
+@media (max-width: 320px) {
+  .main {
+    padding: 0.75rem;
+    padding-bottom: 5rem;
+  }
+  
+  .container {
+    gap: 0.875rem;
+  }
+  
+  .notificationsList {
+    gap: 0.875rem;
+  }
+  
+  .emptyState {
+    padding: 1.5rem 0.75rem;
+  }
+  
+  .emptyIcon {
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+  }
+}
+
+/* Landscape mobile */
+@media (max-height: 500px) and (orientation: landscape) {
+  .main {
+    padding: 0.75rem;
+    padding-bottom: 4.5rem;
+  }
+  
+  .container {
+    gap: 1rem;
+  }
+  
+  .notificationsList {
+    gap: 1rem;
+  }
+}
