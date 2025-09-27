@@ -43,8 +43,9 @@ function DashboardView() {
       <div className={styles.content}>
         <header className={styles.header}>
           <h1 className={styles.title}>
-            DevRank
+            Dashboard
           </h1>
+          <p className={styles.subtitle}>Register your stats and earn tokens!</p>
         
         </header>
 
@@ -149,10 +150,10 @@ function DashboardView() {
 
         {connectionStep !== 'form' && (
           <footer className={styles.footer}>
-            {connectionStep === 'initial' 
-              ? "*CodeStats é uma API open-source"
-              : "*Uma vez conectado, sua conta será vinculada ao seu usuário do CodeStats."
-            }
+          
+             
+              Uma vez conectado, sua conta será vinculada ao seu usuário do CodeStats.
+            
           </footer>
         )}
       </div>

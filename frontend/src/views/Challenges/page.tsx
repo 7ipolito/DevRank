@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import { useRouter } from "next/navigation";
 import { useTranslation } from "react-i18next";
 import ChallengesHeader from "@/entities/Challenges/components/ChallengesHeader";
 import ChallengeCard from "@/entities/Challenges/components/ChallengeCard";
@@ -10,6 +11,7 @@ import styles from "./Challenges.module.css";
 
 export default function ChallengesView() {
   const { t } = useTranslation();
+  const router = useRouter();
 
   const challenges = [
     {
@@ -35,13 +37,13 @@ export default function ChallengesView() {
   ];
 
   const handleJoin = (challengeId: number) => {
-    console.log(`Joining challenge ${challengeId}`);
-    // TODO: Implement join challenge logic
+    router.push(`/challenges/${challengeId}`);
   };
 
   const handleSeeResults = (challengeId: number) => {
     console.log(`Viewing results for challenge ${challengeId}`);
-    // TODO: Implement see results logic
+    // TODO: Implement see results logic - could navigate to results page
+    router.push(`/challenges/${challengeId}/results`);
   };
 
   return (

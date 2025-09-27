@@ -24,11 +24,14 @@ export default function BottomNav() {
     setIsIOS(isIOSDevice());
   }, []);
 
-  const hiddenRoutes = ["/login", "/language-setup", "/language-settings"];
+  const hiddenRoutes = ["/login", "/event", "/payment-selection", "/register", "/language-setup", "/language-settings"];
+  
+  // Verifica se é uma rota de detalhes de challenge (ex: /challenges/1, /challenges/2, etc)
+  const isChallengeDetailsRoute = /^\/challenges\/\d+/.test(pathname);
 
   const shouldHideNav = hiddenRoutes.some((route) =>
     pathname.startsWith(route)
-  );
+  ) || isChallengeDetailsRoute;
 
   if (shouldHideNav) {
     return null;

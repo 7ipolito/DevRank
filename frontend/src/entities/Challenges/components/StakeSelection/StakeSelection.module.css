@@ -1,0 +1,237 @@
+.container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(1.5rem, 4vw, 2rem);
+  box-sizing: border-box;
+}
+
+.header {
+  text-align: center;
+  position: relative;
+  padding: clamp(1rem, 4vw, 1.5rem) 0;
+}
+
+.title {
+  font-size: clamp(1.5rem, 6vw, 2rem);
+  font-weight: 700;
+  color: #2563eb;
+  margin: 0 0 clamp(0.5rem, 2vw, 0.75rem) 0;
+  line-height: 1.2;
+}
+
+.subtitle {
+  font-size: clamp(0.9rem, 4vw, 1.1rem);
+  color: #6b7280;
+  margin: 0;
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+.infoIcon {
+  position: absolute;
+  top: 50%;
+  right: 0;
+  transform: translateY(-50%);
+  color: #2563eb;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.stakeSection {
+  background: #ffffff;
+  border: 2px solid #e5e7eb;
+  border-radius: clamp(1rem, 4vw, 1.5rem);
+  padding: clamp(1.5rem, 5vw, 2rem);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  gap: clamp(1rem, 4vw, 1.5rem);
+  box-sizing: border-box;
+}
+
+.stakeTitle {
+  font-size: clamp(1rem, 4vw, 1.25rem);
+  font-weight: 600;
+  color: #1f2937;
+  margin: 0;
+  line-height: 1.3;
+}
+
+.stakeOptions {
+  display: flex;
+  gap: clamp(0.5rem, 2vw, 0.75rem);
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.stakeButton {
+  flex: 1;
+  min-width: clamp(3rem, 15vw, 4rem);
+  height: clamp(2.5rem, 8vw, 3rem);
+  border: 2px solid #4a5568;
+  border-radius: clamp(0.5rem, 2vw, 0.75rem);
+  background: transparent;
+  color: #4a5568;
+  font-size: clamp(0.9rem, 4vw, 1.1rem);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+}
+
+.stakeButton:hover {
+  border-color: #2563eb;
+  color: #2563eb;
+  transform: translateY(-1px);
+}
+
+.stakeButton.selected {
+  background: #ffd700;
+  border-color: #ffd700;
+  color: #000;
+  box-shadow: 0 4px 12px rgba(255, 215, 0, 0.3);
+}
+
+.stakeButton:active {
+  transform: translateY(0);
+}
+
+.stakeRange {
+  font-size: clamp(0.8rem, 3.5vw, 0.95rem);
+  color: #6b7280;
+  margin: 0;
+  text-align: center;
+  font-weight: 500;
+}
+
+.disclaimer {
+  background: #f8fafc;
+  border-radius: clamp(0.5rem, 2vw, 0.75rem);
+  padding: clamp(0.875rem, 3vw, 1.25rem);
+  border-left: 4px solid #2563eb;
+}
+
+.disclaimerText {
+  font-size: clamp(0.8rem, 3.5vw, 0.95rem);
+  color: #4b5563;
+  margin: 0;
+  line-height: 1.5;
+  font-weight: 500;
+}
+
+/* Media queries para responsividade */
+@media (min-width: 768px) {
+  .container {
+    gap: 2rem;
+  }
+  
+  .header {
+    padding: 1.5rem 0;
+  }
+  
+  .title {
+    font-size: 2rem;
+    margin-bottom: 0.75rem;
+  }
+  
+  .subtitle {
+    font-size: 1.125rem;
+  }
+  
+  .stakeSection {
+    padding: 2rem;
+    gap: 1.5rem;
+  }
+  
+  .stakeTitle {
+    font-size: 1.25rem;
+  }
+  
+  .stakeOptions {
+    gap: 0.75rem;
+  }
+  
+  .stakeButton {
+    min-width: 4rem;
+    height: 3rem;
+    font-size: 1.1rem;
+  }
+  
+  .stakeRange {
+    font-size: 0.95rem;
+  }
+  
+  .disclaimer {
+    padding: 1.25rem;
+  }
+  
+  .disclaimerText {
+    font-size: 0.95rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .stakeSection {
+    padding: 2.5rem;
+  }
+}
+
+/* Mobile específico */
+@media (max-width: 480px) {
+  .container {
+    gap: 1.25rem;
+  }
+  
+  .header {
+    padding: 1rem 0;
+  }
+  
+  .stakeSection {
+    padding: 1.25rem;
+    gap: 1.25rem;
+  }
+  
+  .stakeOptions {
+    gap: 0.5rem;
+  }
+  
+  .stakeButton {
+    min-width: 2.75rem;
+    height: 2.5rem;
+    font-size: 0.95rem;
+  }
+}
+
+@media (max-width: 320px) {
+  .container {
+    gap: 1rem;
+  }
+  
+  .stakeSection {
+    padding: 1rem;
+    gap: 1rem;
+  }
+  
+  .stakeButton {
+    min-width: 2.5rem;
+    height: 2.25rem;
+    font-size: 0.85rem;
+  }
+  
+  .disclaimer {
+    padding: 0.875rem;
+  }
+}
+
+/* Touch targets para mobile */
+@media (hover: none) and (pointer: coarse) {
+  .stakeButton {
+    min-height: 3rem;
+    padding: 0.75rem;
+  }
+}
