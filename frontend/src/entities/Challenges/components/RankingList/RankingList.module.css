@@ -1,0 +1,385 @@
+.container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(0.75rem, 3vw, 1rem);
+  box-sizing: border-box;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.title {
+  font-size: clamp(1.125rem, 4.5vw, 1.5rem);
+  font-weight: 600;
+  color: #1f2937;
+  margin: 0;
+  line-height: 1.3;
+}
+
+.rankingCard {
+  background: #ffffff;
+  border: 2px solid #2563eb;
+  border-radius: clamp(1rem, 4vw, 1.5rem);
+  padding: clamp(1rem, 4vw, 1.5rem);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  box-sizing: border-box;
+}
+
+.rankingList {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(1rem, 4vw, 1.25rem);
+}
+
+.rankingItem {
+  display: flex;
+  align-items: center;
+  gap: clamp(0.75rem, 3vw, 1rem);
+  padding: clamp(0.875rem, 3vw, 1.25rem);
+  background: #f8fafc;
+  border-radius: clamp(0.75rem, 3vw, 1rem);
+  border: 2px solid transparent;
+  transition: all 0.2s ease;
+  box-sizing: border-box;
+}
+
+.rankingItem:hover {
+  background: #f1f5f9;
+  border-color: rgba(37, 99, 235, 0.2);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.positionBadge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: clamp(2rem, 6vw, 2.5rem);
+  height: clamp(2rem, 6vw, 2.5rem);
+  border-radius: 50%;
+  font-weight: 700;
+  font-size: clamp(0.875rem, 3.5vw, 1rem);
+  flex-shrink: 0;
+}
+
+.positionIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.avatarContainer {
+  position: relative;
+  flex-shrink: 0;
+}
+
+.avatar {
+  width: clamp(2.5rem, 8vw, 3rem);
+  height: clamp(2.5rem, 8vw, 3rem);
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #e5e7eb;
+  transition: border-color 0.2s ease;
+}
+
+.userInfo {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(0.25rem, 1vw, 0.375rem);
+  min-width: 0;
+}
+
+.nameRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: clamp(0.5rem, 2vw, 0.75rem);
+}
+
+.name {
+  font-size: clamp(0.95rem, 4vw, 1.1rem);
+  font-weight: 600;
+  color: #1f2937;
+  word-break: break-word;
+  flex: 1;
+}
+
+.languageTag {
+  display: flex;
+  align-items: center;
+  gap: clamp(0.25rem, 1vw, 0.375rem);
+  background: #e0e7ff;
+  padding: clamp(0.25rem, 1vw, 0.375rem) clamp(0.5rem, 2vw, 0.75rem);
+  border-radius: clamp(0.375rem, 1.5vw, 0.5rem);
+  flex-shrink: 0;
+}
+
+.languageIcon {
+  font-size: clamp(0.75rem, 3vw, 0.875rem);
+}
+
+.languageName {
+  font-size: clamp(0.75rem, 3vw, 0.875rem);
+  font-weight: 500;
+  color: #3730a3;
+}
+
+.scoreRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: clamp(0.5rem, 2vw, 0.75rem);
+}
+
+.scoreText {
+  font-size: clamp(0.8rem, 3.5vw, 0.9rem);
+  color: #6b7280;
+  font-weight: 500;
+}
+
+.percentage {
+  font-size: clamp(0.8rem, 3.5vw, 0.9rem);
+  font-weight: 600;
+  color: #2563eb;
+}
+
+.progressBar {
+  width: 100%;
+  height: clamp(0.375rem, 1.5vw, 0.5rem);
+  background: #e5e7eb;
+  border-radius: clamp(0.25rem, 1vw, 0.375rem);
+  overflow: hidden;
+}
+
+.progressFill {
+  height: 100%;
+  background: linear-gradient(90deg, #3b82f6 0%, #1d4ed8 100%);
+  border-radius: clamp(0.25rem, 1vw, 0.375rem);
+  transition: width 0.3s ease;
+}
+
+/* Estilos por posição */
+.first {
+  background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
+  border-color: #dc2626;
+}
+
+.first .positionBadge {
+  background: #dc2626;
+  color: white;
+}
+
+.first .avatar {
+  border-color: #dc2626;
+}
+
+.first .progressFill {
+  background: linear-gradient(90deg, #dc2626 0%, #b91c1c 100%);
+}
+
+.second {
+  background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+  border-color: #2563eb;
+}
+
+.second .positionBadge {
+  background: #2563eb;
+  color: white;
+}
+
+.second .avatar {
+  border-color: #2563eb;
+}
+
+.second .progressFill {
+  background: linear-gradient(90deg, #2563eb 0%, #1d4ed8 100%);
+}
+
+.third {
+  background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%);
+  border-color: #059669;
+}
+
+.third .positionBadge {
+  background: #059669;
+  color: white;
+}
+
+.third .avatar {
+  border-color: #059669;
+}
+
+.third .progressFill {
+  background: linear-gradient(90deg, #059669 0%, #047857 100%);
+}
+
+.default {
+  background: #f8fafc;
+  border-color: transparent;
+}
+
+.default .positionBadge {
+  background: #6b7280;
+  color: white;
+}
+
+/* Media queries para responsividade */
+@media (min-width: 768px) {
+  .container {
+    gap: 1rem;
+  }
+  
+  .title {
+    font-size: 1.5rem;
+  }
+  
+  .rankingCard {
+    padding: 1.5rem;
+    border-radius: 1.5rem;
+  }
+  
+  .rankingList {
+    gap: 1.25rem;
+  }
+  
+  .rankingItem {
+    gap: 1rem;
+    padding: 1.25rem;
+  }
+  
+  .positionBadge {
+    min-width: 2.5rem;
+    height: 2.5rem;
+  }
+  
+  .avatar {
+    width: 3rem;
+    height: 3rem;
+  }
+  
+  .name {
+    font-size: 1.1rem;
+  }
+  
+  .languageTag {
+    padding: 0.375rem 0.75rem;
+  }
+  
+  .languageIcon,
+  .languageName {
+    font-size: 0.875rem;
+  }
+  
+  .scoreText,
+  .percentage {
+    font-size: 0.9rem;
+  }
+  
+  .progressBar {
+    height: 0.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .rankingCard {
+    padding: 2rem;
+  }
+  
+  .rankingList {
+    gap: 1.5rem;
+  }
+  
+  .rankingItem {
+    padding: 1.5rem;
+  }
+}
+
+/* Mobile específico */
+@media (max-width: 480px) {
+  .container {
+    gap: 0.75rem;
+  }
+  
+  .rankingCard {
+    padding: 1rem;
+    border-radius: 1rem;
+  }
+  
+  .rankingList {
+    gap: 1rem;
+  }
+  
+  .rankingItem {
+    gap: 0.75rem;
+    padding: 0.875rem;
+  }
+  
+  .positionBadge {
+    min-width: 2rem;
+    height: 2rem;
+  }
+  
+  .avatar {
+    width: 2.5rem;
+    height: 2.5rem;
+  }
+  
+  .nameRow {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+  
+  .languageTag {
+    align-self: flex-end;
+  }
+}
+
+@media (max-width: 320px) {
+  .rankingCard {
+    padding: 0.875rem;
+  }
+  
+  .rankingList {
+    gap: 0.875rem;
+  }
+  
+  .rankingItem {
+    gap: 0.5rem;
+    padding: 0.75rem;
+  }
+  
+  .positionBadge {
+    min-width: 1.75rem;
+    height: 1.75rem;
+    font-size: 0.8rem;
+  }
+  
+  .avatar {
+    width: 2.25rem;
+    height: 2.25rem;
+  }
+  
+  .name {
+    font-size: 0.95rem;
+  }
+  
+  .languageIcon,
+  .languageName {
+    font-size: 0.75rem;
+  }
+  
+  .scoreText,
+  .percentage {
+    font-size: 0.8rem;
+  }
+  
+  .progressBar {
+    height: 0.375rem;
+  }
+}

@@ -26,7 +26,7 @@ export default function BottomNav() {
 
   const hiddenRoutes = ["/login", "/event", "/payment-selection", "/register", "/language-setup", "/language-settings"];
   
-  // Verifica se é uma rota de detalhes de challenge (ex: /challenges/1, /challenges/2, etc)
+  // Verifica se é uma rota de detalhes de challenge ou resultados (ex: /challenges/1, /challenges/2/results, etc)
   const isChallengeDetailsRoute = /^\/challenges\/\d+/.test(pathname);
 
   const shouldHideNav = hiddenRoutes.some((route) =>

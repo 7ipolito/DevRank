@@ -1,0 +1,135 @@
+.main {
+  min-height: 100vh;
+  min-height: 100dvh;
+  background: linear-gradient(180deg, #f8fafc 0%, #eef2ff 100%);
+  color: #1f2937;
+  padding: clamp(1rem, 4vw, 1.5rem);
+  padding-bottom: clamp(5rem, 8vw, 6rem);
+  box-sizing: border-box;
+}
+
+.container {
+  width: 100%;
+  max-width: min(95vw, 32rem);
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(1rem, 3vw, 1.5rem);
+  box-sizing: border-box;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  margin-top: clamp(0.5rem, 2vw, 1rem);
+  margin-bottom: clamp(0.5rem, 2vw, 1rem);
+}
+
+.backButton {
+  width: clamp(2.5rem, 8vw, 3rem);
+  height: clamp(2.5rem, 8vw, 3rem);
+  border-radius: 50%;
+  background: #ffffff;
+  border: 2px solid #e5e7eb;
+  color: #2563eb;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.backButton:hover {
+  background: #f3f4f6;
+  border-color: #2563eb;
+  transform: translateX(-2px);
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+}
+
+.backButton:active {
+  transform: translateX(0) scale(0.95);
+}
+
+/* Media queries para responsividade */
+@media (min-width: 768px) {
+  .main {
+    padding: clamp(1.5rem, 3vw, 2.5rem);
+    padding-bottom: 6rem;
+  }
+  
+  .container {
+    max-width: min(85vw, 36rem);
+    gap: 1.5rem;
+  }
+  
+  .header {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+  }
+  
+  .backButton {
+    width: 3rem;
+    height: 3rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .main {
+    padding: 2rem;
+    padding-bottom: 6rem;
+  }
+  
+  .container {
+    max-width: min(75vw, 40rem);
+    gap: 2rem;
+  }
+}
+
+/* Mobile específico */
+@media (max-width: 480px) {
+  .main {
+    padding: 1rem;
+    padding-bottom: 5.5rem;
+  }
+  
+  .container {
+    max-width: 100%;
+    gap: 1rem;
+  }
+  
+  .header {
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+  }
+}
+
+@media (max-width: 320px) {
+  .main {
+    padding: 0.75rem;
+    padding-bottom: 5rem;
+  }
+  
+  .container {
+    gap: 0.875rem;
+  }
+  
+  .backButton {
+    width: 2.25rem;
+    height: 2.25rem;
+  }
+}
+
+/* Landscape mobile */
+@media (max-height: 500px) and (orientation: landscape) {
+  .main {
+    padding: 0.75rem;
+    padding-bottom: 4.5rem;
+  }
+  
+  .container {
+    gap: 1rem;
+  }
+}
