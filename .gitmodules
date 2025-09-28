@@ -1,0 +1,9 @@
+[submodule "challenge-contracts/lib/openzeppelin-contracts"]
+	path = challenge-contracts/lib/openzeppelin-contracts
+	url = https://github.com/OpenZeppelin/openzeppelin-contracts
+[submodule "foundry-competition/lib/openzeppelin-contracts"]
+	path = foundry-competition/lib/openzeppelin-contracts
+	url = https://github.com/OpenZeppelin/openzeppelin-contracts
+[submodule "foundry-test/competition/lib/forge-std"]
+	path = foundry-test/competition/lib/forge-std
+	url = https://github.com/foundry-rs/forge-std
