@@ -23,10 +23,12 @@ export function SwipeTransition({
     null
   );
   const minSwipeDistance = 40; // Distância mínima para começar a transição
-  const threshold = window.innerWidth * 0.3; // 30% da largura da tela para completar a transição
+  const threshold = typeof window !== 'undefined' ? window.innerWidth * 0.3 : 0; // 30% da largura da tela para completar a transição
 
   useEffect(() => {
-    setPortalContainer(document.body);
+    if (typeof window !== 'undefined') {
+      setPortalContainer(document.body);
+    }
   }, []);
 
   const handleTouchStart = (e: React.TouchEvent) => {
@@ -57,7 +59,7 @@ export function SwipeTransition({
 
     if (diffX > threshold) {
       // Completa a transição
-      setTransformX(window.innerWidth);
+      setTransformX(typeof window !== 'undefined' ? window.innerWidth : 0);
       setTimeout(() => {
         if (onSwipeComplete) {
           onSwipeComplete();
@@ -73,7 +75,7 @@ export function SwipeTransition({
     setIsSwiping(false);
   };
 
-  const slidePercentage = Math.min(transformX / window.innerWidth, 1);
+  const slidePercentage = Math.min(transformX / (typeof window !== 'undefined' ? window.innerWidth : 1), 1);
   const currentPageTransform = `translateX(${slidePercentage * 30}%) scale(${
     1 - slidePercentage * 0.1
   })`;
@@ -119,7 +121,7 @@ export function SwipeTransition({
               width: "100%",
               height: "100%",
               zIndex: 1,
-              transform: `translateX(${-window.innerWidth + transformX}px)`,
+              transform: `translateX(${-(typeof window !== 'undefined' ? window.innerWidth : 0) + transformX}px)`,
               transition: isSwiping ? "none" : "transform 0.3s ease",
             }}
           >
