@@ -35,10 +35,6 @@ RUN npm prune --production
 # Verifica se o build foi gerado corretamente
 RUN ls -la dist/
 
-# Muda a propriedade dos arquivos para o usuário nodejs
-RUN chown -R nodejs:nodejs /app
-USER nodejs
-
 # Expõe a porta da aplicação
 EXPOSE 3000
 
