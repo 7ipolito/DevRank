@@ -52,7 +52,7 @@ export default function RootLayout({
         </style>
       </head>
       <body className={sora.className}>
-            <ClientProviders>
+        
               <MiniKitProvider>
                 <SwipeNavigationProvider>
                   <ConnectionProvider>
@@ -70,7 +70,7 @@ export default function RootLayout({
                   </ConnectionProvider>
                 </SwipeNavigationProvider>
               </MiniKitProvider>
-            </ClientProviders>
+            
         <script
           dangerouslySetInnerHTML={{
             __html: `
