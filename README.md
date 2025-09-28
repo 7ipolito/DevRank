@@ -69,11 +69,20 @@ Getting started with DevRank is simple:
 
 1. **Create a Code::Stats account**  
    - Visit [Code::Stats](https://codestats.net).  
-   - Sign up for a free account.  
+   - Sign up for a free account.
+   - Make sure its the same username as ur world username so miniapp successfully link accounts.
+   - Add ur machine and get ur api key
+  
+     <img width="1280" height="444" alt="image" src="https://github.com/user-attachments/assets/c5248ee0-919f-4d49-be23-855922d9ed19" />
+     <img width="1280" height="505" alt="image" src="https://github.com/user-attachments/assets/b03028bd-952b-4e3c-89a3-a0b98483de7a" />
+
 
 2. **Install the Code::Stats extension in your IDE**  
    - For [VS Code](https://marketplace.visualstudio.com/items?itemName=riidom.codestats-vscode) or [Cursor](https://cursor.sh/), install the extension and log in with your Code::Stats API key.  
-   - For other editors (IntelliJ, JetBrains, Vim, etc.), check [the full list of supported plugins](https://codestats.net/#install).  
+   - For other editors (IntelliJ, JetBrains, Vim, etc.), check [the full list of supported plugins](https://codestats.net/#install).
+
+     <img width="892" height="860" alt="image" src="https://github.com/user-attachments/assets/fbea01ce-2c59-4a29-a6be-2d7207e20353" />
+
 
 3. **Start coding**  
    - Your coding activity (XP, time, languages) will automatically sync to your Code::Stats account in the background.  
@@ -99,3 +108,8 @@ Getting started with DevRank is simple:
   (for efficient leaderboard queries)
 
 ---
+
+## Link to deployments/demo
+
+1. **Loom demo link: https://www.loom.com/share/d01d20f20ebc4a8e81c1c98543811bc1
+2. **Deployment link: https://worldscan.org/address/0x8471C05150f72eA45fb71Cbae6961EAC44F74584
