@@ -195,7 +195,8 @@ function DashboardView() {
     username,
     setUsername,
     walletAddress,
-    setWalletAddress
+    setWalletAddress,
+    disconnect
   } = useConnection();
 
   const [userStats, setUserStats] = useState<UserStats | null>(null);
@@ -353,15 +354,35 @@ function DashboardView() {
     console.log("Shared on X!");
   };
 
+  const handleLogout = () => {
+    // Limpa todos os dados do localStorage e reseta o estado
+    disconnect();
+    setUserStats(null);
+    setError(null);
+  };
+
   return (
     <main className={styles.main}>
       <div className={styles.content}>
         <header className={styles.header}>
-          <h1 className={styles.title}>
-            Dashboard
-          </h1>
-          <p className={styles.subtitle}>Register your stats and earn tokens!</p>
-        
+          <div className={styles.headerContent}>
+            <div>
+              <h1 className={styles.title}>
+                Dashboard
+              </h1>
+              <p className={styles.subtitle}>Register your stats and earn tokens!</p>
+            </div>
+            {connectionStep === 'connected' && walletAddress && (
+              <button
+                type="button"
+                onClick={handleLogout}
+                className={styles.logoutButton}
+                title="Logout"
+              >
+                ×
+              </button>
+            )}
+          </div>
         </header>
 
         {(connectionStep === 'initial' || !walletAddress) && (
