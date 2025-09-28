@@ -34,7 +34,7 @@ interface UseMatchDataReturn {
 
 // Configuração do link HTTP para o subgraph
 // Para configurar a URL, adicione NEXT_PUBLIC_SUBGRAPH_URL no seu .env.local
-const SUBGRAPH_URL = process.env.NEXT_PUBLIC_SUBGRAPH_URL || 
+const SUBGRAPH_URL =
   'https://subgraph.satsuma-prod.com/6597691a01e2/allans-team--951313/worldchain-competition/version/v1.0.0-worldchain/api';
 
 const httpLink = createHttpLink({

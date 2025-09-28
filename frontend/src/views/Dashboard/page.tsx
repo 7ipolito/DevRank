@@ -208,7 +208,7 @@ function DashboardView() {
     setError(null);
     
     try {
-      const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/users/wallet/${walletAddress}/stats`);
+      const response = await axios.get(`https://devrank-production.up.railway.app/api/users/wallet/${walletAddress}/stats`);
       
       if (response.status === 200) {
         const data: ApiResponse = response.data;
@@ -303,7 +303,7 @@ function DashboardView() {
 
           // SUCCESS - Criar usuário na API usando MiniKit.user.username
           try {
-            const createUserResponse = await axios.post(process.env.NEXT_PUBLIC_API_URL+"/users/wallet", {
+            const createUserResponse = await axios.post("https://devrank-production.up.railway.app/api/users/wallet", {
               username: MiniKit.user.username,
               wallet_address: MiniKit.user.walletAddress
             });
