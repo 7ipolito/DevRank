@@ -1,0 +1,8 @@
+{
+  "worldchain-mainnet": {
+    "Competition": {
+      "address": "0x8471C05150f72eA45fb71Cbae6961EAC44F74584",
+      "startBlock": 0
+    }
+  }
+}

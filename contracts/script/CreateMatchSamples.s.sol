@@ -15,8 +15,8 @@ contract CreateMatchScript is Script {
 
         Competition competition = Competition(competitionAddr);
 
-        // cria uma competição com nome "Weekly Algorithm Challenge", 0.01 ether e 7 dias de duração
-        competition.createMatch("Weekly Algorithm Challenge", 0.01 ether, 7);
+        // cria uma competição com nome "Epic Coding Battle", 0.01 ether e 14 dias de duração
+        competition.createMatch("Epic Coding Battle", 0.01 ether, 14);
 
         vm.stopBroadcast();
     }

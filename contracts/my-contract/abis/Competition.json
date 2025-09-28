@@ -1,0 +1,136 @@
+[
+  {
+    "type": "constructor",
+    "inputs": [
+      { "name": "_platform", "type": "address", "internalType": "address" }
+    ],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "MIN_STAKE",
+    "inputs": [],
+    "outputs": [{ "name": "", "type": "uint256", "internalType": "uint256" }],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "createMatch",
+    "inputs": [
+      { "name": "_name", "type": "string", "internalType": "string" },
+      { "name": "_stake", "type": "uint256", "internalType": "uint256" },
+      { "name": "_durationDays", "type": "uint256", "internalType": "uint256" }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "matchCount",
+    "inputs": [],
+    "outputs": [{ "name": "", "type": "uint256", "internalType": "uint256" }],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "matches",
+    "inputs": [{ "name": "", "type": "uint256", "internalType": "uint256" }],
+    "outputs": [
+      { "name": "id", "type": "uint256", "internalType": "uint256" },
+      { "name": "name", "type": "string", "internalType": "string" },
+      { "name": "stake", "type": "uint256", "internalType": "uint256" },
+      { "name": "startTime", "type": "uint256", "internalType": "uint256" },
+      { "name": "durationDays", "type": "uint256", "internalType": "uint256" },
+      { "name": "active", "type": "bool", "internalType": "bool" }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "platform",
+    "inputs": [],
+    "outputs": [{ "name": "", "type": "address", "internalType": "address" }],
+    "stateMutability": "view"
+  },
+  {
+    "type": "event",
+    "name": "MatchClosed",
+    "inputs": [
+      {
+        "name": "matchId",
+        "type": "uint256",
+        "indexed": true,
+        "internalType": "uint256"
+      },
+      {
+        "name": "winner",
+        "type": "address",
+        "indexed": false,
+        "internalType": "address"
+      },
+      {
+        "name": "reward",
+        "type": "uint256",
+        "indexed": false,
+        "internalType": "uint256"
+      },
+      {
+        "name": "platformFee",
+        "type": "uint256",
+        "indexed": false,
+        "internalType": "uint256"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "type": "event",
+    "name": "MatchCreated",
+    "inputs": [
+      {
+        "name": "matchId",
+        "type": "uint256",
+        "indexed": true,
+        "internalType": "uint256"
+      },
+      {
+        "name": "name",
+        "type": "string",
+        "indexed": false,
+        "internalType": "string"
+      },
+      {
+        "name": "stake",
+        "type": "uint256",
+        "indexed": false,
+        "internalType": "uint256"
+      },
+      {
+        "name": "durationDays",
+        "type": "uint256",
+        "indexed": false,
+        "internalType": "uint256"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "type": "event",
+    "name": "PlayerJoined",
+    "inputs": [
+      {
+        "name": "matchId",
+        "type": "uint256",
+        "indexed": true,
+        "internalType": "uint256"
+      },
+      {
+        "name": "player",
+        "type": "address",
+        "indexed": true,
+        "internalType": "address"
+      }
+    ],
+    "anonymous": false
+  }
+]

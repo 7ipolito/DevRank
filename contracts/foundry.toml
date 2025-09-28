@@ -6,4 +6,8 @@ via_ir = true
 optimizer = true
 optimizer_runs = 200
 
+# Worldchain Sepolia configuration
+[rpc_endpoints]
+worldchain_sepolia = "https://worldchain-sepolia.gateway.tenderly.co"
+
 # See more config options https://github.com/foundry-rs/foundry/blob/master/crates/config/README.md#all-options
