@@ -16,18 +16,16 @@ export default function ChallengesView() {
   const { isConnected, disconnect } = useConnection();
   const { matches, loading, error, refetch } = useMatchData();
 
-  console.log(matches);
   // Transforma os dados do subgraph no formato esperado pelos componentes
   const challenges = transformMatchesToChallenges(matches);
 
-  const handleJoin = (challengeId: number) => {
-    router.push(`/challenges/${challengeId}`);
+  const handleJoin = (originalId: string) => {
+    router.push(`/challenges/${originalId}`);
   };
 
-  const handleSeeResults = (challengeId: number) => {
-    console.log(`Viewing results for challenge ${challengeId}`);
+  const handleSeeResults = (originalId: string) => {
     // TODO: Implement see results logic - could navigate to results page
-    router.push(`/challenges/${challengeId}/results`);
+    router.push(`/challenges/${originalId}/results`);
   };
 
   // Se não estiver conectado, redireciona para o dashboard
@@ -122,8 +120,8 @@ export default function ChallengesView() {
               status={challenge.status}
               duration={challenge.duration}
               showResults={challenge.showResults}
-              onJoin={() => handleJoin(challenge.id)}
-              onSeeResults={() => handleSeeResults(challenge.id)}
+              onJoin={() => handleJoin(challenge.originalId)}
+              onSeeResults={() => handleSeeResults(challenge.originalId)}
             />
           ))}
         </div>

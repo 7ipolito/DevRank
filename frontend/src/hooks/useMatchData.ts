@@ -5,7 +5,7 @@ import { ApolloClient, InMemoryCache, gql, createHttpLink } from '@apollo/client
 const GET_MATCHES = gql`
   query GetMatches {
     matchCreateds {
-      matchId
+      id
       name
       stake
       durationDays
@@ -15,7 +15,7 @@ const GET_MATCHES = gql`
 
 // Interface para os dados retornados do subgraph
 interface MatchCreated {
-  matchId: string;
+  id: string;
   name: string;
   stake: string;
   durationDays: string;
