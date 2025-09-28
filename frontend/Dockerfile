@@ -15,13 +15,13 @@ RUN adduser --system --uid 1001 nextjs
 WORKDIR /app
 
 # Copia os arquivos de configuração do pnpm
-COPY frontend/package.json frontend/pnpm-lock.yaml ./
+COPY package.json pnpm-lock.yaml ./
 
 # Instala as dependências usando pnpm
 RUN pnpm install --frozen-lockfile
 
 # Copia o código fonte do frontend
-COPY frontend/ .
+COPY . .
 
 # Gera o build de produção
 RUN pnpm run build

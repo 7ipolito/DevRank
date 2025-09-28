@@ -1,5 +1,0 @@
-{
-    "install": "pnpm install --frozen-lockfile --prefer-offline",
-    "build": "pnpm run build",
-    "start": "pnpm run start"
-    }
