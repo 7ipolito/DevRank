@@ -62,6 +62,21 @@ export class UserController {
         return res.status(400).json({ error: 'Wallet address is required' });
       }
       
+      // Check if user already exists with this username and wallet
+      const existingUser = await UserService.getUserByUsernameAndWallet(username, wallet_address);
+      
+      if (existingUser) {
+        // User already exists, return success
+        console.log(`User ${username} with wallet ${wallet_address} already exists with ID: ${existingUser.id}`);
+        return res.json({ 
+          success: true, 
+          message: 'User already exists', 
+          userId: existingUser.id,
+          wallet_address,
+          existing: true
+        });
+      }
+      
       const userId = await UserService.addUserWithWallet(username, wallet_address);
       
       // Immediately fetch stats for the new user
@@ -91,6 +106,7 @@ export class UserController {
         message: 'User with wallet added successfully', 
         userId,
         wallet_address,
+        existing: false,
         note: 'Initial stats fetch scheduled'
       });
     } catch (error) {

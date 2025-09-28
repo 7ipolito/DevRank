@@ -22,18 +22,18 @@ export async function initializeDatabase(): Promise<void> {
     const client = await pool.connect();
     console.log('Connected to PostgreSQL database successfully.');
     
-    // Create tables
-    const createUsersTable = `
-      CREATE TABLE IF NOT EXISTS users (
-        id SERIAL PRIMARY KEY,
-        username VARCHAR(255) UNIQUE NOT NULL,
-        github_username VARCHAR(255),
-        wallet_address VARCHAR(255),
-        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-        last_fetch TIMESTAMP,
-        is_active BOOLEAN DEFAULT true
-      )
-    `;
+      // Create tables
+      const createUsersTable = `
+        CREATE TABLE IF NOT EXISTS users (
+          id SERIAL PRIMARY KEY,
+          username VARCHAR(255) NOT NULL,
+          github_username VARCHAR(255),
+          wallet_address VARCHAR(255),
+          created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+          last_fetch TIMESTAMP,
+          is_active BOOLEAN DEFAULT true
+        )
+      `;
     
     const createStatsTable = `
       CREATE TABLE IF NOT EXISTS coding_stats (

@@ -9,5 +9,6 @@ export declare class UserService {
     static getUserStats(userId: number): Promise<any[]>;
     static getUserStatsByWallet(walletAddress: string): Promise<any[]>;
     static getUserByWallet(walletAddress: string): Promise<User | null>;
+    static getUserByUsernameAndWallet(username: string, walletAddress: string): Promise<User | null>;
 }
 //# sourceMappingURL=UserService.d.ts.map

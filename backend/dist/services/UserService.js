@@ -159,6 +159,17 @@ class UserService {
             throw error;
         }
     }
+    static async getUserByUsernameAndWallet(username, walletAddress) {
+        try {
+            const query = 'SELECT * FROM users WHERE username = $1 AND wallet_address = $2';
+            const result = await database_1.pool.query(query, [username, walletAddress]);
+            return result.rows[0] || null;
+        }
+        catch (error) {
+            console.error('Error fetching user by username and wallet:', error);
+            throw error;
+        }
+    }
 }
 exports.UserService = UserService;
 //# sourceMappingURL=UserService.js.map
