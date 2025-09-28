@@ -111,5 +111,6 @@ Getting started with DevRank is simple:
 
 ## Link to deployments/demo
 
-1. **Loom demo link: https://www.loom.com/share/d01d20f20ebc4a8e81c1c98543811bc1
-2. **Deployment link: https://worldscan.org/address/0x8471C05150f72eA45fb71Cbae6961EAC44F74584
+1. **World App Mini-app**: [https://world.org/mini-app?app_id=app_12d5c832010babfc7984dfaef82f27ec](https://world.org/mini-app?app_id=app_12d5c832010babfc7984dfaef82f27ec)
+2. **Loom demo link**: https://www.loom.com/share/d01d20f20ebc4a8e81c1c98543811bc1
+3. **Deployment link**: https://worldscan.org/address/0x8471C05150f72eA45fb71Cbae6961EAC44F74584
