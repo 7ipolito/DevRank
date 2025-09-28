@@ -327,7 +327,7 @@ function DashboardView() {
               
               // Atualizar o username e walletAddress no contexto e conectar
               const currentWalletAddress = MiniKit.user.walletAddress;
-              connect("7ipolito", currentWalletAddress);
+              connect(MiniKit?.user.username || "", currentWalletAddress);
             } else {
               const errorData = await createUserResponse.json();
               console.error('Error creating user:', errorData);

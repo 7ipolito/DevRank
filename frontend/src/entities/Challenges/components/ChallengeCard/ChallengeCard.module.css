@@ -84,11 +84,6 @@
   font-size: 0.8rem;
 }
 
-.difficulty {
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
 
 .duration {
   color: #6b7280;
@@ -113,33 +108,6 @@
   height: 100%;
 }
 
-/* Progress Section */
-.progressSection {
-  margin: 0.5rem 0;
-}
-
-.progressTrack {
-  width: 100%;
-  height: 0.5rem;
-  background: #e5e7eb;
-  border-radius: 0.25rem;
-  overflow: hidden;
-  margin-bottom: 0.25rem;
-}
-
-.progressFill {
-  height: 100%;
-  background: linear-gradient(90deg, #3b82f6, #1d4ed8);
-  border-radius: 0.25rem;
-  transition: width 0.8s ease;
-  box-shadow: 0 0 8px rgba(59, 130, 246, 0.3);
-}
-
-.progressText {
-  font-size: 0.75rem;
-  color: #6b7280;
-  font-weight: 500;
-}
 
 .details {
   display: flex;
@@ -176,12 +144,6 @@
   text-align: center;
 }
 
-.prizePool {
-  font-size: clamp(0.85rem, 3.5vw, 1rem);
-  color: #10b981;
-  font-weight: 600;
-  text-align: center;
-}
 
 .actions {
   display: flex;

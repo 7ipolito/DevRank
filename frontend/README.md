@@ -16,6 +16,19 @@ This template is a way for you to quickly get started with authentication and ex
 8. Continue to developer.worldcoin.org and make sure your app is connected to the right ngrok url
 9. [Optional] For Verify and Send Transaction to work you need to do some more setup in the dev portal. The steps are outlined in the respective component files.
 
+## Environment Variables
+
+### Subgraph Configuration
+
+To configure the subgraph URL for fetching competition data, add the following to your `.env.local` file:
+
+```bash
+# Subgraph URL for Worldchain competition data
+NEXT_PUBLIC_SUBGRAPH_URL=https://subgraph.satsuma-prod.com/6597691a01e2/allans-team--951313/worldchain-competition/version/v1.0.0-worldchain/api
+```
+
+If not set, the app will use the default URL. This allows you to easily switch between different subgraph endpoints for development, staging, and production environments.
+
 ## Authentication
 
 This starter kit uses [Minikit's](https://github.com/worldcoin/minikit-js) wallet auth to authenticate users, and [next-auth](https://authjs.dev/getting-started) to manage sessions.
