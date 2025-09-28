@@ -7,11 +7,7 @@ import ResultsHeader from "@/entities/Challenges/components/ResultsHeader";
 import RankingList from "@/entities/Challenges/components/RankingList";
 import styles from "./ChallengeResults.module.css";
 
-interface ChallengeResultsViewProps {
-  challengeId?: string;
-}
-
-export default function ChallengeResultsView({ challengeId }: ChallengeResultsViewProps) {
+export default function ChallengeResultsView() {
   const { t } = useTranslation();
   const router = useRouter();
 

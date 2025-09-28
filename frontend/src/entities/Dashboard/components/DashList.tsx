@@ -1,6 +1,4 @@
 // components/DashInfo.tsx
-import Image from "next/image";
-
 import styles from "./DashList.module.css";
 
 interface DashInfoProps {

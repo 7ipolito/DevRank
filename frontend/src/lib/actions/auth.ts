@@ -1,7 +1,3 @@
-import { storage } from "@/lib/storage";
-import { useRouter } from "next/navigation";
-import router from "next/router";
-import { MiniKit } from "@worldcoin/minikit-js";
 
 export async function handleLogout() {
   try {

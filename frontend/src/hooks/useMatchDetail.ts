@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { ApolloClient, InMemoryCache, gql, createHttpLink } from '@apollo/client';
 
 // GraphQL query para buscar detalhes de uma competição específica
@@ -51,7 +51,7 @@ export const useMatchDetail = (matchId: string | null): UseMatchDetailReturn => 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const fetchMatchDetail = async () => {
+  const fetchMatchDetail = useCallback(async () => {
     if (!matchId) {
       setMatch(null);
       setLoading(false);
@@ -100,11 +100,11 @@ export const useMatchDetail = (matchId: string | null): UseMatchDetailReturn => 
     } finally {
       setLoading(false);
     }
-  };
+  }, [matchId]);
 
   useEffect(() => {
     fetchMatchDetail();
-  }, [matchId]);
+  }, [fetchMatchDetail]);
 
   return {
     match,

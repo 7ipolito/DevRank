@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState, useEffect, useRef, ReactNode } from "react";
-import { useRouter } from "next/navigation";
 import { createPortal } from "react-dom";
 import { useNavigation } from "@/contexts/NavigationContext";
 
@@ -14,7 +13,6 @@ export function SwipeTransition({
   children,
   onSwipeComplete,
 }: SwipeTransitionProps) {
-  const router = useRouter();
   const { previousScreen, navigateBack } = useNavigation();
   const containerRef = useRef<HTMLDivElement>(null);
   const startX = useRef<number>(0);

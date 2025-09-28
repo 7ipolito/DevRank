@@ -13,7 +13,7 @@ import styles from "./Challenges.module.css";
 export default function ChallengesView() {
   const { t } = useTranslation();
   const router = useRouter();
-  const { isConnected, disconnect } = useConnection();
+  const { isConnected } = useConnection();
   const { matches, loading, error, refetch } = useMatchData();
 
   // Transforma os dados do subgraph no formato esperado pelos componentes

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 import { useTranslation } from "react-i18next";
 import NotificationsHeader from "@/entities/Notifications/components/NotificationsHeader";
 import NotificationCard from "@/entities/Notifications/components/NotificationCard";
@@ -18,7 +18,7 @@ interface Notification {
 export default function NotificationsView() {
   const { t } = useTranslation();
   
-  const [notifications, setNotifications] = useState<Notification[]>([
+  const notifications: Notification[] = [
     {
       id: "1",
       title: "Challenge Completed!",
@@ -28,33 +28,13 @@ export default function NotificationsView() {
       isRead: false,
     },
    
-  ]);
-
-  const unreadCount = notifications.filter(n => !n.isRead).length;
-
-  const handleMarkAsRead = (id: string) => {
-    setNotifications(prev => 
-      prev.map(notification => 
-        notification.id === id 
-          ? { ...notification, isRead: true }
-          : notification
-      )
-    );
-  };
-
-  const handleMarkAllAsRead = () => {
-    setNotifications(prev => 
-      prev.map(notification => ({ ...notification, isRead: true }))
-    );
-  };
+  ];
 
   return (
     <main className={styles.main}>
       <div className={styles.container}>
         <NotificationsHeader 
           title={t("notifications", { defaultValue: "Notifications" })}
-          unreadCount={unreadCount}
-          onMarkAllAsRead={handleMarkAllAsRead}
         />
         
         <div className={styles.notificationsList}>
@@ -80,7 +60,6 @@ export default function NotificationsView() {
                 time={notification.time}
                 type={notification.type}
                 isRead={notification.isRead}
-                onMarkAsRead={handleMarkAsRead}
               />
             ))
           )}

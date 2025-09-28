@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from 'react';
+import React from 'react';
 import styles from './StakeSelection.module.css';
 
 interface StakeSelectionProps {

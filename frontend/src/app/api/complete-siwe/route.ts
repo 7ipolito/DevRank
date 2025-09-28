@@ -9,7 +9,7 @@ interface IRequestPayload {
 
 export const POST = async (req: NextRequest) => {
 	const { payload, nonce } = (await req.json()) as IRequestPayload
-	if (nonce != cookies().get('siwe')?.value) {
+	if (nonce != (await cookies()).get('siwe')?.value) {
 		return NextResponse.json({
 			status: 'error',
 			isValid: false,
@@ -22,12 +22,12 @@ export const POST = async (req: NextRequest) => {
 			status: 'success',
 			isValid: validMessage.isValid,
 		})
-	} catch (error: any) {
+	} catch (error: unknown) {
 		// Handle errors in validation or processing
 		return NextResponse.json({
 			status: 'error',
 			isValid: false,
-			message: error.message,
+			message: error instanceof Error ? error.message : 'Unknown error occurred',
 		})
 	}
 }

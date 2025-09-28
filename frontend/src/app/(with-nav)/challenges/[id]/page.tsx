@@ -1,11 +1,12 @@
 import ChallengeDetailsView from "@/views/ChallengeDetails/page";
 
 interface ChallengeDetailsPageProps {
-  params: {
+  params: Promise<{
     id: string;
-  };
+  }>;
 }
 
-export default function ChallengeDetailsPage({ params }: ChallengeDetailsPageProps) {
-  return <ChallengeDetailsView challengeId={params.id} />;
+export default async function ChallengeDetailsPage({ params }: ChallengeDetailsPageProps) {
+  const { id } = await params;
+  return <ChallengeDetailsView challengeId={id} />;
 }

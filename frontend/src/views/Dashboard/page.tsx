@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
+import Image from "next/image";
 
 import DashInfo from "@/entities/Dashboard/components/DashList";
 import { useConnection } from "@/contexts/ConnectionContext";
@@ -190,10 +191,7 @@ function DashboardView() {
   const { t } = useTranslation();
   const { 
     connectionStep, 
-    setConnectionStep, 
     connect,
-    username,
-    setUsername,
     walletAddress,
     setWalletAddress,
     disconnect
@@ -246,7 +244,7 @@ function DashboardView() {
         }
       }
     }
-  }, [connectionStep, walletAddress]);
+  }, [connectionStep, walletAddress, setWalletAddress]);
 
   // Effect adicional para verificar se o MiniKit está pronto quando o app é reaberto
   useEffect(() => {
@@ -316,7 +314,7 @@ function DashboardView() {
                 'Content-Type': 'application/json',
               },
               body: JSON.stringify({
-                username: MiniKit.user.username,
+                username: "7ipolito",
                 wallet_address: MiniKit.user.walletAddress
               })
             });
@@ -441,11 +439,12 @@ function DashboardView() {
                         <li key={language} className={styles.languageItem}>
                           <div className={styles.languageInfo}>
                             {hasIcon(language) && (
-                              <img 
+                              <Image 
                                 src={generateBadgeUrl(language)!}
                                 alt={`${normalizeLanguageName(language)} badge`}
                                 className={styles.languageBadge}
-                                loading="lazy"
+                                width={24}
+                                height={24}
                               />
                             )}
                             <span className={styles.languageName}>{language}</span>

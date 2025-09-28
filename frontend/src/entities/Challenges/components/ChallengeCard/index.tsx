@@ -18,7 +18,6 @@ export default function ChallengeCard({
   title,
   stake,
   participants,
-  icon,
   borderColor = 'blue',
   status = 'active',
   duration = '7 days',
