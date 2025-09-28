@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import Image from "next/image";
+import axios from "axios";
 
 import DashInfo from "@/entities/Dashboard/components/DashList";
 import { useConnection } from "@/contexts/ConnectionContext";
@@ -207,10 +208,10 @@ function DashboardView() {
     setError(null);
     
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/users/wallet/${walletAddress}/stats`);
+      const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/users/wallet/${walletAddress}/stats`);
       
-      if (response.ok) {
-        const data: ApiResponse = await response.json();
+      if (response.status === 200) {
+        const data: ApiResponse = response.data;
         if (data.success && data.stats.length > 0) {
           // Pega as estatísticas mais recentes (primeiro item)
           setUserStats(data.stats[0]);
@@ -218,7 +219,7 @@ function DashboardView() {
           setError('No stats found for this user');
         }
       } else {
-        const errorData = await response.json();
+        const errorData = response.data;
         setError(errorData.error || 'Failed to fetch user stats');
       }
     } catch (err) {
@@ -276,8 +277,8 @@ function DashboardView() {
     setError(null);
 
     try {
-      const res = await fetch(`/api/nonce`);
-      const { nonce } = await res.json();
+      const res = await axios.get(`/api/nonce`);
+      const { nonce } = res.data;
 
       const { finalPayload } = await MiniKit.commandsAsync.walletAuth(
         walletAuthInput(nonce)
@@ -288,15 +289,9 @@ function DashboardView() {
         setError("Wallet authentication failed");
         return;
       } else {
-        const response = await fetch("/api/auth/login", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            payload: finalPayload,
-            nonce,
-          }),
+        const response = await axios.post("/api/auth/login", {
+          payload: finalPayload,
+          nonce,
         });
 
         if (response.status === 200) {
@@ -308,26 +303,20 @@ function DashboardView() {
 
           // SUCCESS - Criar usuário na API usando MiniKit.user.username
           try {
-            const createUserResponse = await fetch(process.env.NEXT_PUBLIC_API_URL+"/users/wallet", {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-              },
-              body: JSON.stringify({
-                username: MiniKit.user.username,
-                wallet_address: MiniKit.user.walletAddress
-              })
+            const createUserResponse = await axios.post(process.env.NEXT_PUBLIC_API_URL+"/users/wallet", {
+              username: MiniKit.user.username,
+              wallet_address: MiniKit.user.walletAddress
             });
 
-            if (createUserResponse.ok) {
-              const userData = await createUserResponse.json();
+            if (createUserResponse.status === 200) {
+              const userData = createUserResponse.data;
               console.log('User created successfully:', userData);
               
               // Atualizar o username e walletAddress no contexto e conectar
               const currentWalletAddress = MiniKit.user.walletAddress;
               connect(MiniKit?.user.username || "", currentWalletAddress);
             } else {
-              const errorData = await createUserResponse.json();
+              const errorData = createUserResponse.data;
               console.error('Error creating user:', errorData);
               setError(errorData.error || 'Failed to create user');
             }
