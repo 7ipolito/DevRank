@@ -120,6 +120,38 @@ export class UserController {
     }
   }
 
+  static async getUserStatsByWallet(req: Request, res: Response) {
+    try {
+      const { walletAddress } = req.params;
+      
+      if (!walletAddress) {
+        return res.status(400).json({ error: 'Wallet address is required' });
+      }
+      
+      const stats = await UserService.getUserStatsByWallet(walletAddress);
+      const user = await UserService.getUserByWallet(walletAddress);
+      
+      if (!user) {
+        return res.status(404).json({ error: 'User not found with this wallet address' });
+      }
+      
+      res.json({ 
+        success: true, 
+        user: {
+          id: user.id,
+          username: user.username,
+          wallet_address: user.wallet_address,
+          created_at: user.created_at,
+          last_fetch: user.last_fetch
+        },
+        stats 
+      });
+    } catch (error) {
+      console.error('Error fetching user stats by wallet:', error);
+      res.status(500).json({ error: 'Failed to fetch stats' });
+    }
+  }
+
   static async fetchUserStats(req: Request, res: Response) {
     try {
       const userId = parseInt(req.params.userId);

@@ -6,6 +6,7 @@ export declare class UserController {
     static createUserWithWallet(req: Request, res: Response): Promise<Response<any, Record<string, any>> | undefined>;
     static getUsers(req: Request, res: Response): Promise<void>;
     static getUserStats(req: Request, res: Response): Promise<void>;
+    static getUserStatsByWallet(req: Request, res: Response): Promise<Response<any, Record<string, any>> | undefined>;
     static fetchUserStats(req: Request, res: Response): Promise<Response<any, Record<string, any>> | undefined>;
 }
 //# sourceMappingURL=UserController.d.ts.map

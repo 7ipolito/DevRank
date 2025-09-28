@@ -7,5 +7,7 @@ export declare class UserService {
     static storeUserStats(stats: CodingStats): Promise<void>;
     static updateUserLastFetch(userId: number): Promise<void>;
     static getUserStats(userId: number): Promise<any[]>;
+    static getUserStatsByWallet(walletAddress: string): Promise<any[]>;
+    static getUserByWallet(walletAddress: string): Promise<User | null>;
 }
 //# sourceMappingURL=UserService.d.ts.map

@@ -120,6 +120,45 @@ class UserService {
             throw error;
         }
     }
+    static async getUserStatsByWallet(walletAddress) {
+        try {
+            const query = `
+        SELECT cs.* FROM coding_stats cs
+        INNER JOIN users u ON cs.user_id = u.id
+        WHERE u.wallet_address = $1 
+        ORDER BY cs.created_at DESC 
+        LIMIT 30
+      `;
+            const result = await database_1.pool.query(query, [walletAddress]);
+            const stats = result.rows.map((row) => ({
+                id: row.id,
+                user_id: row.user_id,
+                fetch_date: row.fetch_date,
+                total_xp: row.total_xp,
+                new_xp: row.new_xp,
+                created_at: row.created_at,
+                languages: JSON.parse(row.languages || '{}'),
+                machines: JSON.parse(row.machines || '{}'),
+                daily_xp: JSON.parse(row.daily_xp || '{}')
+            }));
+            return stats;
+        }
+        catch (error) {
+            console.error('Error fetching user stats by wallet:', error);
+            throw error;
+        }
+    }
+    static async getUserByWallet(walletAddress) {
+        try {
+            const query = 'SELECT * FROM users WHERE wallet_address = $1';
+            const result = await database_1.pool.query(query, [walletAddress]);
+            return result.rows[0] || null;
+        }
+        catch (error) {
+            console.error('Error fetching user by wallet:', error);
+            throw error;
+        }
+    }
 }
 exports.UserService = UserService;
 //# sourceMappingURL=UserService.js.map

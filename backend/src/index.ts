@@ -38,7 +38,8 @@ async function startServer() {
       console.log(`  POST /api/users - Add new user`);
       console.log(`  POST /api/users/wallet - Add new user with wallet address`);
       console.log(`  GET /api/users - Get all active users`);
-      console.log(`  GET /api/users/:userId/stats - Get user stats history`);
+      console.log(`  GET /api/users/:userId/stats - Get user stats history by user ID`);
+      console.log(`  GET /api/users/wallet/:walletAddress/stats - Get user stats by wallet address`);
       console.log(`  POST /api/fetch-stats/:userId - Manually trigger stats fetch for user`);
       console.log(`  GET /api/health - Health check`);
     });
