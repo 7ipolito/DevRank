@@ -6,7 +6,7 @@ interface ChallengesHeaderProps {
   subtitle?: string;
 }
 
-export default function ChallengesHeader({ 
+export default function ChallengesHeader({
   title = "Challenges",
   subtitle = "Stack WLD and earn tokens!"
 }: ChallengesHeaderProps) {

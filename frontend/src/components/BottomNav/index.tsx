@@ -48,8 +48,7 @@ export default function BottomNav() {
       icon: ChallengesIcon,
       href: "/challenges",
       label: "Challenges",
-      disabled: false,
-      //disabled: !isConnected,
+      disabled: !isConnected,
     },
     {
       icon: NotificationsIcon,

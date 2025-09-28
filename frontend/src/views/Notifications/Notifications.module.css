@@ -1,7 +1,6 @@
 .main {
   min-height: 100vh;
   min-height: 100dvh;
-  background: linear-gradient(180deg, #f8fafc 0%, #eef2ff 100%);
   color: #1f2937;
   padding: clamp(0.75rem, 4vw, 1.5rem);
   padding-bottom: clamp(5rem, 8vw, 6rem);

@@ -1,26 +1,24 @@
 .main {
+  display: flex;
   min-height: 100vh;
-  min-height: 100dvh;
-  padding: clamp(0.75rem, 4vw, 1.5rem);
-  padding-bottom: clamp(5rem, 8vw, 6rem); /* Espaço para BottomNav */
-  background: linear-gradient(180deg, #f8fafc 0%, #eef2ff 100%);
-  box-sizing: border-box;
+  min-height: 100dvh; /* Dynamic viewport height for mobile */
+  flex-direction: column;
+  
+  
 }
 
-.container {
+.content {
   width: 100%;
-  max-width: min(95vw, 32rem);
+  max-width: min(90vw, 28rem);
   margin: 0 auto;
   display: flex;
   flex-direction: column;
-  gap: clamp(1rem, 3vw, 1.5rem);
-  box-sizing: border-box;
+  
 }
 
 .challengesList {
   display: flex;
   flex-direction: column;
-  gap: clamp(1.25rem, 4vw, 1.75rem);
 }
 
 /* Media queries para diferentes dispositivos */

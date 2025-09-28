@@ -4,7 +4,7 @@ import LoginPage from "./login/page";
 
 const Page = async () => {
   return (
-    <div className="bg-white text-black min-h-full p-5">
+    <div className="bg-white text-black ">
       <DashboardPage />
       <BottomNav />
     </div>

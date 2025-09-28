@@ -4,7 +4,6 @@
   min-height: 100dvh; /* Dynamic viewport height for mobile */
   flex-direction: column;
   padding: clamp(0.75rem, 4vw, 1.5rem);
-  background: linear-gradient(180deg, #f8fafc 0%, #eef2ff 100%);
   box-sizing: border-box;
 }
 
