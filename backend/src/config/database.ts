@@ -4,7 +4,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 // PostgreSQL connection configuration
-const connectionString = process.env.DATABASE_URL || 'postgresql://postgres:mkcdhJHpEmiEApEKfekPjGrPFXuqTRNs@shinkansen.proxy.rlwy.net:47899/railway';
+const connectionString = process.env.DATABASE_URL;
 
 export const pool = new Pool({
   connectionString,
