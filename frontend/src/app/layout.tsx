@@ -4,6 +4,7 @@ import { MiniKitProvider } from "@/components/MiniKitProvider";
 import { SwipeNavigationProvider } from "@/components/SwipeNavigationProvider";
 import ClientProviders from "@/components/ClientProviders";
 import { ConnectionProvider } from "@/contexts/ConnectionContext";
+import { ErudaProvider } from "@/providers/Eruda";
 
 const sora = Sora({ subsets: ["latin"] });
 
@@ -54,6 +55,7 @@ export default function RootLayout({
       <body className={sora.className}>
             <ClientProviders>
               <MiniKitProvider>
+                <ErudaProvider>
                 <SwipeNavigationProvider>
                   <ConnectionProvider>
                     <div
@@ -69,6 +71,7 @@ export default function RootLayout({
                     </div>
                   </ConnectionProvider>
                 </SwipeNavigationProvider>
+                </ErudaProvider>
               </MiniKitProvider>
             </ClientProviders>
         <script

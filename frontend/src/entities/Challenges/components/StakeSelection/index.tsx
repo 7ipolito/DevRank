@@ -9,7 +9,7 @@ interface StakeSelectionProps {
 }
 
 export default function StakeSelection({ onStakeSelect, selectedStake }: StakeSelectionProps) {
-  const stakeOptions = [0.1, 1, 5, 10, 20];
+  const stakeOptions = [0.0001, 1, 5, 10, 20];
 
   const InfoIcon = () => (
     <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">

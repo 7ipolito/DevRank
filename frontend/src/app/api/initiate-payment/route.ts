@@ -1,17 +1,24 @@
-import { cookies } from "next/headers";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from 'next/server'
 
-export async function POST() {
-  const uuid = crypto.randomUUID().replace(/-/g, "");
-
-  // TODO: Store the ID field in your database so you can verify the payment later
-  (await cookies()).set({
-    name: "payment-nonce",
-    value: uuid,
-    httpOnly: true,
-  });
-
-  console.log(uuid);
-
-  return NextResponse.json({ id: uuid });
+export async function POST(req: NextRequest) {
+  try {
+    // Gerar um UUID único para a referência do pagamento
+    const uuid = crypto.randomUUID().replace(/-/g, '')
+    
+    // TODO: Armazenar o ID no banco de dados para verificar o pagamento depois
+    // Por exemplo: await database.payments.create({ id: uuid, status: 'pending', ... })
+    
+    console.log('Payment initiated with ID:', uuid)
+    
+    return NextResponse.json({ 
+      id: uuid,
+      success: true 
+    })
+  } catch (error) {
+    console.error('Error initiating payment:', error)
+    return NextResponse.json(
+      { error: 'Failed to initiate payment' },
+      { status: 500 }
+    )
+  }
 }

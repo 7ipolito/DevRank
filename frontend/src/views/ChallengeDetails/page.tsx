@@ -3,7 +3,8 @@
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useTranslation } from "react-i18next";
-import { formatEther } from "viem";
+import { formatEther, parseEther } from "viem";
+import { MiniKit, tokenToDecimals, Tokens, PayCommandInput } from '@worldcoin/minikit-js';
 import { useMatchDetail } from "@/hooks/useMatchDetail";
 import StepProgress from "@/entities/Challenges/components/StepProgress";
 import ChallengeInfoCard from "@/entities/Challenges/components/ChallengeInfoCard";
@@ -20,10 +21,11 @@ export default function ChallengeDetailsView({ challengeId }: ChallengeDetailsVi
   const router = useRouter();
   const [currentStep, setCurrentStep] = useState(1);
   const [selectedStake, setSelectedStake] = useState(0.1);
-  
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   
   // Buscar dados reais da competição do subgraph
-  const { match, loading, error, refetch } = useMatchDetail(challengeId || null);
+  const { match, loading, error: matchError, refetch } = useMatchDetail(challengeId || null);
 
   // Dados processados da competição
   const challengeData = match ? {
@@ -43,17 +45,74 @@ export default function ChallengeDetailsView({ challengeId }: ChallengeDetailsVi
     router.back();
   };
 
-  const handleNext = () => {
+  const handleNext = async () => {
     if (currentStep === 1) {
       // Avança para o step 2 (Apostar & Entrar)
       setCurrentStep(2);
     } else {
-      // Step 2 - Entrar no desafio e ir para resultados
-      console.log("Entrar no desafio com stake:", selectedStake);
-      // TODO: Implementar lógica de entrada no desafio (smart contract call)
-      
-      // Redirecionar para a tela de resultados
-      router.push(`/challenges/${challengeId}/results`);
+      // Step 2 - Entrar no desafio enviando WLD para o contrato
+      if (match && challengeId) {
+        try {
+          setIsLoading(true);
+          setError(null);
+          
+          console.log("Entrando no desafio com stake:", selectedStake, "WLD");
+          
+          // Endereço do contrato Competition (substitua pelo endereço real após deploy)
+          const contractAddress = '0x8a7d416E2fb2EEdC3a547Cadb3F21dD0dcFF19e0';
+          
+          // 1. Iniciar o pagamento no backend
+          const initiateRes = await fetch('/api/initiate-payment', {
+            method: 'POST',
+          });
+          const { id: paymentReference } = await initiateRes.json();
+          
+          console.log("Payment reference:", paymentReference);
+          
+          // 2. Criar o payload do comando Pay
+          const payload: PayCommandInput = {
+            reference: paymentReference,
+            to: contractAddress, // Endereço do contrato que receberá o pagamento
+            tokens: [
+              {
+                symbol: Tokens.WLD,
+                token_amount: tokenToDecimals(selectedStake, Tokens.WLD).toString(),
+              },
+            ],
+            description: `Join challenge ${challengeId} with ${selectedStake} WLD stake`,
+          };
+          
+          console.log("Pay command payload:", payload);
+          
+          // 3. Executar o comando Pay
+          if (!MiniKit.isInstalled()) {
+            setError('World App is not installed');
+            return;
+          }
+          
+          const { finalPayload } = await MiniKit.commandsAsync.pay(payload);
+          
+          console.log('Pay command result:', finalPayload);
+       
+              if (finalPayload.status == 'success') {
+                const res = await fetch(`/api/confirm-payment`, {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify(finalPayload),
+                })
+                const payment = await res.json()
+                if (payment.success) {
+                  // Congrats your payment was successful!
+                  router.push(`/challenges/${challengeId}/results`);
+                }
+              }
+        } catch (error) {
+          console.error("Erro ao entrar no desafio:", error);
+          setError(error instanceof Error ? error.message : 'Unknown error');
+        } finally {
+          setIsLoading(false);
+        }
+      }
     }
   };
 
@@ -90,7 +149,7 @@ export default function ChallengeDetailsView({ challengeId }: ChallengeDetailsVi
   }
 
   // Estado de erro
-  if (error) {
+  if (matchError) {
     return (
       <main className={styles.main}>
         <div className={styles.container}>
@@ -113,7 +172,7 @@ export default function ChallengeDetailsView({ challengeId }: ChallengeDetailsVi
             <h1 className={styles.title}>Error</h1>
           </div>
           <div className={styles.errorContainer}>
-            <p className={styles.errorMessage}>Error loading challenge: {error}</p>
+            <p className={styles.errorMessage}>Error loading challenge: {matchError}</p>
             <button onClick={refetch} className={styles.retryButton}>
               Try Again
             </button>
@@ -254,12 +313,24 @@ export default function ChallengeDetailsView({ challengeId }: ChallengeDetailsVi
         <button 
           className={styles.nextButton}
           onClick={handleNext}
+          disabled={isLoading || loading}
         >
-          {currentStep === 1 
-            ? t("next", { defaultValue: "Next" })
-            : t("enter", { defaultValue: "Enter" })
+          {isLoading 
+            ? "Processing..." 
+            : currentStep === 1 
+              ? t("next", { defaultValue: "Next" })
+              : t("enter", { defaultValue: "Enter" })
           }
         </button>
+
+        {/* Mostrar erro se houver */}
+        {error && (
+          <div className={styles.errorContainer}>
+            <p className={styles.errorMessage}>
+              Error: {error}
+            </p>
+          </div>
+        )}
       </div>
     </main>
   );

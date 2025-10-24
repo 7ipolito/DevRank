@@ -53,40 +53,6 @@ tab_width = 4
 bracket_spacing = true
 int_types = "long"
 
-# Build settings
-[build]
-cache_path = "cache"
-extra_output = ["abi", "metadata", "devdoc", "userdoc", "storageLayout", "evm.bytecode", "evm.deployedBytecode"]
-extra_output_files = ["abi", "metadata"]
-
-# XPBets Competition specific settings
-[profile.xpbets]
-src = "src"
-test = "test"
-script = "script"
-out = "out"
-
-# Gas optimization for competition contracts
-optimizer_runs = 1000
-via_ir = false
-
-# Specific compiler warnings
-ignored_error_codes = []
-deny_warnings = false
-
-# Libraries for XPBets
-libraries = []
-
-[profile.xpbets.fuzz]
-# More aggressive fuzzing for financial contracts
-runs = 10000
-max_test_rejects = 100000
-
-[profile.xpbets.invariant]
-# Extended invariant testing for competition logic
-runs = 1000
-depth = 20
-
 # CI Profile for faster testing
 [profile.ci]
 fuzz = { runs = 100 }
@@ -96,21 +62,3 @@ invariant = { runs = 10 }
 [profile.local]
 optimizer = false
 via_ir = false
-
-# Model checker settings for formal verification
-[profile.default.model_checker]
-contracts = {
-    "src/XPBetsCompetition.sol" = ["XPBetsCompetition"]
-}
-
-# Enable detailed error reporting
-[profile.default.optimizer_details]
-yul = true
-constantOptimizer = true
-cse = true
-deduplicate = true
-inliner = true
-jumpdestRemover = true
-orderLiterals = true
-peephole = true
-stackCompressor = true

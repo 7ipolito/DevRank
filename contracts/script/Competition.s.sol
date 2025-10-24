@@ -7,7 +7,9 @@ import "../src/Competition.sol";
 contract CompetitionScript is Script {
     function run() external {
         vm.startBroadcast();
-        new Competition(msg.sender); // msg.sender será a plataforma
+        // Mock WLD token address para teste
+        address mockWldToken = address(0x1234567890123456789012345678901234567890);
+        new Competition(msg.sender, mockWldToken); // msg.sender será a plataforma
         vm.stopBroadcast();
     }
 }
