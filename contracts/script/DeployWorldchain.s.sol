@@ -29,15 +29,16 @@ contract DeployWorldchainScript is Script {
 
         vm.startBroadcast(deployerPrivateKey);
         
-        // Deploy Competition contract with deployer as platform
-        // Mock WLD token address para teste na Worldchain Sepolia
-        // Em produção, substitua pelo endereço real do WLD token
-        address mockWldToken = address(0x0000000000000000000000000000000000000000);
-        Competition competition = new Competition(deployer, mockWldToken);
+        // Endereço do token WLD na Worldchain
+        // Mainnet: 0x2cFc85d8E48F8EAB294be644d9E25C3030863003
+        // Sepolia: 0x2cFc85d8E48F8EAB294be644d9E25C3030863003 (mesmo endereço)
+        address wldTokenAddress = vm.envOr("WLD_TOKEN_ADDRESS", address(0x2cFc85d8E48F8EAB294be644d9E25C3030863003));
+        
+        // Deploy Competition contract passando o endereço do WLD
+        Competition competition = new Competition();
         
         console.log("Competition contract deployed to:", address(competition));
-        console.log("Platform address:", competition.platform());
-        console.log("WLD Token address:", address(competition.wldToken()));
+        console.log("WLD Token address:", wldTokenAddress);
         
         vm.stopBroadcast();
     }

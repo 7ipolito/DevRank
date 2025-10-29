@@ -7,9 +7,15 @@ import "../src/Competition.sol";
 contract CompetitionScript is Script {
     function run() external {
         vm.startBroadcast();
-        // Mock WLD token address para teste
-        address mockWldToken = address(0x1234567890123456789012345678901234567890);
-        new Competition(msg.sender, mockWldToken); // msg.sender será a plataforma
+        
+        // Endereço do token WLD na Worldchain Mainnet
+        address wldTokenAddress = 0x2cFc85d8E48F8EAB294be644d9E25C3030863003;
+        
+        Competition competition = new Competition();
+        
+        console.log("Competition contract deployed to:", address(competition));
+        console.log("WLD Token address:", wldTokenAddress);
+        
         vm.stopBroadcast();
     }
 }

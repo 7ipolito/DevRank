@@ -5,6 +5,7 @@ import { SwipeNavigationProvider } from "@/components/SwipeNavigationProvider";
 import ClientProviders from "@/components/ClientProviders";
 import { ConnectionProvider } from "@/contexts/ConnectionContext";
 import { ErudaProvider } from "@/providers/Eruda";
+import { ViewportHeight } from "@/components/ViewportHeight";
 
 const sora = Sora({ subsets: ["latin"] });
 
@@ -53,6 +54,7 @@ export default function RootLayout({
         </style>
       </head>
       <body className={sora.className}>
+            <ViewportHeight />
             <ClientProviders>
               <MiniKitProvider>
                 <ErudaProvider>
@@ -74,20 +76,6 @@ export default function RootLayout({
                 </ErudaProvider>
               </MiniKitProvider>
             </ClientProviders>
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-            // Fix para altura em dispositivos móveis
-            function setVh() {
-              let vh = window.innerHeight * 0.01;
-              document.documentElement.style.setProperty('--vh', \`\${vh}px\`);
-            }
-            window.addEventListener('resize', setVh);
-            window.addEventListener('orientationchange', setVh);
-            setVh();
-          `,
-          }}
-        />
       </body>
     </html>
   );

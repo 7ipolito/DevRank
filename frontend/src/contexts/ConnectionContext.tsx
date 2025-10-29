@@ -101,11 +101,8 @@ export function ConnectionProvider({ children }: ConnectionProviderProps) {
     disconnect,
   };
 
-  // Não renderiza os children até que o estado seja inicializado do localStorage
-  if (!isInitialized) {
-    return null;
-  }
-
+  // Renderiza os children mesmo antes de inicializar para evitar hydration mismatch
+  // O conteúdo será atualizado assim que isInitialized for true
   return (
     <ConnectionContext.Provider value={value}>
       {children}

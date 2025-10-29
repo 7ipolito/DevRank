@@ -2,12 +2,11 @@
 
 import { MiniKit } from "@worldcoin/minikit-js";
 import { ReactNode, useEffect } from "react";
-
-const appId = "app_b193c6ebbba556c51297918a98a282bf";
+import { APP_ID } from "@/config/contracts";
 
 export const MiniKitProvider = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
-    MiniKit.install(appId);
+    MiniKit.install(APP_ID);
   }, []);
 
   return <>{children}</>;

@@ -28,11 +28,12 @@ export default function ChallengesView() {
     router.push(`/challenges/${originalId}/results`);
   };
 
-  // Se não estiver conectado, redireciona para o dashboard
-  if (!isConnected) {
-    router.push('/dashboard');
-    return null;
-  }
+  // Se não estiver conectado, redireciona para o dashboard (usando useEffect para evitar hydration error)
+  React.useEffect(() => {
+    if (!isConnected) {
+      router.push('/dashboard');
+    }
+  }, [isConnected, router]);
 
   // Estado de loading
   if (loading) {

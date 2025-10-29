@@ -14,15 +14,22 @@ import styles from "./BottomNav.module.css";
 
 export default function BottomNav() {
   const pathname = usePathname();
+  const [mounted, setMounted] = useState(false);
   const [bottomSpace, setBottomSpace] = useState(0);
   const [isIOS, setIsIOS] = useState(false);
   const { triggerImpact, triggerSelection } = useHapticFeedback();
   const { isConnected } = useConnection();
 
   useEffect(() => {
+    setMounted(true);
     setBottomSpace(getBottomSpace());
     setIsIOS(isIOSDevice());
   }, []);
+
+  // Não renderiza até que o componente esteja montado no cliente
+  if (!mounted) {
+    return null;
+  }
 
   const hiddenRoutes = ["/login", "/event", "/payment-selection", "/register", "/language-setup", "/language-settings"];
   

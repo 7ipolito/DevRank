@@ -22,12 +22,15 @@ export function SwipeTransition({
   const [portalContainer, setPortalContainer] = useState<HTMLElement | null>(
     null
   );
+  const [mounted, setMounted] = useState(false);
   const minSwipeDistance = 40; // Distância mínima para começar a transição
-  const threshold = typeof window !== 'undefined' ? window.innerWidth * 0.3 : 0; // 30% da largura da tela para completar a transição
+  const [threshold, setThreshold] = useState(0);
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
       setPortalContainer(document.body);
+      setThreshold(window.innerWidth * 0.3); // 30% da largura da tela para completar a transição
+      setMounted(true);
     }
   }, []);
 
@@ -80,7 +83,10 @@ export function SwipeTransition({
     1 - slidePercentage * 0.1
   })`;
 
-  if (!portalContainer) return <>{children}</>;
+  // Renderiza um fallback simples até que o componente seja montado no cliente
+  if (!mounted || !portalContainer) {
+    return <div style={{ width: "100%", height: "100%" }}>{children}</div>;
+  }
 
   // Este estilo garante que o conteúdo mantenha sua altura e rolagem normal
   const mainContainerStyle: React.CSSProperties = {
