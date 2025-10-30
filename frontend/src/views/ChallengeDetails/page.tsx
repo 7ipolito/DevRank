@@ -582,10 +582,7 @@ export default function ChallengeDetailsView({ challengeId }: ChallengeDetailsVi
                 highlight={true}
               />
               
-              <CountdownTimer
-                title="First day ends"
-                targetDate={challengeData.details.endDate}
-              />
+             
             </div>
           </>
         ) : (

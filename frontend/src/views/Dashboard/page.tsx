@@ -336,11 +336,6 @@ function DashboardView() {
     }
   };
 
-  const handleShare = () => {
-    // TODO: Integrate share action (X/Twitter API or navigator.share)
-    console.log("Shared on X!");
-  };
-
   const handleLogout = () => {
     // Limpa todos os dados do localStorage e reseta o estado
     disconnect();
@@ -461,15 +456,6 @@ function DashboardView() {
                   No stats available yet. Make sure you have Code::Stats data for your username.
                 </div>
               )}
-
-              <button
-                type="button"
-                onClick={handleShare}
-                className={styles.shareButton}
-                disabled={loading || !!error}
-              >
-                {t("share_on_x", { defaultValue: "Share it on X!" })}
-              </button>
             </div> 
           </div>
         )}

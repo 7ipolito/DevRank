@@ -25,13 +25,13 @@
 }
 
 .completed {
-  background: #10b981;
+  background: #6b7280;
   color: white;
 }
 
 .inactive {
-  background: #4a5568;
-  color: #a0aec0;
+  background: #6b7280;
+  color: #9ca3af;
 }
 
 .connector {
@@ -41,11 +41,11 @@
 }
 
 .connectorCompleted {
-  background: #10b981;
+  background: #6b7280;
 }
 
 .connectorInactive {
-  background: #4a5568;
+  background: #6b7280;
 }
 
 /* Media queries para responsividade */

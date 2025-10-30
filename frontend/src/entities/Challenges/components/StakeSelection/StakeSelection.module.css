@@ -40,11 +40,15 @@
 }
 
 .stakeSection {
-  background: #ffffff;
-  border: 2px solid #e5e7eb;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(241, 245, 249, 0.85));
+  backdrop-filter: blur(20px) saturate(120%);
+  border: 1px solid rgba(255, 255, 255, 0.4);
   border-radius: clamp(1rem, 4vw, 1.5rem);
   padding: clamp(1.5rem, 5vw, 2rem);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  box-shadow: 
+    0 8px 32px rgba(15, 23, 42, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.5),
+    0 4px 16px rgba(59, 130, 246, 0.1);
   display: flex;
   flex-direction: column;
   gap: clamp(1rem, 4vw, 1.5rem);
@@ -70,35 +74,76 @@
   flex: 1;
   min-width: clamp(3rem, 15vw, 4rem);
   height: clamp(2.5rem, 8vw, 3rem);
-  border: 2px solid #4a5568;
+  border: 1px solid rgba(59, 130, 246, 0.3);
   border-radius: clamp(0.5rem, 2vw, 0.75rem);
-  background: transparent;
-  color: #4a5568;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.8), rgba(241, 245, 249, 0.7));
+  backdrop-filter: blur(10px);
+  color: #2563eb;
   font-size: clamp(0.9rem, 4vw, 1.1rem);
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.3s ease;
   display: flex;
   align-items: center;
   justify-content: center;
   box-sizing: border-box;
+  box-shadow: 
+    0 2px 8px rgba(59, 130, 246, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.4);
+  position: relative;
+  overflow: hidden;
+}
+
+.stakeButton::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  transition: left 0.5s ease;
 }
 
 .stakeButton:hover {
-  border-color: #2563eb;
-  color: #2563eb;
-  transform: translateY(-1px);
+  border-color: rgba(59, 130, 246, 0.5);
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.12), rgba(96, 165, 250, 0.08));
+  transform: translateY(-2px);
+  box-shadow: 
+    0 4px 12px rgba(59, 130, 246, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.5);
+}
+
+.stakeButton:hover::before {
+  left: 100%;
 }
 
 .stakeButton.selected {
-  background: #ffd700;
-  border-color: #ffd700;
-  color: #000;
-  box-shadow: 0 4px 12px rgba(255, 215, 0, 0.3);
+  background: linear-gradient(135deg, rgba(29, 78, 216, 0.95), rgba(37, 99, 235, 0.9), rgba(59, 130, 246, 0.85));
+  backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: white;
+  box-shadow: 
+    0 6px 20px rgba(29, 78, 216, 0.4),
+    0 8px 32px rgba(37, 99, 235, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  transform: translateY(-2px);
+}
+
+.stakeButton.selected::before {
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.25), transparent);
+}
+
+.stakeButton.selected:hover {
+  transform: translateY(-3px);
+  box-shadow: 
+    0 8px 28px rgba(29, 78, 216, 0.5),
+    0 10px 40px rgba(37, 99, 235, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.25);
 }
 
 .stakeButton:active {
-  transform: translateY(0);
+  transform: translateY(-1px);
 }
 
 .stakeRange {
@@ -110,10 +155,15 @@
 }
 
 .disclaimer {
-  background: #f8fafc;
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.08), rgba(96, 165, 250, 0.05));
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.4);
   border-radius: clamp(0.5rem, 2vw, 0.75rem);
   padding: clamp(0.875rem, 3vw, 1.25rem);
-  border-left: 4px solid #2563eb;
+  border-left: 3px solid rgba(37, 99, 235, 0.8);
+  box-shadow: 
+    0 2px 8px rgba(59, 130, 246, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3);
 }
 
 .disclaimerText {

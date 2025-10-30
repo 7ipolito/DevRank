@@ -13,8 +13,8 @@ export default function DashInfo({ totalXp = 0, newXp = 0, loading = false }: Da
 
   return (
     <div className={styles.container}>
-      <div className={styles.header}>
-        {/* <Image
+      {/* <div className={styles.header}>
+        <Image
           src="https://avatars.githubusercontent.com/u/45522944?v=4" // foto do usuário
           alt="User profile"
           width={72}
@@ -70,7 +70,6 @@ export default function DashInfo({ totalXp = 0, newXp = 0, loading = false }: Da
           )}
         </div>
       </div>
-    </div>
     </div>
   );
 }
