@@ -6,6 +6,7 @@ import { useTranslation } from "react-i18next";
 import { formatEther, parseEther } from "viem";
 import { MiniKit, tokenToDecimals, Tokens, PayCommandInput } from '@worldcoin/minikit-js';
 import { useMatchDetail } from "@/hooks/useMatchDetail";
+import { useConnection } from "@/contexts/ConnectionContext";
 import StepProgress from "@/entities/Challenges/components/StepProgress";
 import ChallengeInfoCard from "@/entities/Challenges/components/ChallengeInfoCard";
 import CountdownTimer from "@/entities/Challenges/components/CountdownTimer";
@@ -259,6 +260,7 @@ export const WLD_TOKEN_ABI = [
 export default function ChallengeDetailsView({ challengeId }: ChallengeDetailsViewProps) {
   const { t } = useTranslation();
   const router = useRouter();
+  const { walletAddress, isConnected } = useConnection();
   const [currentStep, setCurrentStep] = useState(1);
   const [selectedStake, setSelectedStake] = useState(0.1);
   const [isLoading, setIsLoading] = useState(false);
@@ -291,15 +293,25 @@ export default function ChallengeDetailsView({ challengeId }: ChallengeDetailsVi
       setCurrentStep(2);
     } else {
       console.log('🚀 Joining challenge with MiniKit using Permit2...');
+      
       // Step 2 - Entrar no desafio enviando WLD para o contrato
-      if (!MiniKit.user?.walletAddress) {
-        return { success: false, error: 'Wallet not connected' };
+      // Pega o walletAddress do localStorage via ConnectionContext
+      const userWalletAddress = walletAddress || MiniKit.user?.walletAddress;
+      
+      if (!userWalletAddress) {
+        setError('Wallet not connected. Please connect your wallet first.');
+        return;
       }
-  
+
+      if (!isConnected) {
+        setError('Please connect your wallet to join the challenge.');
+        return;
+      }
   
       try {
         setIsLoading(true);
-        console.log('🚀 Joining challenge with MiniKit using Permit2...');
+        setError(null);
+        console.log('🚀 Joining challenge with wallet:', userWalletAddress);
   
         // Convert stake amount to wei
         const stakeAmountWei = (parseFloat(selectedStake.toString()) * 10**18).toString();

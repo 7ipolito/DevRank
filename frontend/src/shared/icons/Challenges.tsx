@@ -1,32 +1,31 @@
 interface ChallengesIconProps {
   filled?: boolean;
   className?: string;
+  size?: number;
 }
 
-export function ChallengesIcon({ filled = false, className = "" }: ChallengesIconProps) {
+export function ChallengesIcon({ filled = false, className = "", size = 24 }: ChallengesIconProps) {
   return (
-    <svg
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
+    <svg 
+      xmlns="http://www.w3.org/2000/svg" 
+      width={size} 
+      height={size} 
+      viewBox="0 0 24 24" 
+      fill="none" 
+      stroke="currentColor" 
+      strokeWidth="2" 
+      strokeLinecap="round" 
+      strokeLinejoin="round" 
       className={className}
     >
-      {filled ? (
-        <path
-          d="M12 2L15.09 8.26L22 9L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9L8.91 8.26L12 2Z"
-          fill="currentColor"
-        />
-      ) : (
-        <path
-          d="M12 2L15.09 8.26L22 9L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9L8.91 8.26L12 2Z"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-      )}
+      <polyline points="14.5 17.5 3 6 3 3 6 3 17.5 14.5" />
+      <line x1="13" x2="19" y1="19" y2="13" />
+      <line x1="16" x2="20" y1="16" y2="20" />
+      <line x1="19" x2="21" y1="21" y2="19" />
+      <polyline points="14.5 6.5 18 3 21 3 21 6 17.5 9.5" />
+      <line x1="5" x2="9" y1="14" y2="18" />
+      <line x1="7" x2="4" y1="17" y2="20" />
+      <line x1="3" x2="5" y1="19" y2="21" />
     </svg>
   );
 }

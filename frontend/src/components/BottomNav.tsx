@@ -7,7 +7,6 @@ import { HomeIcon } from "@/shared/icons/Home";
 import { ChallengesIcon } from "@/shared/icons/Challenges";
 import { NotificationsIcon } from "@/shared/icons/Notifications";
 import Link from "next/link";
-import { motion } from "framer-motion";
 import { useHapticFeedback } from "@/hooks/useHapticFeedback";
 import { useConnection } from "@/contexts/ConnectionContext";
 import styles from "./BottomNav.module.css";
@@ -65,8 +64,6 @@ export default function BottomNav() {
     },
   ];
 
-  const IconWrapper = isIOS ? motion.div : "div";
-
   const handleTap = () => {
     if (isIOS) {
       triggerImpact("light");
@@ -102,13 +99,13 @@ export default function BottomNav() {
                 className={`${styles.navItem} ${styles.disabled}`}
                 onClick={handleItemClick}
               >
-                <IconWrapper className={styles.iconWrapper}>
+                <div className={styles.iconWrapper}>
                   <Icon 
                     filled={false} 
                     size={24}
                     className={styles.icon}
                   />
-                </IconWrapper>
+                </div>
                 <span className={styles.label}>
                   {item.label}
                 </span>
@@ -122,28 +119,17 @@ export default function BottomNav() {
               href={item.href}
               className={`${styles.navItem} ${isActive ? styles.active : styles.inactive}`}
               onClick={handleItemClick}
+              scroll={false}
+              prefetch={true}
             >
-              <IconWrapper
-                whileTap={isIOS ? { scale: 1.2 } : undefined}
-                transition={
-                  isIOS
-                    ? { type: "spring", stiffness: 400, damping: 17 }
-                    : undefined
-                }
-                className={styles.iconWrapper}
-              >
+              <div className={styles.iconWrapper}>
                 <Icon 
                   filled={isActive} 
                   size={24}
                   className={styles.icon}
                 />
-                {/* Badge de notificação para o ícone de notifications */}
-                {item.href === "/notifications" && !isActive && (
-                  <div className={styles.notificationBadge}>
-                    <span className={styles.badgeNumber}>1</span>
-                  </div>
-                )}
-              </IconWrapper>
+           
+              </div>
               <span className={styles.label}>
                 {item.label}
               </span>
@@ -151,7 +137,7 @@ export default function BottomNav() {
           );
         })}
       </div>
-      <div style={{ height: 0 }} />
+   
     </div>
   );
 }

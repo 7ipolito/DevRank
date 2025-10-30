@@ -29,11 +29,11 @@ export default function ChallengesView() {
   };
 
   // Se não estiver conectado, redireciona para o dashboard (usando useEffect para evitar hydration error)
-  React.useEffect(() => {
-    if (!isConnected) {
-      router.push('/dashboard');
-    }
-  }, [isConnected, router]);
+  // React.useEffect(() => {
+  //   if (!isConnected) {
+  //     router.push('/dashboard');
+  //   }
+  // }, [isConnected, router]);
 
   // Estado de loading
   if (loading) {

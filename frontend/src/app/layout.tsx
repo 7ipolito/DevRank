@@ -29,36 +29,14 @@ export default function RootLayout({
           href="https://fonts.googleapis.com/css2?family=DM+Mono:ital@0;1&family=Rubik:ital,wght@0,300..900;1,300..900&family=Sora:wght@600&display=swap"
           rel="stylesheet"
         />
-        <style>
-          {`
-            :root {
-              --vh: 1vh;
-            }
-            html, body {
-              height: 100%;
-              height: calc(var(--vh, 1vh) * 100);
-              overflow: hidden;
-              position: fixed;
-              width: 100%;
-              touch-action: manipulation;
-            }
-            /* Garante que os elementos fixos fiquem realmente fixos */
-            .fixed-bottom {
-              position: fixed;
-              bottom: 0;
-              left: 0;
-              right: 0;
-              z-index: 1000;
-            }
-          `}
-        </style>
+    
       </head>
       <body className={sora.className}>
             <ViewportHeight />
             <ClientProviders>
               <MiniKitProvider>
                 <ErudaProvider>
-                <SwipeNavigationProvider>
+                
                   <ConnectionProvider>
                     <div
                       className="app-container"
@@ -72,7 +50,6 @@ export default function RootLayout({
                       {children}
                     </div>
                   </ConnectionProvider>
-                </SwipeNavigationProvider>
                 </ErudaProvider>
               </MiniKitProvider>
             </ClientProviders>

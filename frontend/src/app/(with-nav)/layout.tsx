@@ -1,5 +1,5 @@
-
 import BottomNav from "@/components/BottomNav";
+
 
 export default function WithNavLayout({
   children,
@@ -8,7 +8,7 @@ export default function WithNavLayout({
 }) {
   return (
     <>
-      <main className="pb-16">{children}</main>
+      <main>{children}</main>
       <BottomNav />
     </>
   );
