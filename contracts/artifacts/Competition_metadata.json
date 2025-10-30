@@ -127,6 +127,44 @@
 						"internalType": "uint256",
 						"name": "_matchId",
 						"type": "uint256"
+					}
+				],
+				"name": "getParticipantCount",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "_matchId",
+						"type": "uint256"
+					}
+				],
+				"name": "getParticipants",
+				"outputs": [
+					{
+						"internalType": "address[]",
+						"name": "",
+						"type": "address[]"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "_matchId",
+						"type": "uint256"
 					},
 					{
 						"internalType": "address",
@@ -143,6 +181,24 @@
 					}
 				],
 				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "_challengeId",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_stake",
+						"type": "uint256"
+					}
+				],
+				"name": "joinChallenge",
+				"outputs": [],
+				"stateMutability": "nonpayable",
 				"type": "function"
 			},
 			{
@@ -308,6 +364,18 @@
 			},
 			"kind": "dev",
 			"methods": {
+				"getParticipantCount(uint256)": {
+					"details": "Obter o número de participantes de um match",
+					"params": {
+						"_matchId": "ID do match"
+					}
+				},
+				"getParticipants(uint256)": {
+					"details": "Obter a lista de participantes de um match",
+					"params": {
+						"_matchId": "ID do match"
+					}
+				},
 				"isParticipant(uint256,address)": {
 					"details": "Verificar se um usuário já participou de uma competição",
 					"params": {
@@ -315,7 +383,7 @@
 						"_user": "Endereço do usuário"
 					}
 				},
-				"joinChallengeWithPermit2(uint256,((address,uint256),uint256,uint256),(address,uint256),bytes)": {
+				"joinChallenge(uint256,uint256)": {
 					"details": "Join a challenge using Permit2 signature transfer"
 				}
 			},
@@ -408,11 +476,11 @@
 			]
 		},
 		"src/Competition.sol": {
-			"keccak256": "0x259e08ae316e4436bcc3fbda9367b5622d6216d2fc9bb69f543c9fb0540669cb",
+			"keccak256": "0xe9ae33dfa387a72788a9e48af10523776e9c442f3f251435bce1a86d1a652fac",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://228b5a89acbb83203b490bc08a9a31b8358e649312b7df40eee1481c316b096c",
-				"dweb:/ipfs/QmQpY5uKZ4YdmDFbnSN1BWzcx7AJFh24Y9g4iS1TqF618j"
+				"bzz-raw://6722b77d36b64c7b644aff0b52051e284ac21bca8cbe03fce693a550ba54387f",
+				"dweb:/ipfs/QmVqaPpteVCNx5gq45sf2raWSB1aWs8gHED63idgHkZr7q"
 			]
 		}
 	},

@@ -125,7 +125,24 @@ contract Competition is ReentrancyGuard {
      /**
      * @dev Join a challenge using Permit2 signature transfer
      */
-    function joinChallengeWithPermit2(
+    function joinChallenge(
+        uint256 _challengeId,
+        uint256 _stake
+    ) external nonReentrant {
+        Match storage challenge = matches[_challengeId];
+        
+        require(challenge.active, "Challenge is not active");
+        require(!challenge.hasParticipated[msg.sender], "Already joined this challenge");
+        
+        challenge.stake += _stake;
+        challenge.hasParticipated[msg.sender] = true;
+        
+        challenge.participants.push(msg.sender);
+        
+        emit PlayerJoined(_challengeId, msg.sender);
+    }
+
+     function joinChallengeWithPermit2(
         uint256 _challengeId,
         ISignatureTransfer.PermitTransferFrom calldata permit,
         ISignatureTransfer.SignatureTransferDetails calldata transferDetails,
@@ -134,24 +151,20 @@ contract Competition is ReentrancyGuard {
         Match storage challenge = matches[_challengeId];
         
         require(challenge.active, "Challenge is not active");
+        require(!challenge.hasParticipated[msg.sender], "Already joined this challenge");
         require(permit.permitted.token == address(wldToken), "Invalid token");
-       
-       
         require(transferDetails.to == address(this), "Invalid transfer recipient");
         
         // Use Permit2 to transfer tokens
         ISignatureTransfer(PERMIT2_ADDRESS).permitTransferFrom(
             permit,
             transferDetails,
-            msg.sender, // owner of the tokens
+            msg.sender,
             signature
         );
-        
-        // Add user to challenge
-        
         challenge.stake += transferDetails.requestedAmount;
+        challenge.hasParticipated[msg.sender] = true;
         
-        // Track user's challenges
         challenge.participants.push(msg.sender);
         
         emit PlayerJoined(_challengeId, msg.sender);
@@ -165,6 +178,24 @@ contract Competition is ReentrancyGuard {
     function isParticipant(uint256 _matchId, address _user) external view returns (bool) {
         require(_matchId > 0 && _matchId <= matchCount, "Invalid match ID");
         return matches[_matchId].hasParticipated[_user];
+    }
+
+    /**
+     * @dev Obter a lista de participantes de um match
+     * @param _matchId ID do match
+     */
+    function getParticipants(uint256 _matchId) external view returns (address[] memory) {
+        require(_matchId > 0 && _matchId <= matchCount, "Invalid match ID");
+        return matches[_matchId].participants;
+    }
+
+    /**
+     * @dev Obter o número de participantes de um match
+     * @param _matchId ID do match
+     */
+    function getParticipantCount(uint256 _matchId) external view returns (uint256) {
+        require(_matchId > 0 && _matchId <= matchCount, "Invalid match ID");
+        return matches[_matchId].participants.length;
     }
 
 }
