@@ -237,6 +237,19 @@ export class UserController {
       // Processar todos os usuários
       for (const user of users) {
         try {
+          // Skip users without ID
+          if (!user.id) {
+            failCount++;
+            results.push({
+              userId: undefined,
+              username: user.username,
+              status: 'error',
+              message: 'User ID is missing'
+            });
+            console.error(`❌ User ${user.username} has no ID`);
+            continue;
+          }
+
           const stats = await UserController.codeStatsService.fetchUserStats(
             user.github_username || user.username
           );

@@ -2,8 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import { initializeDatabase, closeDatabase, setupCronJob } from './config';
-import { CodeStatsService, UserService } from './services';
-import { SmartContractService } from './smart-contract';
+import { CodeStatsService, UserService, SmartContractService } from './services';
 import { User, CodingStats } from './models';
 import routes from './routes';
 
@@ -162,163 +161,164 @@ app.get('/api/health', (req, res) => {
 });
 
 // ============ XPBets Competition API Endpoints ============
+// TODO: Implement SmartContractService methods for these endpoints
 
-// Create a new competition
-app.post('/api/competitions', async (req, res) => {
-  try {
-    const { name, description, entryFeeWLD, maxParticipants, durationHours } = req.body;
-    
-    if (!name || !entryFeeWLD || !maxParticipants || !durationHours) {
-      return res.status(400).json({ 
-        error: 'Missing required fields: name, entryFeeWLD, maxParticipants, durationHours' 
-      });
-    }
-
-    const result = await contractService.createCompetition(
-      name,
-      description || '',
-      entryFeeWLD,
-      maxParticipants,
-      durationHours
-    );
-
-    if (result.success) {
-      res.json({
-        success: true,
-        competitionId: result.competitionId,
-        txHash: result.txHash,
-        message: 'Competition created successfully'
-      });
-    } else {
-      res.status(500).json({ error: 'Failed to create competition' });
-    }
-  } catch (error) {
-    console.error('Error creating competition:', error);
-    res.status(500).json({ error: 'Failed to create competition' });
-  }
-});
-
-// Get all active competitions
-app.get('/api/competitions', async (req, res) => {
-  try {
-    const competitions = await contractService.getActiveCompetitions();
-    res.json({ 
-      success: true, 
-      competitions,
-      count: competitions.length 
-    });
-  } catch (error) {
-    console.error('Error fetching competitions:', error);
-    res.status(500).json({ error: 'Failed to fetch competitions' });
-  }
-});
-
-// Get specific competition details
-app.get('/api/competitions/:competitionId', async (req, res) => {
-  try {
-    const competitionId = parseInt(req.params.competitionId);
-    
-    if (isNaN(competitionId)) {
-      return res.status(400).json({ error: 'Invalid competition ID' });
-    }
-
-    const competition = await contractService.getCompetition(competitionId);
-    
-    if (!competition) {
-      return res.status(404).json({ error: 'Competition not found' });
-    }
-
-    // Get participants
-    const participants = await contractService.getParticipants(competitionId);
-
-    res.json({ 
-      success: true, 
-      competition: {
-        ...competition,
-        participants
-      }
-    });
-  } catch (error) {
-    console.error('Error fetching competition:', error);
-    res.status(500).json({ error: 'Failed to fetch competition' });
-  }
-});
-
-// Get competition participants
-app.get('/api/competitions/:competitionId/participants', async (req, res) => {
-  try {
-    const competitionId = parseInt(req.params.competitionId);
-    
-    if (isNaN(competitionId)) {
-      return res.status(400).json({ error: 'Invalid competition ID' });
-    }
-
-    const participants = await contractService.getParticipants(competitionId);
-    
-    res.json({ 
-      success: true, 
-      participants,
-      count: participants.length
-    });
-  } catch (error) {
-    console.error('Error fetching participants:', error);
-    res.status(500).json({ error: 'Failed to fetch participants' });
-  }
-});
-
-// End a competition (admin only)
-app.post('/api/competitions/:competitionId/end', async (req, res) => {
-  try {
-    const competitionId = parseInt(req.params.competitionId);
-    const { winner } = req.body;
-    
-    if (isNaN(competitionId)) {
-      return res.status(400).json({ error: 'Invalid competition ID' });
-    }
-    
-    if (!winner) {
-      return res.status(400).json({ error: 'Winner address is required' });
-    }
-
-    const result = await contractService.endCompetition(competitionId, winner);
-    
-    if (result.success) {
-      res.json({
-        success: true,
-        txHash: result.txHash,
-        message: 'Competition ended successfully'
-      });
-    } else {
-      res.status(500).json({ error: 'Failed to end competition' });
-    }
-  } catch (error) {
-    console.error('Error ending competition:', error);
-    res.status(500).json({ error: 'Failed to end competition' });
-  }
-});
-
-// Get contract information
-app.get('/api/contract/info', async (req, res) => {
-  try {
-    const contractInfo = await contractService.getContractInfo();
-    res.json({ success: true, contractInfo });
-  } catch (error) {
-    console.error('Error fetching contract info:', error);
-    res.status(500).json({ error: 'Failed to fetch contract info' });
-  }
-});
-
-// Get leaderboard (adapted for competitions)
-app.get('/api/leaderboard', async (req, res) => {
-  try {
-    const limit = parseInt(req.query.limit as string) || 100;
-    const leaderboard = await contractService.getLeaderboard(limit);
-    res.json({ success: true, leaderboard, count: leaderboard.length });
-  } catch (error) {
-    console.error('Error fetching leaderboard:', error);
-    res.status(500).json({ error: 'Failed to fetch leaderboard' });
-  }
-});
+// // Create a new competition
+// app.post('/api/competitions', async (req, res) => {
+//   try {
+//     const { name, description, entryFeeWLD, maxParticipants, durationHours } = req.body;
+//     
+//     if (!name || !entryFeeWLD || !maxParticipants || !durationHours) {
+//       return res.status(400).json({ 
+//         error: 'Missing required fields: name, entryFeeWLD, maxParticipants, durationHours' 
+//       });
+//     }
+//
+//     const result = await contractService.createCompetition(
+//       name,
+//       description || '',
+//       entryFeeWLD,
+//       maxParticipants,
+//       durationHours
+//     );
+//
+//     if (result.success) {
+//       res.json({
+//         success: true,
+//         competitionId: result.competitionId,
+//         txHash: result.txHash,
+//         message: 'Competition created successfully'
+//       });
+//     } else {
+//       res.status(500).json({ error: 'Failed to create competition' });
+//     }
+//   } catch (error) {
+//     console.error('Error creating competition:', error);
+//     res.status(500).json({ error: 'Failed to create competition' });
+//   }
+// });
+//
+// // Get all active competitions
+// app.get('/api/competitions', async (req, res) => {
+//   try {
+//     const competitions = await contractService.getActiveCompetitions();
+//     res.json({ 
+//       success: true, 
+//       competitions,
+//       count: competitions.length 
+//     });
+//   } catch (error) {
+//     console.error('Error fetching competitions:', error);
+//     res.status(500).json({ error: 'Failed to fetch competitions' });
+//   }
+// });
+//
+// // Get specific competition details
+// app.get('/api/competitions/:competitionId', async (req, res) => {
+//   try {
+//     const competitionId = parseInt(req.params.competitionId);
+//     
+//     if (isNaN(competitionId)) {
+//       return res.status(400).json({ error: 'Invalid competition ID' });
+//     }
+//
+//     const competition = await contractService.getCompetition(competitionId);
+//     
+//     if (!competition) {
+//       return res.status(404).json({ error: 'Competition not found' });
+//     }
+//
+//     // Get participants
+//     const participants = await contractService.getParticipants(competitionId);
+//
+//     res.json({ 
+//       success: true, 
+//       competition: {
+//         ...competition,
+//         participants
+//       }
+//     });
+//   } catch (error) {
+//     console.error('Error fetching competition:', error);
+//     res.status(500).json({ error: 'Failed to fetch competition' });
+//   }
+// });
+//
+// // Get competition participants
+// app.get('/api/competitions/:competitionId/participants', async (req, res) => {
+//   try {
+//     const competitionId = parseInt(req.params.competitionId);
+//     
+//     if (isNaN(competitionId)) {
+//       return res.status(400).json({ error: 'Invalid competition ID' });
+//     }
+//
+//     const participants = await contractService.getParticipants(competitionId);
+//     
+//     res.json({ 
+//       success: true, 
+//       participants,
+//       count: participants.length
+//     });
+//   } catch (error) {
+//     console.error('Error fetching participants:', error);
+//     res.status(500).json({ error: 'Failed to fetch participants' });
+//   }
+// });
+//
+// // End a competition (admin only)
+// app.post('/api/competitions/:competitionId/end', async (req, res) => {
+//   try {
+//     const competitionId = parseInt(req.params.competitionId);
+//     const { winner } = req.body;
+//     
+//     if (isNaN(competitionId)) {
+//       return res.status(400).json({ error: 'Invalid competition ID' });
+//     }
+//     
+//     if (!winner) {
+//       return res.status(400).json({ error: 'Winner address is required' });
+//     }
+//
+//     const result = await contractService.endCompetition(competitionId, winner);
+//     
+//     if (result.success) {
+//       res.json({
+//         success: true,
+//         txHash: result.txHash,
+//         message: 'Competition ended successfully'
+//       });
+//     } else {
+//       res.status(500).json({ error: 'Failed to end competition' });
+//     }
+//   } catch (error) {
+//     console.error('Error ending competition:', error);
+//     res.status(500).json({ error: 'Failed to end competition' });
+//   }
+// });
+//
+// // Get contract information
+// app.get('/api/contract/info', async (req, res) => {
+//   try {
+//     const contractInfo = await contractService.getContractInfo();
+//     res.json({ success: true, contractInfo });
+//   } catch (error) {
+//     console.error('Error fetching contract info:', error);
+//     res.status(500).json({ error: 'Failed to fetch contract info' });
+//   }
+// });
+//
+// // Get leaderboard (adapted for competitions)
+// app.get('/api/leaderboard', async (req, res) => {
+//   try {
+//     const limit = parseInt(req.query.limit as string) || 100;
+//     const leaderboard = await contractService.getLeaderboard(limit);
+//     res.json({ success: true, leaderboard, count: leaderboard.length });
+//   } catch (error) {
+//     console.error('Error fetching leaderboard:', error);
+//     res.status(500).json({ error: 'Failed to fetch leaderboard' });
+//   }
+// });
 
 // Get all users endpoint (legacy compatibility)
 app.get('/api/users', async (req, res) => {
@@ -344,18 +344,9 @@ async function startServer() {
     
     // Start server
     app.listen(PORT, () => {
-      console.log(`🚀 XPBets Competition backend server running on port ${PORT}`);
+      console.log(`🚀 DevRank backend server running on port ${PORT}`);
       console.log(`⏰ Cron job: Stats fetch every 12 hours (00:00 and 12:00 UTC)`);
-      console.log(`\n🎮 XPBets Competition API Endpoints:`);
-      console.log(`  POST /api/competitions - Create new competition`);
-      console.log(`  GET /api/competitions - Get all active competitions`);
-      console.log(`  GET /api/competitions/:id - Get specific competition details`);
-      console.log(`  GET /api/competitions/:id/participants - Get competition participants`);
-      console.log(`  POST /api/competitions/:id/end - End competition (admin)`);
-      console.log(`  GET /api/contract/info - Smart contract information`);
-      console.log(`  GET /api/leaderboard - Competition leaderboard`);
-      console.log(`  GET /api/health - Health check`);
-      console.log(`\n📊 Legacy DevRank Endpoints (for compatibility):`);
+      console.log(`\n📊 User Management Endpoints:`);
       console.log(`  POST /api/users - Add new user`);
       console.log(`  POST /api/users/wallet - Add new user with wallet address`);
       console.log(`  GET /api/users - Get all active users`);
@@ -363,6 +354,9 @@ async function startServer() {
       console.log(`  POST /api/fetch-stats/:userId - Manually trigger stats fetch`);
       console.log(`\n🔧 Admin Endpoints:`);
       console.log(`  POST /api/admin/update-all-users - Force update all users (manual trigger)`);
+      console.log(`\n🏥 System Endpoints:`);
+      console.log(`  GET /api/health - Health check`);
+      console.log(`\n💡 Note: Competition endpoints are commented out - implement SmartContractService methods to enable`);
 
     });
     

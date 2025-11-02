@@ -180,6 +180,114 @@ class UserController {
             res.status(500).json({ error: 'Failed to fetch stats' });
         }
     }
+    /**
+     * Atualiza dados de todos os usuários
+     * Endpoint para forçar atualização manual (útil para testes e administração)
+     */
+    static async updateAllUsersStats(req, res) {
+        try {
+            const startTime = new Date();
+            console.log(`🔄 Manual update started at ${startTime.toISOString()}`);
+            const users = await services_1.UserService.getActiveUsers();
+            if (users.length === 0) {
+                return res.json({
+                    success: true,
+                    message: 'No active users to update',
+                    stats: {
+                        total: 0,
+                        success: 0,
+                        failed: 0,
+                        duration: 0
+                    }
+                });
+            }
+            console.log(`📊 Updating ${users.length} users...`);
+            let successCount = 0;
+            let failCount = 0;
+            const results = [];
+            // Processar todos os usuários
+            for (const user of users) {
+                try {
+                    // Skip users without ID
+                    if (!user.id) {
+                        failCount++;
+                        results.push({
+                            userId: undefined,
+                            username: user.username,
+                            status: 'error',
+                            message: 'User ID is missing'
+                        });
+                        console.error(`❌ User ${user.username} has no ID`);
+                        continue;
+                    }
+                    const stats = await UserController.codeStatsService.fetchUserStats(user.github_username || user.username);
+                    if (stats) {
+                        const completeStats = {
+                            ...stats,
+                            user_id: user.id,
+                            fetch_date: new Date().toISOString().split('T')[0]
+                        };
+                        await services_1.UserService.storeUserStats(completeStats);
+                        await UserController.contractService.storeUserStats(completeStats);
+                        await services_1.UserService.updateUserLastFetch(user.id);
+                        successCount++;
+                        results.push({
+                            userId: user.id,
+                            username: user.username,
+                            status: 'success',
+                            totalXp: stats.total_xp
+                        });
+                        console.log(`✅ Updated ${user.username} - XP: ${stats.total_xp}`);
+                    }
+                    else {
+                        failCount++;
+                        results.push({
+                            userId: user.id,
+                            username: user.username,
+                            status: 'no_stats',
+                            message: 'No stats found'
+                        });
+                        console.log(`⚠️  No stats found for ${user.username}`);
+                    }
+                }
+                catch (error) {
+                    failCount++;
+                    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+                    results.push({
+                        userId: user.id,
+                        username: user.username,
+                        status: 'error',
+                        message: errorMessage
+                    });
+                    console.error(`❌ Error updating ${user.username}:`, errorMessage);
+                }
+            }
+            const endTime = new Date();
+            const duration = (endTime.getTime() - startTime.getTime()) / 1000;
+            console.log(`\n✨ Manual update completed in ${duration}s`);
+            console.log(`   Success: ${successCount} | Failed: ${failCount} | Total: ${users.length}\n`);
+            res.json({
+                success: true,
+                message: 'Batch update completed',
+                stats: {
+                    total: users.length,
+                    success: successCount,
+                    failed: failCount,
+                    duration: `${duration}s`,
+                    startTime: startTime.toISOString(),
+                    endTime: endTime.toISOString()
+                },
+                results
+            });
+        }
+        catch (error) {
+            console.error('Error in batch stats update:', error);
+            res.status(500).json({
+                error: 'Failed to update all users stats',
+                message: error instanceof Error ? error.message : 'Unknown error'
+            });
+        }
+    }
 }
 exports.UserController = UserController;
 UserController.codeStatsService = new services_1.CodeStatsService();

@@ -8,5 +8,10 @@ export declare class UserController {
     static getUserStats(req: Request, res: Response): Promise<void>;
     static getUserStatsByWallet(req: Request, res: Response): Promise<Response<any, Record<string, any>> | undefined>;
     static fetchUserStats(req: Request, res: Response): Promise<Response<any, Record<string, any>> | undefined>;
+    /**
+     * Atualiza dados de todos os usuários
+     * Endpoint para forçar atualização manual (útil para testes e administração)
+     */
+    static updateAllUsersStats(req: Request, res: Response): Promise<Response<any, Record<string, any>> | undefined>;
 }
 //# sourceMappingURL=UserController.d.ts.map
