@@ -1,26 +1,50 @@
 import cron from 'node-cron';
 import { UserService, CodeStatsService } from '../services';
 
-// Setup cron job to run daily at 2 AM
+// Setup cron job to run every 12 hours
 export function setupCronJob(codeStatsService: CodeStatsService) {
-  // Run every day at 2:00 AM
-  cron.schedule('0 2 * * *', async () => {
+  // Run every 12 hours (at 00:00 and 12:00)
+  cron.schedule('0 */12 * * *', async () => {
     console.log('Running scheduled task: Fetch coding stats for all users');
+    const startTime = new Date();
+    console.log(`🔄 Starting data update at ${startTime.toISOString()}`);
+    
     let users = await UserService.getActiveUsers();
+    console.log(`📊 Found ${users.length} active users to update`);
+    
+    let successCount = 0;
+    let failCount = 0;
+    
     for (const user of users) {
-      let stats = await codeStatsService.fetchUserStats(user.username);
-      if (stats) {
-        // await UserService.storeUserStats(stats);
-        // await contractService.storeUserStats(stats);
-        // await UserService.updateUserLastFetch(user.id);
+      try {
+        let stats = await codeStatsService.fetchUserStats(user.username);
+        if (stats) {
+          successCount++;
+          console.log(`✅ Successfully updated ${user.username}`);
+          // await UserService.storeUserStats(stats);
+          // await contractService.storeUserStats(stats);
+          // await UserService.updateUserLastFetch(user.id);
+        } else {
+          failCount++;
+          console.log(`⚠️  No stats found for ${user.username}`);
+        }
+      } catch (error) {
+        failCount++;
+        console.error(`❌ Error updating ${user.username}:`, error);
       }
     }
+    
+    const endTime = new Date();
+    const duration = (endTime.getTime() - startTime.getTime()) / 1000;
+    console.log(`\n✨ Update completed in ${duration}s`);
+    console.log(`   Success: ${successCount} | Failed: ${failCount} | Total: ${users.length}`);
+    console.log(`   Next update: ${new Date(Date.now() + 12 * 60 * 60 * 1000).toISOString()}\n`);
   }, {
     scheduled: true,
     timezone: "UTC"
   });
   
-  console.log('Cron job scheduled: Daily stats fetch at 2:00 AM UTC');
+  console.log('✅ Cron job scheduled: Stats fetch every 12 hours (00:00 and 12:00 UTC)');
   
   // For testing purposes, also run every 5 minutes (uncomment to enable)
   // cron.schedule('*/5 * * * *', async () => {

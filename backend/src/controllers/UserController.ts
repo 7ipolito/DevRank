@@ -203,4 +203,112 @@ export class UserController {
       res.status(500).json({ error: 'Failed to fetch stats' });
     }
   }
+
+  /**
+   * Atualiza dados de todos os usuários
+   * Endpoint para forçar atualização manual (útil para testes e administração)
+   */
+  static async updateAllUsersStats(req: Request, res: Response) {
+    try {
+      const startTime = new Date();
+      console.log(`🔄 Manual update started at ${startTime.toISOString()}`);
+      
+      const users = await UserService.getActiveUsers();
+      
+      if (users.length === 0) {
+        return res.json({ 
+          success: true, 
+          message: 'No active users to update',
+          stats: {
+            total: 0,
+            success: 0,
+            failed: 0,
+            duration: 0
+          }
+        });
+      }
+
+      console.log(`📊 Updating ${users.length} users...`);
+      
+      let successCount = 0;
+      let failCount = 0;
+      const results = [];
+      
+      // Processar todos os usuários
+      for (const user of users) {
+        try {
+          const stats = await UserController.codeStatsService.fetchUserStats(
+            user.github_username || user.username
+          );
+          
+          if (stats) {
+            const completeStats: CodingStats = {
+              ...stats,
+              user_id: user.id,
+              fetch_date: new Date().toISOString().split('T')[0]
+            };
+            
+            await UserService.storeUserStats(completeStats);
+            await UserController.contractService.storeUserStats(completeStats);
+            await UserService.updateUserLastFetch(user.id);
+            
+            successCount++;
+            results.push({
+              userId: user.id,
+              username: user.username,
+              status: 'success',
+              totalXp: stats.total_xp
+            });
+            console.log(`✅ Updated ${user.username} - XP: ${stats.total_xp}`);
+          } else {
+            failCount++;
+            results.push({
+              userId: user.id,
+              username: user.username,
+              status: 'no_stats',
+              message: 'No stats found'
+            });
+            console.log(`⚠️  No stats found for ${user.username}`);
+          }
+        } catch (error) {
+          failCount++;
+          const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+          results.push({
+            userId: user.id,
+            username: user.username,
+            status: 'error',
+            message: errorMessage
+          });
+          console.error(`❌ Error updating ${user.username}:`, errorMessage);
+        }
+      }
+      
+      const endTime = new Date();
+      const duration = (endTime.getTime() - startTime.getTime()) / 1000;
+      
+      console.log(`\n✨ Manual update completed in ${duration}s`);
+      console.log(`   Success: ${successCount} | Failed: ${failCount} | Total: ${users.length}\n`);
+      
+      res.json({
+        success: true,
+        message: 'Batch update completed',
+        stats: {
+          total: users.length,
+          success: successCount,
+          failed: failCount,
+          duration: `${duration}s`,
+          startTime: startTime.toISOString(),
+          endTime: endTime.toISOString()
+        },
+        results
+      });
+      
+    } catch (error) {
+      console.error('Error in batch stats update:', error);
+      res.status(500).json({ 
+        error: 'Failed to update all users stats',
+        message: error instanceof Error ? error.message : 'Unknown error'
+      });
+    }
+  }
 }

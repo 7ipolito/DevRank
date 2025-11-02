@@ -345,7 +345,7 @@ async function startServer() {
     // Start server
     app.listen(PORT, () => {
       console.log(`🚀 XPBets Competition backend server running on port ${PORT}`);
-      console.log(`⏰ Cron job: Daily stats fetch at 2:00 AM UTC`);
+      console.log(`⏰ Cron job: Stats fetch every 12 hours (00:00 and 12:00 UTC)`);
       console.log(`\n🎮 XPBets Competition API Endpoints:`);
       console.log(`  POST /api/competitions - Create new competition`);
       console.log(`  GET /api/competitions - Get all active competitions`);
@@ -361,6 +361,8 @@ async function startServer() {
       console.log(`  GET /api/users - Get all active users`);
       console.log(`  GET /api/users/:userId/stats - Get user stats history`);
       console.log(`  POST /api/fetch-stats/:userId - Manually trigger stats fetch`);
+      console.log(`\n🔧 Admin Endpoints:`);
+      console.log(`  POST /api/admin/update-all-users - Force update all users (manual trigger)`);
 
     });
     
