@@ -249,6 +249,28 @@
     inset 0 1px 0 rgba(255, 255, 255, 0.15);
 }
 
+.joinButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  background: linear-gradient(135deg, rgba(107, 114, 128, 0.7), rgba(75, 85, 99, 0.6));
+  transform: none;
+  box-shadow: 
+    0 2px 10px rgba(107, 114, 128, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.joinButton:disabled:hover {
+  transform: none;
+  background: linear-gradient(135deg, rgba(107, 114, 128, 0.7), rgba(75, 85, 99, 0.6));
+  box-shadow: 
+    0 2px 10px rgba(107, 114, 128, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.joinButton:disabled::before {
+  display: none;
+}
+
 .resultsButton {
   flex: 1;
   padding: clamp(0.75rem, 3vw, 1rem) clamp(0.875rem, 4vw, 1.25rem);

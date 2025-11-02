@@ -4,7 +4,7 @@ import {
   MatchClosed,
   MatchCreated,
   PlayerJoined
-} from "../generated/Competition/Competition"
+} from "../generated/smartcontract-competitions/smartcontract-competitions"
 
 export function createMatchClosedEvent(
   matchId: BigInt,
@@ -41,8 +41,8 @@ export function createMatchClosedEvent(
 export function createMatchCreatedEvent(
   matchId: BigInt,
   name: string,
-  stake: BigInt,
-  durationDays: BigInt
+  durationDays: BigInt,
+  startTime: BigInt
 ): MatchCreated {
   let matchCreatedEvent = changetype<MatchCreated>(newMockEvent())
 
@@ -58,12 +58,15 @@ export function createMatchCreatedEvent(
     new ethereum.EventParam("name", ethereum.Value.fromString(name))
   )
   matchCreatedEvent.parameters.push(
-    new ethereum.EventParam("stake", ethereum.Value.fromUnsignedBigInt(stake))
-  )
-  matchCreatedEvent.parameters.push(
     new ethereum.EventParam(
       "durationDays",
       ethereum.Value.fromUnsignedBigInt(durationDays)
+    )
+  )
+  matchCreatedEvent.parameters.push(
+    new ethereum.EventParam(
+      "startTime",
+      ethereum.Value.fromUnsignedBigInt(startTime)
     )
   )
 
@@ -72,7 +75,8 @@ export function createMatchCreatedEvent(
 
 export function createPlayerJoinedEvent(
   matchId: BigInt,
-  player: Address
+  player: Address,
+  stakeAmount: BigInt
 ): PlayerJoined {
   let playerJoinedEvent = changetype<PlayerJoined>(newMockEvent())
 
@@ -86,6 +90,12 @@ export function createPlayerJoinedEvent(
   )
   playerJoinedEvent.parameters.push(
     new ethereum.EventParam("player", ethereum.Value.fromAddress(player))
+  )
+  playerJoinedEvent.parameters.push(
+    new ethereum.EventParam(
+      "stakeAmount",
+      ethereum.Value.fromUnsignedBigInt(stakeAmount)
+    )
   )
 
   return playerJoinedEvent

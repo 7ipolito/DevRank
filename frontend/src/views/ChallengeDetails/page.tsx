@@ -15,247 +15,372 @@ import { WLD_TOKEN_ADDRESS, COMPETITION_CONTRACT_ADDRESS } from "@/config/contra
 import styles from "./ChallengeDetails.module.css";
 
 interface ChallengeDetailsViewProps {
-  challengeId?: string;
+  challengeId: string;
 }
 
 export const COMPETITION_ABI = [
   {
-    type: 'function',
-    name: 'challengeCounter',
-    inputs: [],
-    outputs: [{ name: '', type: 'uint256' }],
-    stateMutability: 'view',
+    "type": "constructor",
+    "inputs": [],
+    "stateMutability": "nonpayable"
   },
   {
-    type: 'function',
-    name: 'getChallengeDetails',
-    inputs: [{ name: '_challengeId', type: 'uint256' }],
-    outputs: [
-      { name: 'id', type: 'uint256' },
-      { name: 'entryFee', type: 'uint256' },
-      { name: 'totalPool', type: 'uint256' },
-      { name: 'participantCount', type: 'uint256' },
-      { name: 'winnerCount', type: 'uint256' },
-      { name: 'isActive', type: 'bool' },
-      { name: 'isCompleted', type: 'bool' },
+    "type": "function",
+    "name": "PERMIT2_ADDRESS",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "address",
+        "internalType": "address"
+      }
     ],
-    stateMutability: 'view',
+    "stateMutability": "view"
   },
   {
-    type: 'function',
-    name: 'joinChallenge',
-    inputs: [{ name: '_challengeId', type: 'uint256' }],
-    outputs: [],
-    stateMutability: 'nonpayable',
+    "type": "function",
+    "name": "createMatch",
+    "inputs": [
+      {
+        "name": "_name",
+        "type": "string",
+        "internalType": "string"
+      },
+      {
+        "name": "_durationDays",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
   },
   {
-    type: 'function',
-    name: 'joinChallengeWithPermit2',
-    inputs: [
-      { name: '_challengeId', type: 'uint256' },
-      { 
-        name: 'permit', 
-        type: 'tuple',
-        components: [
+    "type": "function",
+    "name": "getParticipantCount",
+    "inputs": [
+      {
+        "name": "_matchId",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "getParticipants",
+    "inputs": [
+      {
+        "name": "_matchId",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "",
+        "type": "address[]",
+        "internalType": "address[]"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "isParticipant",
+    "inputs": [
+      {
+        "name": "_matchId",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "_user",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "",
+        "type": "bool",
+        "internalType": "bool"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "joinChallenge",
+    "inputs": [
+      {
+        "name": "_challengeId",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "_stake",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "joinChallengeWithPermit2",
+    "inputs": [
+      {
+        "name": "_challengeId",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "permit",
+        "type": "tuple",
+        "internalType": "struct ISignatureTransfer.PermitTransferFrom",
+        "components": [
           {
-            name: 'permitted',
-            type: 'tuple',
-            components: [
-              { name: 'token', type: 'address' },
-              { name: 'amount', type: 'uint256' }
+            "name": "permitted",
+            "type": "tuple",
+            "internalType": "struct ISignatureTransfer.TokenPermissions",
+            "components": [
+              {
+                "name": "token",
+                "type": "address",
+                "internalType": "address"
+              },
+              {
+                "name": "amount",
+                "type": "uint256",
+                "internalType": "uint256"
+              }
             ]
           },
-          { name: 'nonce', type: 'uint256' },
-          { name: 'deadline', type: 'uint256' }
+          {
+            "name": "nonce",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "deadline",
+            "type": "uint256",
+            "internalType": "uint256"
+          }
         ]
       },
       {
-        name: 'transferDetails',
-        type: 'tuple',
-        components: [
-          { name: 'to', type: 'address' },
-          { name: 'requestedAmount', type: 'uint256' }
+        "name": "transferDetails",
+        "type": "tuple",
+        "internalType": "struct ISignatureTransfer.SignatureTransferDetails",
+        "components": [
+          {
+            "name": "to",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "requestedAmount",
+            "type": "uint256",
+            "internalType": "uint256"
+          }
         ]
       },
-      { name: 'signature', type: 'bytes' }
+      {
+        "name": "signature",
+        "type": "bytes",
+        "internalType": "bytes"
+      }
     ],
-    outputs: [],
-    stateMutability: 'nonpayable',
+    "outputs": [],
+    "stateMutability": "nonpayable"
   },
   {
-    type: 'function',
-    name: 'createChallenge',
-    inputs: [{ name: '_entryFee', type: 'uint256' }],
-    outputs: [],
-    stateMutability: 'nonpayable',
-  },
-  {
-    type: 'function',
-    name: 'completeChallenge',
-    inputs: [
-      { name: '_challengeId', type: 'uint256' },
-      { name: '_winners', type: 'address[]' },
-      { name: '_signature', type: 'bytes' },
+    "type": "function",
+    "name": "matchCount",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
     ],
-    outputs: [],
-    stateMutability: 'nonpayable',
+    "stateMutability": "view"
   },
   {
-    type: 'function',
-    name: 'cancelChallenge',
-    inputs: [{ name: '_challengeId', type: 'uint256' }],
-    outputs: [],
-    stateMutability: 'nonpayable',
-  },
-  {
-    type: 'function',
-    name: 'getChallengeParticipants',
-    inputs: [{ name: '_challengeId', type: 'uint256' }],
-    outputs: [{ name: '', type: 'address[]' }],
-    stateMutability: 'view',
-  },
-  {
-    type: 'function',
-    name: 'getChallengeWinners',
-    inputs: [{ name: '_challengeId', type: 'uint256' }],
-    outputs: [{ name: '', type: 'address[]' }],
-    stateMutability: 'view',
-  },
-  {
-    type: 'function',
-    name: 'isParticipant',
-    inputs: [
-      { name: '_challengeId', type: 'uint256' },
-      { name: '_user', type: 'address' },
+    "type": "function",
+    "name": "matches",
+    "inputs": [
+      {
+        "name": "",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
     ],
-    outputs: [{ name: '', type: 'bool' }],
-    stateMutability: 'view',
-  },
-  {
-    type: 'function',
-    name: 'isWinner',
-    inputs: [
-      { name: '_challengeId', type: 'uint256' },
-      { name: '_user', type: 'address' },
+    "outputs": [
+      {
+        "name": "id",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "name",
+        "type": "string",
+        "internalType": "string"
+      },
+      {
+        "name": "stake",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "startTime",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "durationDays",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "active",
+        "type": "bool",
+        "internalType": "bool"
+      }
     ],
-    outputs: [{ name: '', type: 'bool' }],
-    stateMutability: 'view',
+    "stateMutability": "view"
   },
   {
-    type: 'function',
-    name: 'getUserChallenges',
-    inputs: [{ name: '_user', type: 'address' }],
-    outputs: [{ name: '', type: 'uint256[]' }],
-    stateMutability: 'view',
-  },
-  {
-    type: 'function',
-    name: 'updateBackendSigner',
-    inputs: [{ name: '_newSigner', type: 'address' }],
-    outputs: [],
-    stateMutability: 'nonpayable',
-  },
-  {
-    type: 'function',
-    name: 'backendSigner',
-    inputs: [],
-    outputs: [{ name: '', type: 'address' }],
-    stateMutability: 'view',
-  },
-  {
-    type: 'function',
-    name: 'owner',
-    inputs: [],
-    outputs: [{ name: '', type: 'address' }],
-    stateMutability: 'view',
-  },
-  // Events
-  {
-    type: 'event',
-    name: 'ChallengeCreated',
-    inputs: [
-      { name: 'challengeId', type: 'uint256', indexed: true },
-      { name: 'entryFee', type: 'uint256', indexed: false },
+    "type": "function",
+    "name": "platform",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "address",
+        "internalType": "address"
+      }
     ],
+    "stateMutability": "view"
   },
   {
-    type: 'event',
-    name: 'UserJoinedChallenge',
-    inputs: [
-      { name: 'challengeId', type: 'uint256', indexed: true },
-      { name: 'user', type: 'address', indexed: true },
-      { name: 'amount', type: 'uint256', indexed: false },
+    "type": "function",
+    "name": "wldToken",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "address",
+        "internalType": "contract IERC20"
+      }
     ],
+    "stateMutability": "view"
   },
   {
-    type: 'event',
-    name: 'ChallengeCompleted',
-    inputs: [
-      { name: 'challengeId', type: 'uint256', indexed: true },
-      { name: 'winnerCount', type: 'uint256', indexed: false },
-      { name: 'prizePerWinner', type: 'uint256', indexed: false },
+    "type": "event",
+    "name": "MatchClosed",
+    "inputs": [
+      {
+        "name": "matchId",
+        "type": "uint256",
+        "indexed": true,
+        "internalType": "uint256"
+      },
+      {
+        "name": "winner",
+        "type": "address",
+        "indexed": false,
+        "internalType": "address"
+      },
+      {
+        "name": "reward",
+        "type": "uint256",
+        "indexed": false,
+        "internalType": "uint256"
+      },
+      {
+        "name": "platformFee",
+        "type": "uint256",
+        "indexed": false,
+        "internalType": "uint256"
+      }
     ],
+    "anonymous": false
   },
   {
-    type: 'event',
-    name: 'WinnerVerified',
-    inputs: [
-      { name: 'challengeId', type: 'uint256', indexed: true },
-      { name: 'winner', type: 'address', indexed: true },
-      { name: 'prize', type: 'uint256', indexed: false },
+    "type": "event",
+    "name": "MatchCreated",
+    "inputs": [
+      {
+        "name": "matchId",
+        "type": "uint256",
+        "indexed": true,
+        "internalType": "uint256"
+      },
+      {
+        "name": "name",
+        "type": "string",
+        "indexed": false,
+        "internalType": "string"
+      },
+      {
+        "name": "durationDays",
+        "type": "uint256",
+        "indexed": false,
+        "internalType": "uint256"
+      },
+      {
+        "name": "startTime",
+        "type": "uint256",
+        "indexed": false,
+        "internalType": "uint256"
+      }
     ],
+    "anonymous": false
   },
+  {
+    "type": "event",
+    "name": "PlayerJoined",
+    "inputs": [
+      {
+        "name": "matchId",
+        "type": "uint256",
+        "indexed": true,
+        "internalType": "uint256"
+      },
+      {
+        "name": "player",
+        "type": "address",
+        "indexed": true,
+        "internalType": "address"
+      },
+      {
+        "name": "stakeAmount",
+        "type": "uint256",
+        "indexed": false,
+        "internalType": "uint256"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "type": "error",
+    "name": "ReentrancyGuardReentrantCall",
+    "inputs": []
+  }
 ] as const;
-
-export const WLD_TOKEN_ABI = [
-  {
-    type: 'function',
-    name: 'balanceOf',
-    inputs: [{ name: 'account', type: 'address' }],
-    outputs: [{ name: '', type: 'uint256' }],
-    stateMutability: 'view',
-  },
-  {
-    type: 'function',
-    name: 'approve',
-    inputs: [
-      { name: 'spender', type: 'address' },
-      { name: 'amount', type: 'uint256' },
-    ],
-    outputs: [{ name: '', type: 'bool' }],
-    stateMutability: 'nonpayable',
-  },
-  {
-    type: 'function',
-    name: 'allowance',
-    inputs: [
-      { name: 'owner', type: 'address' },
-      { name: 'spender', type: 'address' },
-    ],
-    outputs: [{ name: '', type: 'uint256' }],
-    stateMutability: 'view',
-  },
-  {
-    type: 'function',
-    name: 'transfer',
-    inputs: [
-      { name: 'to', type: 'address' },
-      { name: 'amount', type: 'uint256' },
-    ],
-    outputs: [{ name: '', type: 'bool' }],
-    stateMutability: 'nonpayable',
-  },
-  {
-    type: 'function',
-    name: 'mint',
-    inputs: [
-      { name: 'to', type: 'address' },
-      { name: 'amount', type: 'uint256' },
-    ],
-    outputs: [],
-    stateMutability: 'nonpayable',
-  },
-] as const; 
+ 
 
 export default function ChallengeDetailsView({ challengeId }: ChallengeDetailsViewProps) {
   const { t } = useTranslation();
@@ -267,7 +392,7 @@ export default function ChallengeDetailsView({ challengeId }: ChallengeDetailsVi
   const [error, setError] = useState<string | null>(null);
   
   // Buscar dados reais da competição do subgraph
-  const { match, loading, error: matchError, refetch } = useMatchDetail(challengeId || null);
+  const { match, loading, error: matchError, refetch } = useMatchDetail(challengeId);
 
   // Dados processados da competição
   const challengeData = match ? {
@@ -373,6 +498,8 @@ export default function ChallengeDetailsView({ challengeId }: ChallengeDetailsVi
         }
   
         console.log('✅ Transaction sent:', finalPayload.transaction_id);
+
+        router.push('/challenges');
   
         // // Record participation in database after successful transaction
         // try {

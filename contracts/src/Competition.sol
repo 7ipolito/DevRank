@@ -57,17 +57,23 @@ contract Competition is ReentrancyGuard {
     mapping(uint256 => Match) public matches;
 
     // ---- Eventos ----
+    // @subgraph:entity Match - rastreia estado da competição
     event MatchCreated(
         uint256 indexed matchId,
         string name,
-        uint256 durationDays
+        uint256 durationDays,
+        uint256 startTime
     );
 
+    // @subgraph:entity Participation - rastreia participação de jogadores
+    // @subgraph:relation Match(matchId) - Player(player)
     event PlayerJoined(
         uint256 indexed matchId,
-        address indexed player
+        address indexed player,
+        uint256 stakeAmount
     );
 
+    // @subgraph:update Match.active = false
     event MatchClosed(
         uint256 indexed matchId,
         address winner,
@@ -93,7 +99,7 @@ contract Competition is ReentrancyGuard {
         m.durationDays = _durationDays;
         m.active = true;
 
-        emit MatchCreated(matchCount, _name, _durationDays);
+        emit MatchCreated(matchCount, _name, _durationDays, block.timestamp);
     }
 
 
@@ -139,7 +145,7 @@ contract Competition is ReentrancyGuard {
         
         challenge.participants.push(msg.sender);
         
-        emit PlayerJoined(_challengeId, msg.sender);
+        emit PlayerJoined(_challengeId, msg.sender, _stake);
     }
 
      function joinChallengeWithPermit2(
@@ -167,7 +173,7 @@ contract Competition is ReentrancyGuard {
         
         challenge.participants.push(msg.sender);
         
-        emit PlayerJoined(_challengeId, msg.sender);
+        emit PlayerJoined(_challengeId, msg.sender, transferDetails.requestedAmount);
     }
 
     /**

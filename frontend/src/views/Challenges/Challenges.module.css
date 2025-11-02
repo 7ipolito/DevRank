@@ -1,7 +1,6 @@
 .main {
   display: flex;
-  min-height: 100vh;
-  min-height: 100dvh; /* Dynamic viewport height for mobile */
+
   flex-direction: column;
   
   
@@ -9,7 +8,7 @@
 
 .content {
   width: 100%;
-  max-width: min(90vw, 28rem);
+
   margin: 0 auto;
   display: flex;
   flex-direction: column;

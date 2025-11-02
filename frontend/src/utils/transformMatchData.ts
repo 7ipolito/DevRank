@@ -1,18 +1,22 @@
 import { formatEther } from 'viem';
 
-interface MatchCreated {
+interface Match {
   id: string;
+  matchId: string; // matchId numérico (BigInt como string)
   name: string;
-  stake: string;
   durationDays: string;
+  stake: string; // Stake em Wei
+  participantCount: string;
+  active: boolean;
 }
 
 interface ChallengeData {
   id: number; // ID numérico para uso interno
-  originalId: string; // ID original da blockchain para navegação
+  originalId: string; // ID original da blockchain para navegação (match.id)
+  matchId: string; // matchId numérico para verificação de participação
   title: string;
-  stake: string;
   participants: number;
+  stake: string; // Stake formatado (ex: "0.5 WLD")
   icon: string;
   borderColor: "blue" | "green";
   status: "active" | "completed" | "upcoming";
@@ -44,36 +48,33 @@ const getIcon = (name: string): string => {
   return '🏆'; // ícone padrão
 };
 
-
-// Função para simular participantes baseado no id
-const getParticipants = (id: string): number => {
-  // Usar hash do ID para gerar número consistente de participantes
-  const hash = id.split('').reduce((a, b) => {
-    a = ((a << 5) - a) + b.charCodeAt(0);
-    return a & a;
-  }, 0);
-  return Math.max(20, Math.abs(hash) % 200 + 50); // Entre 50 e 250 participantes
+// Função para formatar o stake
+const formatStake = (stakeWei: string): string => {
+  try {
+    const stakeEther = formatEther(BigInt(stakeWei));
+    const stakeNumber = parseFloat(stakeEther);
+    
+    // Formatar com até 4 casas decimais, removendo zeros desnecessários
+    if (stakeNumber === 0) return '0 WLD';
+    if (stakeNumber < 0.0001) return '< 0.0001 WLD';
+    
+    return `${stakeNumber.toFixed(4).replace(/\.?0+$/, '')} WLD`;
+  } catch (error) {
+    console.error('Error formatting stake:', error);
+    return '0 WLD';
+  }
 };
 
-
-// Função para determinar o status (simulado por enquanto)
-const getStatus = (id: string): ChallengeData['status'] => {
-  // Usar hash do ID para determinar status consistente
-  const hash = id.split('').reduce((a, b) => {
-    a = ((a << 5) - a) + b.charCodeAt(0);
-    return a & a;
-  }, 0);
-  const absHash = Math.abs(hash);
-  if (absHash % 3 === 0) return 'completed';
-  if (absHash % 5 === 0) return 'upcoming';
-  return 'active';
+// Função para determinar o status baseado no campo active
+const getStatus = (active: boolean): ChallengeData['status'] => {
+  return active ? 'active' : 'completed';
 };
 
 // Função principal para transformar os dados do subgraph
-export const transformMatchesToChallenges = (matches: MatchCreated[]): ChallengeData[] => {
+export const transformMatchesToChallenges = (matches: Match[]): ChallengeData[] => {
   return matches.map((match) => {
-    const participants = getParticipants(match.id);
-    const status = getStatus(match.id);
+    const participants = parseInt(match.participantCount) || 0;
+    const status = getStatus(match.active);
     
     // Usar hash do ID para gerar um número inteiro consistente
     const hash = match.id.split('').reduce((a, b) => {
@@ -83,10 +84,11 @@ export const transformMatchesToChallenges = (matches: MatchCreated[]): Challenge
     
     return {
       id: Math.abs(hash), // Usar hash como ID numérico
-      originalId: match.id, // ID original da blockchain
+      originalId: match.id, // ID original da blockchain (usado para navegação)
+      matchId: match.matchId, // matchId numérico (usado para verificação de participação)
       title: match.name,
-      stake: `${formatEther(BigInt(match.stake))}WLD`,
       participants,
+      stake: formatStake(match.stake),
       icon: getIcon(match.name),
       borderColor: getBorderColor(match.id),
       status,

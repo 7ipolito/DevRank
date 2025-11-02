@@ -1,0 +1,65 @@
+# Entidades de estado atual (mutáveis) - Para consultar participações
+type Match @entity(immutable: false) {
+  id: ID! # matchId como string
+  matchId: BigInt! # uint256
+  name: String!
+  durationDays: BigInt!
+  stake: BigInt! # total stake acumulado
+  startTime: BigInt!
+  active: Boolean!
+  participants: [Participation!]! @derivedFrom(field: "match")
+  participantCount: BigInt!
+  createdAt: BigInt!
+  createdTxHash: Bytes!
+}
+
+type Participation @entity(immutable: false) {
+  id: ID! # matchId-playerAddress - Use isso para verificar se um usuário está participando
+  match: Match!
+  player: Player!
+  joinedAt: BigInt!
+  joinedTxHash: Bytes!
+}
+
+type Player @entity(immutable: false) {
+  id: Bytes! # player address - Use isso para consultar todas as participações de um usuário
+  participations: [Participation!]! @derivedFrom(field: "player")
+  matchesJoined: BigInt!
+}
+
+# Entidades de eventos (histórico imutável)
+type MatchClosed @entity(immutable: true) {
+  id: Bytes!
+  match: Match
+  matchId: BigInt! # uint256
+  winner: Bytes! # address
+  reward: BigInt! # uint256
+  platformFee: BigInt! # uint256
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type MatchCreated @entity(immutable: true) {
+  id: Bytes!
+  match: Match
+  matchId: BigInt! # uint256
+  name: String! # string
+  durationDays: BigInt! # uint256
+  startTime: BigInt # uint256 (optional for backwards compatibility)
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type PlayerJoined @entity(immutable: true) {
+  id: Bytes!
+  match: Match
+  participation: Participation
+  matchId: BigInt! # uint256
+  player: Bytes! # address
+  stakeAmount: BigInt # uint256 (optional for backwards compatibility)
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}

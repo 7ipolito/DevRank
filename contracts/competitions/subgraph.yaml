@@ -1,32 +1,33 @@
 specVersion: 1.2.0
-indexerHints:
-  prune: auto
 schema:
   file: ./schema.graphql
 dataSources:
   - kind: ethereum
-    name: Competition
+    name: smartcontract-competitions
     network: worldchain-mainnet
     source:
-      address: "0x8471C05150f72eA45fb71Cbae6961EAC44F74584"
-      abi: Competition
-      startBlock: 0
+      address: "0x7b76189a7b79b7c636D4B9c9B87fB85bFab1fc39"
+      abi: smartcontract-competitions
+      startBlock: 21282000
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.9
       language: wasm/assemblyscript
       entities:
+        - Match
+        - Participation
+        - Player
         - MatchClosed
         - MatchCreated
         - PlayerJoined
       abis:
-        - name: Competition
-          file: ./abis/Competition.json
+        - name: smartcontract-competitions
+          file: ./abis/smartcontract-competitions.json
       eventHandlers:
         - event: MatchClosed(indexed uint256,address,uint256,uint256)
           handler: handleMatchClosed
         - event: MatchCreated(indexed uint256,string,uint256,uint256)
           handler: handleMatchCreated
-        - event: PlayerJoined(indexed uint256,indexed address)
+        - event: PlayerJoined(indexed uint256,indexed address,uint256)
           handler: handlePlayerJoined
-      file: ./src/competition.ts
+      file: ./src/smartcontract-competitions.ts

@@ -8,9 +8,9 @@ import {
 } from "matchstick-as/assembly/index"
 import { BigInt, Address } from "@graphprotocol/graph-ts"
 import { MatchClosed } from "../generated/schema"
-import { MatchClosed as MatchClosedEvent } from "../generated/Competition/Competition"
-import { handleMatchClosed } from "../src/competition"
-import { createMatchClosedEvent } from "./competition-utils"
+import { MatchClosed as MatchClosedEvent } from "../generated/smartcontract-competitions/smartcontract-competitions"
+import { handleMatchClosed } from "../src/smartcontract-competitions"
+import { createMatchClosedEvent } from "./smartcontract-competitions-utils"
 
 // Tests structure (matchstick-as >=0.5.0)
 // https://thegraph.com/docs/en/subgraphs/developing/creating/unit-testing-framework/#tests-structure

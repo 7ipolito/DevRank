@@ -54,14 +54,14 @@ export default function BottomNav() {
       icon: ChallengesIcon,
       href: "/challenges",
       label: "Challenges",
-      disabled: !isConnected,
+      
     },
-    {
-      icon: NotificationsIcon,
-      href: "/notifications",
-      label: "Notifications",
-      disabled: false,
-    },
+    // {
+    //   icon: NotificationsIcon,
+    //   href: "/notifications",
+    //   label: "Notifications",
+    //   disabled: false,
+    // },
   ];
 
   const handleTap = () => {

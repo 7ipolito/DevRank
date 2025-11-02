@@ -3,8 +3,8 @@ import styles from './ChallengeCard.module.css';
 
 interface ChallengeCardProps {
   title: string;
-  stake: string;
   participants: number;
+  stake: string; // Stake em formato legível (ex: "0.5 WLD")
   icon: React.ReactNode | string;
   borderColor?: 'blue' | 'green';
   status?: 'active' | 'completed' | 'upcoming';
@@ -12,18 +12,22 @@ interface ChallengeCardProps {
   onJoin: () => void;
   onSeeResults?: () => void;
   showResults?: boolean;
+  isParticipating?: boolean;
+  participationLoading?: boolean;
 }
 
 export default function ChallengeCard({
   title,
-  stake,
   participants,
+  stake,
   borderColor = 'blue',
   status = 'active',
   duration = '7 days',
   onJoin,
   onSeeResults,
   showResults = false,
+  isParticipating = false,
+  participationLoading = false,
 }: ChallengeCardProps) {
   const getStatusColor = (status: string) => {
     switch (status) {
@@ -55,7 +59,7 @@ export default function ChallengeCard({
       <div className={styles.details}>
         <div className={styles.detailRow}>
           <div className={styles.detailItem}>
-            <span className={styles.label}>Stake:</span>
+            <span className={styles.label}>Total Stake:</span>
             <span className={styles.value}>{stake}</span>
           </div>
 
@@ -70,8 +74,9 @@ export default function ChallengeCard({
         <button 
           className={styles.joinButton}
           onClick={onJoin}
+          disabled={isParticipating || participationLoading}
         >
-          Join
+          {participationLoading ? 'Checking...' : isParticipating ? 'Already Joined' : 'Join'}
         </button>
         
         {showResults && onSeeResults && (

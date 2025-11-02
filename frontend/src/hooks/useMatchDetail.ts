@@ -1,110 +1,130 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect } from 'react';
 import { ApolloClient, InMemoryCache, gql, createHttpLink } from '@apollo/client';
 
-// GraphQL query para buscar detalhes de uma competição específica
+// Query para buscar uma competição específica
 const GET_MATCH_DETAIL = gql`
-  query MatchCreated($id: ID!) {
-    matchCreated(id: $id) {
+  query GetMatchDetail($matchId: ID!) {
+    match(id: $matchId) {
       id
+      matchId
       name
       stake
       durationDays
+      startTime
+      active
+      participantCount
+      createdAt
+      participants {
+        id
+        player {
+          id
+        }
+        joinedAt
+      }
     }
   }
 `;
 
-// Interface para os dados retornados do subgraph
-interface MatchDetail {
+interface Match {
   id: string;
+  matchId: string;
   name: string;
   stake: string;
   durationDays: string;
+  startTime: string;
+  active: boolean;
+  participantCount: string;
+  createdAt: string;
+  participants: Array<{
+    id: string;
+    player: {
+      id: string;
+    };
+    joinedAt: string;
+  }>;
 }
 
 interface MatchDetailData {
-  matchCreated: MatchDetail | null;
+  match: Match | null;
 }
 
 interface UseMatchDetailReturn {
-  match: MatchDetail | null;
+  match: Match | null;
   loading: boolean;
   error: string | null;
   refetch: () => Promise<void>;
 }
 
-// Configuração do link HTTP para o subgraph
 const SUBGRAPH_URL =
-  'https://subgraph.satsuma-prod.com/6597691a01e2/allans-team--951313/worldchain-competition/version/v1.0.0-worldchain/api';
+  'https://subgraph.satsuma-prod.com/6597691a01e2/allans-team--951313/competitions/api';
 
 const httpLink = createHttpLink({
   uri: SUBGRAPH_URL,
 });
 
-// Cliente Apollo configurado para o subgraph
 const client = new ApolloClient({
   link: httpLink,
   cache: new InMemoryCache(),
 });
 
+/**
+ * Hook para buscar detalhes de uma competição específica
+ * @param matchId - ID da competição (pode ser string numérica como "1" ou hex)
+ */
 export const useMatchDetail = (matchId: string | null): UseMatchDetailReturn => {
-  const [match, setMatch] = useState<MatchDetail | null>(null);
-  const [loading, setLoading] = useState(false);
+  const [match, setMatch] = useState<Match | null>(null);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  const fetchMatchDetail = useCallback(async () => {
+  const fetchMatchDetail = async () => {
     if (!matchId) {
-      setMatch(null);
       setLoading(false);
+      setError('No match ID provided');
       return;
     }
-
-    // Validar e formatar o ID
-    let formattedId = matchId.trim();
-    
-    // Remover prefixo 0x se existir e adicionar novamente para garantir consistência
-    if (formattedId.startsWith('0x')) {
-      formattedId = formattedId.slice(2);
-    }
-    
-    // Verificar se tem número par de dígitos hexadecimais
-    if (formattedId.length % 2 !== 0) {
-      setError(`Invalid ID format: odd number of hex digits (${formattedId.length} digits)`);
-      setLoading(false);
-      return;
-    }
-    
-    // Verificar se contém apenas caracteres hexadecimais válidos
-    if (!/^[0-9a-fA-F]+$/.test(formattedId)) {
-      setError('Invalid ID format: contains non-hexadecimal characters');
-      setLoading(false);
-      return;
-    }
-    
-    // Adicionar prefixo 0x de volta
-    const finalId = '0x' + formattedId;
 
     try {
       setLoading(true);
       setError(null);
+
+      // O ID no subgraph é simplesmente o matchId como string
+      // Se receber "1", usar "1"
+      // Se receber "0x1", converter para "1"
+      let normalizedId = matchId;
+      
+      // Se começar com 0x, é hex, converter para decimal
+      if (matchId.startsWith('0x')) {
+        normalizedId = parseInt(matchId, 16).toString();
+      }
+
+      console.log('🔍 Fetching match detail for ID:', normalizedId);
       
       const { data } = await client.query<MatchDetailData>({
         query: GET_MATCH_DETAIL,
-        variables: { id: finalId },
-        fetchPolicy: 'network-only', // Sempre busca dados atualizados da rede
+        variables: {
+          matchId: normalizedId,
+        },
+        fetchPolicy: 'network-only',
       });
 
-      setMatch(data?.matchCreated || null);
+      if (data?.match) {
+        setMatch(data.match);
+        console.log('✅ Match found:', data.match);
+      } else {
+        setError('Match not found');
+        console.warn('⚠️ Match not found for ID:', normalizedId);
+      }
     } catch (err) {
-      console.error('Erro ao buscar detalhes da competição:', err);
-      setError(err instanceof Error ? err.message : 'Erro desconhecido');
+      console.error('❌ Error fetching match detail:', err);
+      setError(err instanceof Error ? err.message : 'Unknown error');
     } finally {
       setLoading(false);
     }
-  }, [matchId]);
+  };
 
   useEffect(() => {
     fetchMatchDetail();
-  }, [fetchMatchDetail]);
+  }, [matchId]);
 
   return {
     match,

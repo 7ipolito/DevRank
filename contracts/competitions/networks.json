@@ -1,0 +1,8 @@
+{
+  "mainnet": {
+    "smartcontract-competitions": {
+      "address": "0x7b76189a7b79b7c636D4B9c9B87fB85bFab1fc39",
+      "startBlock": 0
+    }
+  }
+}
