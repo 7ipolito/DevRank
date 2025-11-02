@@ -20,8 +20,10 @@ app.use(express.json());
 const codeStatsService = new CodeStatsService();
 const contractService = new SmartContractService();
 
+// Use routes from routes folder (includes all user management routes)
+app.use('/', routes);
 
-// API Routes
+// API Routes (legacy/inline routes - to be refactored)
 app.post('/api/users', async (req, res) => {
   try {
     const { username, github_username } = req.body;

@@ -8,6 +8,7 @@ const cors_1 = __importDefault(require("cors"));
 const dotenv_1 = __importDefault(require("dotenv"));
 const config_1 = require("./config");
 const services_1 = require("./services");
+const routes_1 = __importDefault(require("./routes"));
 // Load environment variables
 dotenv_1.default.config();
 const app = (0, express_1.default)();
@@ -18,7 +19,9 @@ app.use(express_1.default.json());
 // Services
 const codeStatsService = new services_1.CodeStatsService();
 const contractService = new services_1.SmartContractService();
-// API Routes
+// Use routes from routes folder (includes all user management routes)
+app.use('/', routes_1.default);
+// API Routes (legacy/inline routes - to be refactored)
 app.post('/api/users', async (req, res) => {
     try {
         const { username, github_username } = req.body;
