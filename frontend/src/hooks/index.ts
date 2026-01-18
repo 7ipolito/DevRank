@@ -1,5 +1,9 @@
-// Export all subgraph hooks
-export { useMatchData } from './useMatchData';
-export { useMatchDetail } from './useMatchDetail';
-export { useIsParticipating, useUserParticipations } from './useParticipation';
+// Export all contract hooks
+export { useContractMatches } from './useContractMatches';
+export { useMatchDetail } from './useContractMatchDetail';
+export { 
+  useIsParticipating, 
+  useUserParticipations,
+  useMatchParticipants 
+} from './useContractParticipation';
 

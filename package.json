@@ -1,13 +1,16 @@
 {
-    "devDependencies": {
-      "concurrently": "^8.2.2"
-    },
-    "scripts": {
-      "start-frontend": "cd frontend && pnpm dev",
-      "start-backend": "cd backend && pnpm start:dev",
-      "install-frontend": "cd frontend && pnpm install",
-      "install-backend": "cd backend && pnpm install",
-      "install": "concurrently \"pnpm run install-frontend\" \"pnpm run install-backend\" ",
-      "start": "concurrently \"pnpm run start-frontend\" \"pnpm run start-backend\""
-    }
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  },
+  "scripts": {
+    "start-frontend": "cd frontend && pnpm dev",
+    "start-backend": "cd backend && pnpm start:dev",
+    "install-frontend": "cd frontend && pnpm install",
+    "install-backend": "cd backend && pnpm install",
+    "install": "concurrently \"pnpm run install-frontend\" \"pnpm run install-backend\" ",
+    "start": "concurrently \"pnpm run start-frontend\" \"pnpm run start-backend\""
+  },
+  "dependencies": {
+    "@graphprotocol/graph-ts": "^0.38.2"
   }
+}

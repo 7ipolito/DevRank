@@ -9,7 +9,7 @@ interface ChallengeCardProps {
   borderColor?: 'blue' | 'green';
   status?: 'active' | 'completed' | 'upcoming';
   duration?: string;
-  onJoin: () => void;
+  onJoin?: () => void;
   onSeeResults?: () => void;
   showResults?: boolean;
   isParticipating?: boolean;
@@ -71,13 +71,15 @@ export default function ChallengeCard({
       </div>
 
       <div className={styles.actions}>
-        <button 
-          className={styles.joinButton}
-          onClick={onJoin}
-          disabled={isParticipating || participationLoading}
-        >
-          {participationLoading ? 'Checking...' : isParticipating ? 'Already Joined' : 'Join'}
-        </button>
+        {onJoin && (
+          <button 
+            className={styles.joinButton}
+            onClick={onJoin}
+            disabled={isParticipating || participationLoading}
+          >
+            {participationLoading ? 'Checking...' : isParticipating ? 'Already Joined' : 'Join'}
+          </button>
+        )}
         
         {showResults && onSeeResults && (
           <button 

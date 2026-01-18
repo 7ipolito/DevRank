@@ -1,0 +1,74 @@
+# ============================================
+# Worldchain Contract Integration - Environment Variables
+# ============================================
+# Copy this content to .env.local and fill in your values
+
+# ============================================
+# REQUIRED VARIABLES
+# ============================================
+
+# World ID App ID (get from https://developer.worldcoin.org)
+NEXT_PUBLIC_APP_ID=app_staging_xxxxxxxxxxxx
+
+# WLD Token Address on Worldchain Mainnet
+# Official WLD token: 0x2cFc85d8E48F8EAB294be644d9E25C3030863003
+NEXT_PUBLIC_WLD_TOKEN_ADDRESS=0x2cFc85d8E48F8EAB294be644d9E25C3030863003
+
+# Your Competition Contract Address on Worldchain Mainnet
+# Replace with your deployed contract address
+NEXT_PUBLIC_COMPETITION_CONTRACT_ADDRESS=0xYOUR_CONTRACT_ADDRESS_HERE
+
+# ============================================
+# OPTIONAL VARIABLES (Recommended for Production)
+# ============================================
+
+# Worldchain RPC Endpoint
+# Get free API key from: https://www.alchemy.com/
+# Free tier: 100k requests/day
+# Format: https://worldchain-mainnet.g.alchemy.com/v2/YOUR_API_KEY
+# If not set, uses public endpoint (may be rate limited)
+NEXT_PUBLIC_WORLDCHAIN_RPC_URL=https://worldchain-mainnet.g.alchemy.com/v2/YOUR_ALCHEMY_API_KEY
+
+# ============================================
+# DEPRECATED (No Longer Used)
+# ============================================
+
+# Subgraph URL - No longer needed, can be removed
+# NEXT_PUBLIC_SUBGRAPH_URL=https://subgraph.satsuma-prod.com/...
+
+# ============================================
+# SETUP INSTRUCTIONS
+# ============================================
+#
+# 1. Create .env.local file in the frontend directory
+#
+# 2. Copy the content from this file to .env.local
+#
+# 3. Fill in the required variables:
+#    - NEXT_PUBLIC_APP_ID: From World Developer Portal
+#    - NEXT_PUBLIC_COMPETITION_CONTRACT_ADDRESS: Your deployed contract
+#
+# 4. (Optional) Get Alchemy API key:
+#    - Sign up at https://www.alchemy.com/
+#    - Create app for "World Chain"
+#    - Add key to NEXT_PUBLIC_WORLDCHAIN_RPC_URL
+#
+# 5. Restart dev server:
+#    npm run dev
+#
+# ============================================
+# WORLDCHAIN MAINNET INFO
+# ============================================
+#
+# Chain ID: 480
+# Name: World Chain
+# Explorer: https://worldscan.org
+# Type: OP Stack Layer 2
+#
+# Public RPC (free, rate limited):
+# https://worldchain-mainnet.g.alchemy.com/public
+#
+# Alchemy RPC (recommended):
+# https://worldchain-mainnet.g.alchemy.com/v2/YOUR_KEY
+#
+# ============================================

@@ -1,18 +1,18 @@
-# Hooks do Subgraph - Guia de Uso
+# Contract Hooks - Guia de Uso
 
-Este diretório contém hooks React para interagir com o subgraph das competições.
+Este diretório contém hooks React para interagir diretamente com o smart contract de competições na Worldchain usando viem.
 
 ## Hooks Disponíveis
 
-### 1. `useMatchData` - Buscar todas as competições
+### 1. `useContractMatches` - Buscar todas as competições
 
-Busca todas as competições disponíveis, ordenadas por data de criação.
+Busca todas as competições disponíveis diretamente do contrato na blockchain.
 
 ```typescript
-import { useMatchData } from '@/hooks';
+import { useContractMatches } from '@/hooks';
 
 function ChallengesPage() {
-  const { matches, loading, error, refetch } = useMatchData();
+  const { matches, loading, error, refetch } = useContractMatches();
 
   if (loading) return <div>Carregando...</div>;
   if (error) return <div>Erro: {error}</div>;
@@ -34,7 +34,7 @@ function ChallengesPage() {
 
 ### 2. `useMatchDetail` - Buscar detalhes de uma competição específica
 
-Busca os detalhes completos de uma competição pelo ID.
+Busca os detalhes completos de uma competição pelo ID diretamente do contrato.
 
 ```typescript
 import { useMatchDetail } from '@/hooks';
@@ -143,49 +143,40 @@ interface Match {
 }
 ```
 
-## Queries GraphQL Disponíveis
+## Funções do Contrato Utilizadas
 
-### Buscar competição específica
-```graphql
-query GetMatch($matchId: ID!) {
-  match(id: $matchId) {
-    id
-    name
-    active
-    participantCount
-    stake
-  }
-}
+### Leitura de Matches
+```solidity
+function matchCount() public view returns (uint256);
+function matches(uint256 index) public view returns (Match);
+function getParticipantCount(uint256 matchId) public view returns (uint256);
 ```
 
-### Verificar participação
-```graphql
-query CheckParticipation($participationId: ID!) {
-  participation(id: $participationId) {
-    id
-    match { name }
-    player { id }
-  }
-}
+### Verificação de Participação
+```solidity
+function isParticipant(uint256 matchId, address user) public view returns (bool);
+function getParticipants(uint256 matchId) public view returns (address[]);
 ```
 
 ## Dicas de Uso
 
-1. **Formatação de valores**: Os valores `stake` vêm em Wei. Use `ethers.utils.formatEther()` para converter.
+1. **Formatação de valores**: Os valores `stake` vêm como BigInt em Wei. Use `formatEther()` do viem para converter.
 
-2. **Timestamps**: Os campos de tempo são Unix timestamps. Multiplique por 1000 para usar com `Date()`.
+2. **Timestamps**: Os campos de tempo são BigInt Unix timestamps. Use `Number(timestamp) * 1000` com `Date()`.
 
-3. **Endereços**: Sempre converta endereços para lowercase ao fazer queries.
+3. **Endereços**: Os endereços são retornados como tipo `Address` do viem.
 
-4. **Cache**: Use `fetchPolicy: 'network-only'` para dados em tempo real.
+4. **BigInt**: A maioria dos valores numéricos são BigInt. Converta com `Number()` ou `toString()` quando necessário.
 
-5. **Refetch**: Todos os hooks incluem uma função `refetch()` para atualizar os dados.
+5. **Refetch**: Todos os hooks incluem uma função `refetch()` para atualizar os dados diretamente da blockchain.
 
 ## Configuração
 
-A URL do subgraph está definida em cada hook. Para ambiente de produção, mova para variáveis de ambiente:
+Configure o RPC endpoint no arquivo `.env.local`:
 
-```typescript
-const SUBGRAPH_URL = process.env.NEXT_PUBLIC_SUBGRAPH_URL || 'https://subgraph.satsuma-prod.com/...';
+```bash
+NEXT_PUBLIC_WORLDCHAIN_RPC_URL=https://worldchain-mainnet.g.alchemy.com/v2/YOUR_KEY
+NEXT_PUBLIC_COMPETITION_CONTRACT_ADDRESS=0x...
 ```
 
+Para mais detalhes, veja `WORLDCHAIN_CONTRACT_INTEGRATION.md`.

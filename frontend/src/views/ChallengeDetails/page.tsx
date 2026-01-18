@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { useTranslation } from "react-i18next";
 import { formatEther, parseEther } from "viem";
 import { MiniKit, tokenToDecimals, Tokens, PayCommandInput } from '@worldcoin/minikit-js';
-import { useMatchDetail } from "@/hooks/useMatchDetail";
+import { useMatchDetail } from "@/hooks/useContractMatchDetail";
 import { useConnection } from "@/contexts/ConnectionContext";
 import StepProgress from "@/entities/Challenges/components/StepProgress";
 import ChallengeInfoCard from "@/entities/Challenges/components/ChallengeInfoCard";
@@ -401,10 +401,10 @@ export default function ChallengeDetailsView({ challengeId }: ChallengeDetailsVi
     totalSteps: 2,
     details: {
       frequency: "At least ?XP/ 1.5h per day", // Valor padrão por enquanto
-      duration: `${match.durationDays} days`,
-      participants: 2, // Valor simulado por enquanto
-      totalDeposited: `${formatEther(BigInt(match.stake))} WLD`,
-      endDate: new Date(Date.now() + parseInt(match.durationDays) * 24 * 60 * 60 * 1000),
+      duration: `${match.durationDays.toString()} days`,
+      participants: match.participantCount, // Use actual participant count
+      totalDeposited: `${formatEther(match.stake)} WLD`,
+      endDate: new Date(Date.now() + Number(match.durationDays) * 24 * 60 * 60 * 1000),
     }
   } : null;
 
@@ -437,6 +437,15 @@ export default function ChallengeDetailsView({ challengeId }: ChallengeDetailsVi
         setIsLoading(true);
         setError(null);
         console.log('🚀 Joining challenge with wallet:', userWalletAddress);
+        console.log('🆔 Challenge ID:', challengeId);
+        console.log('💰 Selected stake:', selectedStake);
+
+        // Validate match exists
+        if (!match) {
+          setError('Challenge not found. Please try again.');
+          setIsLoading(false);
+          return;
+        }
   
         // Convert stake amount to wei
         const stakeAmountWei = (parseFloat(selectedStake.toString()) * 10**18).toString();
@@ -460,17 +469,24 @@ export default function ChallengeDetailsView({ challengeId }: ChallengeDetailsVi
         };
   
         // Call the new joinChallengeWithPermit2 function
+        // Use the actual match ID from the contract (not the challengeId string)
         const joinTransaction = {
           address: COMPETITION_CONTRACT_ADDRESS,
           abi: COMPETITION_ABI,
           functionName: 'joinChallengeWithPermit2',
           args: [
-            '1',
+            match.id.toString(), // Use the actual match ID from the contract
             permitTransfer,
             transferDetails,
             'PERMIT2_SIGNATURE_PLACEHOLDER_0'
           ],
         };
+        
+        console.log('📋 Transaction details:', {
+          matchId: match.id.toString(),
+          stakeAmount: stakeAmountWei,
+          contract: COMPETITION_CONTRACT_ADDRESS
+        });
   
         // Send transaction with permit2
         const { finalPayload } = await MiniKit.commandsAsync.sendTransaction({
@@ -486,15 +502,25 @@ export default function ChallengeDetailsView({ challengeId }: ChallengeDetailsVi
         if (finalPayload.status === 'error') {
           console.error('❌ Transaction failed:', finalPayload);
           
-          // Check if it's a permission error
+          // Check for specific error types
           if (finalPayload.error_code === 'disallowed_operation') {
+            setError('Transaction contains disallowed operations. Make sure WLD token and contract are configured in World Developer Portal.');
             return { 
               success: false, 
               error: 'Transaction contains disallowed operations. Make sure WLD token and contract are configured in World Developer Portal.' 
             };
           }
           
-          return { success: false, error: 'Transaction failed' };
+          if (finalPayload.error_code === 'simulation_failed') {
+            setError('Transaction simulation failed. The match may not exist or you may have already joined.');
+            return { 
+              success: false, 
+              error: 'Transaction simulation failed. Please check if the match is still active and you have not already joined.' 
+            };
+          }
+          
+          setError(`Transaction failed: ${finalPayload.error_code || 'Unknown error'}`);
+          return { success: false, error: `Transaction failed: ${finalPayload.error_code || 'Unknown error'}` };
         }
   
         console.log('✅ Transaction sent:', finalPayload.transaction_id);
@@ -515,15 +541,30 @@ export default function ChallengeDetailsView({ challengeId }: ChallengeDetailsVi
       } catch (error) {
         console.error('❌ Failed to join challenge:', error);
         
-        // Check for specific permission errors
-        if (error instanceof Error && error.message.includes('disallowed_operation')) {
-          return { 
-            success: false, 
-            error: 'Transaction contains disallowed operations. Make sure contracts and tokens are configured in World Developer Portal.' 
-          };
+        // Check for specific errors
+        if (error instanceof Error) {
+          if (error.message.includes('disallowed_operation')) {
+            setError('Transaction contains disallowed operations. Make sure contracts and tokens are configured in World Developer Portal.');
+            return { 
+              success: false, 
+              error: 'Transaction contains disallowed operations. Make sure contracts and tokens are configured in World Developer Portal.' 
+            };
+          }
+          
+          if (error.message.includes('simulation') || error.message.includes('Invalid match')) {
+            setError('Unable to join challenge. The match may not exist or you may have already joined.');
+            return { 
+              success: false, 
+              error: 'Transaction simulation failed. Please verify the match exists and is active.' 
+            };
+          }
+          
+          setError(error.message);
+          return { success: false, error: error.message };
         }
         
-        return { success: false, error: error instanceof Error ? error.message : 'Unknown error' };
+        setError('Unknown error occurred');
+        return { success: false, error: 'Unknown error' };
       } finally {
         setIsLoading(false);
       }

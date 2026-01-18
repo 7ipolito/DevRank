@@ -1,9 +1,7 @@
 .main {
   display: flex;
-
   flex-direction: column;
-  
-  
+  padding-bottom: 200px;
 }
 
 .content {
@@ -80,7 +78,7 @@
 @media (min-width: 768px) {
   .main {
     padding: clamp(1.5rem, 3vw, 2.5rem);
-    padding-bottom: 6rem;
+    padding-bottom: 200px;
   }
   
   .container {
@@ -96,7 +94,7 @@
 @media (min-width: 1024px) {
   .main {
     padding: 2rem;
-    padding-bottom: 6rem;
+    padding-bottom: 200px;
   }
   
   .container {
@@ -112,7 +110,7 @@
 @media (max-width: 480px) {
   .main {
     padding: 1rem;
-    padding-bottom: 5.5rem;
+    padding-bottom: 200px;
   }
   
   .container {
@@ -128,7 +126,7 @@
 @media (max-width: 320px) {
   .main {
     padding: 0.75rem;
-    padding-bottom: 5rem;
+    padding-bottom: 200px;
   }
   
   .container {
@@ -145,7 +143,7 @@
 @media (max-height: 500px) and (orientation: landscape) {
   .main {
     padding: 0.75rem;
-    padding-bottom: 4.5rem;
+    padding-bottom: 200px;
   }
   
   .challengesList {

@@ -1,193 +1,388 @@
-// // SPDX-License-Identifier: MIT
-// pragma solidity ^0.8.20;
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.20;
 
-// import "../lib/forge-std/src/Test.sol";
-// import "../src/Competition.sol";
+import {Test, console} from "forge-std/Test.sol";
+import {Competition} from "../src/Competition.sol";
+import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
-// contract CompetitionTest is Test {
-//     Competition competition;
-//     address platform;
-//     address player1;
-//     address player2;
-//     address wldToken;
+// Mock ERC20 Token para testes
+contract MockERC20 is IERC20 {
+    mapping(address => uint256) private _balances;
+    mapping(address => mapping(address => uint256)) private _allowances;
+    uint256 private _totalSupply;
+    string private _name = "Mock WLD";
+    string private _symbol = "mWLD";
 
-//     function setUp() public {
-//         platform = address(0x1);
-//         player1 = address(0x2);
-//         player2 = address(0x3);
-//         wldToken = address(0x4); // Mock WLD token address
-        
-//         vm.prank(platform);
-//         competition = new Competition();
-        
-//         // Criar uma competição
-//         vm.prank(platform);
-//         competition.createMatch("Test Match", 7);
-//     }
+    function mint(address account, uint256 amount) external {
+        _balances[account] += amount;
+        _totalSupply += amount;
+    }
 
-//     function testGetMatchDetails() public view {
-//         // Verificar detalhes da competição antes de adicionar jogadores
-//         (uint256 id, string memory name, address[] memory participants, uint256 totalStake, uint256 startTime, uint256 durationDays, bool active) = competition.getMatchDetails(1);
-        
-//         console.log("=== MATCH DETAILS ===");
-//         console.log("ID:", id);
-//         console.log("Name:", name);
-//         console.log("Participants count:", participants.length);
-//         console.log("Total stake:", totalStake);
-//         console.log("Start time:", startTime);
-//         console.log("Duration (days):", durationDays);
-//         console.log("Active:", active);
-        
-//         // Verificar valores iniciais
-//         assertEq(id, 1);
-//         assertEq(keccak256(bytes(name)), keccak256(bytes("Test Match")));
-//         assertEq(participants.length, 0);
-//         assertEq(totalStake, 0);
-//         assertEq(durationDays, 7);
-//         assertTrue(active);
-//     }
+    function balanceOf(address account) external view override returns (uint256) {
+        return _balances[account];
+    }
 
-//     function testGetMatchDetailsWithParticipants() public {
-//         // Simular que jogadores se juntaram à competição
-//         // (Em um teste real, você precisaria mockar o token WLD)
-        
-//         console.log("=== TESTING MATCH DETAILS FUNCTION ===");
-        
-//         // Verificar competição vazia
-//         (uint256 id, string memory name, address[] memory participants, uint256 totalStake, uint256 startTime, uint256 durationDays, bool active) = competition.getMatchDetails(1);
-        
-//         console.log("BEFORE adding participants:");
-//         console.log("Participants:", participants.length);
-//         console.log("Total stake:", totalStake);
-        
-//         // Verificar que a função retorna os dados corretos
-//         assertEq(participants.length, 0);
-//         assertEq(totalStake, 0);
-//         assertEq(id, 1);
-//         assertTrue(active);
-        
-//         console.log("Function getMatchDetails() works correctly!");
-//         console.log("It returns all match information including participants and stake amounts");
-//     }
+    function transfer(address recipient, uint256 amount) external override returns (bool) {
+        _balances[msg.sender] -= amount;
+        _balances[recipient] += amount;
+        return true;
+    }
 
-//     function testJoinMatch() public {
-//         console.log("=== TESTING JOIN MATCH FUNCTION ===");
-        
-//         // Verificar competição antes de adicionar jogadores
-//         (uint256 id, string memory name, address[] memory participants, uint256 totalStake, uint256 startTime, uint256 durationDays, bool active) = competition.getMatchDetails(1);
-        
-//         console.log("BEFORE joining:");
-//         console.log("Participants:", participants.length);
-//         console.log("Total stake:", totalStake);
-        
-//         // Simular player1 se juntando à competição com 1 WLD
-//         // Mock: simular que player1 tem WLD tokens
-//         vm.prank(player1);
-//         competition.joinMatchWithPermit2(1, 1 ether);
-        
-//         // Verificar competição após adicionar jogador
-//         (id, name, participants, totalStake, startTime, durationDays, active) = competition.getMatchDetails(1);
-        
-//         console.log("AFTER player1 joins:");
-//         console.log("Participants:", participants.length);
-//         console.log("Total stake:", totalStake);
-//         console.log("Player1 address:", participants[0]);
-        
-//         // Verificar que os dados foram atualizados corretamente
-//         assertEq(participants.length, 1);
-//         assertEq(totalStake, 1 ether);
-//         assertEq(participants[0], player1);
-        
-//         // Simular player2 se juntando à competição com 2 WLD
-//         // Mock: simular que player2 tem WLD tokens
-//         vm.prank(player2);
-//         competition.joinMatch(1, 2 ether);
-        
-//         // Verificar competição após adicionar segundo jogador
-//         (id, name, participants, totalStake, startTime, durationDays, active) = competition.getMatchDetails(1);
-        
-//         console.log("AFTER player2 joins:");
-//         console.log("Participants:", participants.length);
-//         console.log("Total stake:", totalStake);
-        
-//         // Verificar que os dados foram atualizados corretamente
-//         assertEq(participants.length, 2);
-//         assertEq(totalStake, 3 ether);
-//         assertEq(participants[0], player1);
-//         assertEq(participants[1], player2);
-        
-//         console.log("joinMatch() function works correctly!");
-//         console.log("Players can join matches by sending WLD directly");
-//     }
+    function allowance(address owner, address spender) external view override returns (uint256) {
+        return _allowances[owner][spender];
+    }
 
-//     function testLastMatchIDAdded() public {
-//         console.log("=== TESTING LAST MATCH ID ADDED ===");
-        
-//         // Verificar valor inicial
-//         assertEq(competition.lastMatchIDAdded(), 1);
-//         console.log("Initial lastMatchIDAdded:", competition.lastMatchIDAdded());
-        
-//         // Criar segundo match
-//         vm.prank(platform);
-//         competition.createMatch("Second Match", 14);
-        
-//         // Verificar se lastMatchIDAdded foi atualizado
-//         assertEq(competition.lastMatchIDAdded(), 2);
-//         console.log("After creating second match, lastMatchIDAdded:", competition.lastMatchIDAdded());
-        
-//         // Criar terceiro match
-//         vm.prank(platform);
-//         competition.createMatch("Third Match", 21);
-        
-//         // Verificar se lastMatchIDAdded foi atualizado novamente
-//         assertEq(competition.lastMatchIDAdded(), 3);
-//         console.log("After creating third match, lastMatchIDAdded:", competition.lastMatchIDAdded());
-        
-//         // Verificar que matchCount e lastMatchIDAdded são iguais
-//         assertEq(competition.matchCount(), competition.lastMatchIDAdded());
-//         console.log("matchCount and lastMatchIDAdded are equal:", competition.matchCount());
-        
-//         console.log("lastMatchIDAdded variable works correctly!");
-//         console.log("It tracks the ID of the most recently created match");
-//     }
+    function approve(address spender, uint256 amount) external override returns (bool) {
+        _allowances[msg.sender][spender] = amount;
+        return true;
+    }
 
-//     function testGetMatchDetailsUsesMatchCount() public {
-//         console.log("=== TESTING GET MATCH DETAILS USES MATCH COUNT ===");
+    function transferFrom(address sender, address recipient, uint256 amount) external override returns (bool) {
+        _allowances[sender][msg.sender] -= amount;
+        _balances[sender] -= amount;
+        _balances[recipient] += amount;
+        return true;
+    }
+
+    function totalSupply() external view override returns (uint256) {
+        return _totalSupply;
+    }
+}
+
+contract CompetitionTest is Test {
+    Competition public competition;
+    MockERC20 public mockWLD;
+    
+    address public platform;
+    address public player1;
+    address public player2;
+    address public player3;
+    
+    uint256 constant INITIAL_BALANCE = 1000 ether;
+    uint256 constant STAKE_AMOUNT = 10 ether;
+    
+    // Eventos para testar
+    event MatchCreated(uint256 indexed matchId, string name, uint256 durationDays, uint256 startTime);
+    event PlayerJoined(uint256 indexed matchId, address indexed player, uint256 stakeAmount);
+    event MatchClosed(uint256 indexed matchId, address winner, uint256 reward, uint256 platformFee);
+
+    function setUp() public {
+        platform = address(this);
+        player1 = makeAddr("player1");
+        player2 = makeAddr("player2");
+        player3 = makeAddr("player3");
         
-//         // Criar múltiplos matches
-//         vm.prank(platform);
-//         competition.createMatch("First Match", 7);
+        // Deploy competition contract first
+        competition = new Competition();
         
-//         vm.prank(platform);
-//         competition.createMatch("Second Match", 14);
+        // Deploy mock WLD token
+        mockWLD = new MockERC20();
         
-//         vm.prank(platform);
-//         competition.createMatch("Third Match", 21);
+        // Use vm.etch to place the mock at the WLD token address
+        vm.etch(address(competition.wldToken()), address(mockWLD).code);
         
-//         console.log("Created 3 additional matches. Total matchCount:", competition.matchCount());
+        // Now mockWLD reference points to the correct address
+        mockWLD = MockERC20(address(competition.wldToken()));
         
-//         // Testar getMatchDetails com diferentes IDs - todos devem retornar o último match
-//         (uint256 id1, string memory name1, , , , , ) = competition.getMatchDetails(1);
-//         (uint256 id2, string memory name2, , , , , ) = competition.getMatchDetails(2);
-//         (uint256 id3, string memory name3, , , , , ) = competition.getMatchDetails(3);
-//         (uint256 id4, string memory name4, , , , , ) = competition.getMatchDetails(4);
+        // Mint tokens para os jogadores
+        mockWLD.mint(player1, INITIAL_BALANCE);
+        mockWLD.mint(player2, INITIAL_BALANCE);
+        mockWLD.mint(player3, INITIAL_BALANCE);
         
-//         console.log("getMatchDetails(1) returns - ID:", id1, "Name:", name1);
-//         console.log("getMatchDetails(2) returns - ID:", id2, "Name:", name2);
-//         console.log("getMatchDetails(3) returns - ID:", id3, "Name:", name3);
-//         console.log("getMatchDetails(4) returns - ID:", id4, "Name:", name4);
+        // Aprovar o contrato da competição para transferir tokens
+        vm.prank(player1);
+        mockWLD.approve(address(competition), type(uint256).max);
         
-//         // Todos devem retornar o mesmo match (o último criado - ID 4)
-//         assertEq(id1, 4);
-//         assertEq(id2, 4);
-//         assertEq(id3, 4);
-//         assertEq(id4, 4);
-//         assertEq(keccak256(bytes(name1)), keccak256(bytes("Third Match")));
-//         assertEq(keccak256(bytes(name2)), keccak256(bytes("Third Match")));
-//         assertEq(keccak256(bytes(name3)), keccak256(bytes("Third Match")));
-//         assertEq(keccak256(bytes(name4)), keccak256(bytes("Third Match")));
+        vm.prank(player2);
+        mockWLD.approve(address(competition), type(uint256).max);
         
-//         console.log("getMatchDetails() now uses matchCount!");
-//         console.log("All calls return details of the most recent match");
-//     }
-// }
+        vm.prank(player3);
+        mockWLD.approve(address(competition), type(uint256).max);
+    }
+
+    /////////////////////////////
+    // Testes de Criação de Match
+    /////////////////////////////
+    
+    function testCreateMatch() public {
+        vm.expectEmit(true, false, false, true);
+        emit MatchCreated(1, "Test Competition", 7, block.timestamp);
+        
+        competition.createMatch("Test Competition", 7);
+        
+        assertEq(competition.matchCount(), 1);
+        
+        // Verificar estado inicial
+        (Competition.CompetitionState state, address winner, uint256 stake) = competition.getCompetitionResult(1);
+        assertEq(uint256(state), uint256(Competition.CompetitionState.OPEN));
+        assertEq(winner, address(0));
+        assertEq(stake, 0);
+    }
+    
+    function testCreateMultipleMatches() public {
+        competition.createMatch("Match 1", 7);
+        competition.createMatch("Match 2", 14);
+        competition.createMatch("Match 3", 21);
+        
+        assertEq(competition.matchCount(), 3);
+    }
+
+    /////////////////////////////
+    // Testes de Participação
+    /////////////////////////////
+    
+    function testJoinChallenge() public {
+        competition.createMatch("Test Competition", 7);
+        
+        vm.expectEmit(true, true, false, true);
+        emit PlayerJoined(1, player1, STAKE_AMOUNT);
+        
+        vm.prank(player1);
+        competition.joinChallenge(1, STAKE_AMOUNT);
+        
+        assertEq(competition.getParticipantCount(1), 1);
+        assertTrue(competition.isParticipant(1, player1));
+        
+        (,, uint256 stake) = competition.getCompetitionResult(1);
+        assertEq(stake, STAKE_AMOUNT);
+    }
+    
+    function testMultiplePlayersJoin() public {
+        competition.createMatch("Test Competition", 7);
+        
+        vm.prank(player1);
+        competition.joinChallenge(1, STAKE_AMOUNT);
+        
+        vm.prank(player2);
+        competition.joinChallenge(1, STAKE_AMOUNT);
+        
+        vm.prank(player3);
+        competition.joinChallenge(1, STAKE_AMOUNT * 2);
+        
+        assertEq(competition.getParticipantCount(1), 3);
+        
+        (,, uint256 stake) = competition.getCompetitionResult(1);
+        assertEq(stake, STAKE_AMOUNT * 4);
+    }
+
+    /////////////////////////////
+    // Testes de Finalização
+    /////////////////////////////
+    
+    function testFinalizeCompetition() public {
+        // Criar competição e adicionar jogadores
+        competition.createMatch("Test Competition", 7);
+        
+        vm.prank(player1);
+        competition.joinChallenge(1, STAKE_AMOUNT);
+        
+        vm.prank(player2);
+        competition.joinChallenge(1, STAKE_AMOUNT);
+        
+        // Total stake: 20 ether
+        uint256 totalStake = STAKE_AMOUNT * 2;
+        uint256 platformFee = (totalStake * 30) / 100; // 6 ether
+        uint256 winnerReward = totalStake - platformFee; // 14 ether
+        
+        // Transferir tokens para o contrato (simulando que já foram transferidos)
+        mockWLD.mint(address(competition), totalStake);
+        
+        // Verificar balances antes da finalização
+        uint256 platformBalanceBefore = mockWLD.balanceOf(platform);
+        uint256 player1BalanceBefore = mockWLD.balanceOf(player1);
+        
+        // Finalizar competição com player1 como vencedor
+        vm.expectEmit(true, false, false, true);
+        emit MatchClosed(1, player1, winnerReward, platformFee);
+        
+        competition.finalizeCompetition(1, player1);
+        
+        // Verificar que a competição foi finalizada
+        (Competition.CompetitionState state, address winner,) = competition.getCompetitionResult(1);
+        assertEq(uint256(state), uint256(Competition.CompetitionState.FINISHED));
+        assertEq(winner, player1);
+        
+        // Verificar distribuição de prêmios
+        assertEq(mockWLD.balanceOf(platform), platformBalanceBefore + platformFee);
+        assertEq(mockWLD.balanceOf(player1), player1BalanceBefore + winnerReward);
+    }
+    
+    function testFinalizeCompetitionCalculation() public {
+        competition.createMatch("Test Competition", 7);
+        
+        // Simular múltiplos jogadores com diferentes stakes
+        vm.prank(player1);
+        competition.joinChallenge(1, 100 ether);
+        
+        vm.prank(player2);
+        competition.joinChallenge(1, 50 ether);
+        
+        vm.prank(player3);
+        competition.joinChallenge(1, 150 ether);
+        
+        uint256 totalStake = 300 ether;
+        
+        // Transferir tokens para o contrato
+        mockWLD.mint(address(competition), totalStake);
+        
+        // Calcular valores esperados
+        uint256 expectedPlatformFee = (totalStake * 30) / 100; // 90 ether
+        uint256 expectedWinnerReward = totalStake - expectedPlatformFee; // 210 ether
+        
+        uint256 platformBalanceBefore = mockWLD.balanceOf(platform);
+        uint256 player2BalanceBefore = mockWLD.balanceOf(player2);
+        
+        // Finalizar com player2 como vencedor
+        competition.finalizeCompetition(1, player2);
+        
+        // Verificar cálculos
+        assertEq(mockWLD.balanceOf(platform), platformBalanceBefore + expectedPlatformFee);
+        assertEq(mockWLD.balanceOf(player2), player2BalanceBefore + expectedWinnerReward);
+    }
+
+    /////////////////////////////
+    // Testes de Exceções
+    /////////////////////////////
+    
+    function testRevertJoinWhenNotOpen() public {
+        competition.createMatch("Test Competition", 7);
+        
+        vm.prank(player1);
+        competition.joinChallenge(1, STAKE_AMOUNT);
+        
+        // Transferir tokens para o contrato
+        mockWLD.mint(address(competition), STAKE_AMOUNT);
+        
+        // Finalizar a competição
+        competition.finalizeCompetition(1, player1);
+        
+        // Tentar entrar em uma competição finalizada
+        vm.prank(player2);
+        vm.expectRevert(Competition.Competition__NotOpen.selector);
+        competition.joinChallenge(1, STAKE_AMOUNT);
+    }
+    
+    function testRevertInvalidWinner() public {
+        competition.createMatch("Test Competition", 7);
+        
+        vm.prank(player1);
+        competition.joinChallenge(1, STAKE_AMOUNT);
+        
+        // Transferir tokens para o contrato
+        mockWLD.mint(address(competition), STAKE_AMOUNT);
+        
+        // Tentar finalizar com um vencedor que não participou
+        vm.expectRevert(Competition.Competition__InvalidWinner.selector);
+        competition.finalizeCompetition(1, player2);
+    }
+    
+    function testRevertFinalizeAlreadyFinished() public {
+        competition.createMatch("Test Competition", 7);
+        
+        vm.prank(player1);
+        competition.joinChallenge(1, STAKE_AMOUNT);
+        
+        // Transferir tokens para o contrato
+        mockWLD.mint(address(competition), STAKE_AMOUNT);
+        
+        // Finalizar a competição
+        competition.finalizeCompetition(1, player1);
+        
+        // Tentar finalizar novamente
+        vm.expectRevert(Competition.Competition__AlreadyFinished.selector);
+        competition.finalizeCompetition(1, player1);
+    }
+    
+    function testRevertFinalizeNoParticipants() public {
+        competition.createMatch("Test Competition", 7);
+        
+        // Tentar finalizar sem participantes
+        vm.expectRevert(Competition.Competition__NoParticipants.selector);
+        competition.finalizeCompetition(1, player1);
+    }
+    
+    function testRevertJoinTwice() public {
+        competition.createMatch("Test Competition", 7);
+        
+        vm.startPrank(player1);
+        competition.joinChallenge(1, STAKE_AMOUNT);
+        
+        // Tentar entrar novamente
+        vm.expectRevert("Already joined this challenge");
+        competition.joinChallenge(1, STAKE_AMOUNT);
+        vm.stopPrank();
+    }
+    
+    function testRevertJoinInactiveCompetition() public {
+        competition.createMatch("Test Competition", 7);
+        
+        vm.prank(player1);
+        competition.joinChallenge(1, STAKE_AMOUNT);
+        
+        // Transferir tokens para o contrato
+        mockWLD.mint(address(competition), STAKE_AMOUNT);
+        
+        // Finalizar (torna inativa e muda estado para FINISHED)
+        competition.finalizeCompetition(1, player1);
+        
+        // Tentar entrar em competição finalizada
+        // Como o estado é verificado primeiro, deve reverter com NotOpen
+        vm.prank(player2);
+        vm.expectRevert(Competition.Competition__NotOpen.selector);
+        competition.joinChallenge(1, STAKE_AMOUNT);
+    }
+
+    /////////////////////////////
+    // Testes de Funções View
+    /////////////////////////////
+    
+    function testGetParticipants() public {
+        competition.createMatch("Test Competition", 7);
+        
+        vm.prank(player1);
+        competition.joinChallenge(1, STAKE_AMOUNT);
+        
+        vm.prank(player2);
+        competition.joinChallenge(1, STAKE_AMOUNT);
+        
+        address[] memory participants = competition.getParticipants(1);
+        assertEq(participants.length, 2);
+        assertEq(participants[0], player1);
+        assertEq(participants[1], player2);
+    }
+    
+    function testIsParticipant() public {
+        competition.createMatch("Test Competition", 7);
+        
+        vm.prank(player1);
+        competition.joinChallenge(1, STAKE_AMOUNT);
+        
+        assertTrue(competition.isParticipant(1, player1));
+        assertFalse(competition.isParticipant(1, player2));
+    }
+    
+    function testGetCompetitionResult() public {
+        competition.createMatch("Test Competition", 7);
+        
+        vm.prank(player1);
+        competition.joinChallenge(1, STAKE_AMOUNT);
+        
+        // Antes da finalização
+        (Competition.CompetitionState state, address winner, uint256 stake) = competition.getCompetitionResult(1);
+        assertEq(uint256(state), uint256(Competition.CompetitionState.OPEN));
+        assertEq(winner, address(0));
+        assertEq(stake, STAKE_AMOUNT);
+        
+        // Transferir tokens para o contrato
+        mockWLD.mint(address(competition), STAKE_AMOUNT);
+        
+        // Finalizar
+        competition.finalizeCompetition(1, player1);
+        
+        // Depois da finalização
+        (state, winner, stake) = competition.getCompetitionResult(1);
+        assertEq(uint256(state), uint256(Competition.CompetitionState.FINISHED));
+        assertEq(winner, player1);
+        assertEq(stake, STAKE_AMOUNT);
+    }
+}

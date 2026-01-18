@@ -4,8 +4,8 @@ import React from "react";
 import { useRouter } from "next/navigation";
 import { useTranslation } from "react-i18next";
 import { useConnection } from "@/contexts/ConnectionContext";
-import { useMatchData } from "@/hooks/useMatchData";
-import { useIsParticipating } from "@/hooks/useParticipation";
+import { useContractMatches } from "@/hooks/useContractMatches";
+import { useIsParticipating } from "@/hooks/useContractParticipation";
 import { transformMatchesToChallenges } from "@/utils/transformMatchData";
 import ChallengesHeader from "@/entities/Challenges/components/ChallengesHeader";
 import ChallengeCard from "@/entities/Challenges/components/ChallengeCard";
@@ -15,9 +15,9 @@ export default function ChallengesView() {
   const { t } = useTranslation();
   const router = useRouter();
   const { isConnected, walletAddress } = useConnection();
-  const { matches, loading, error, refetch } = useMatchData();
+  const { matches, loading, error, refetch } = useContractMatches();
 
-  // Transforma os dados do subgraph no formato esperado pelos componentes
+  // Transforma os dados do contrato no formato esperado pelos componentes
   const challenges = transformMatchesToChallenges(matches);
 
   const handleJoin = (originalId: string) => {
@@ -41,11 +41,13 @@ export default function ChallengesView() {
     onJoin: () => void;
     onSeeResults: () => void;
   }) {
-    // Usa o matchId numérico para verificar a participação
-    // O participationId no subgraph é construído como: matchId-playerAddress
+    // Não verifica participação se o desafio estiver completo
+    const shouldCheckParticipation = challenge.status !== 'completed' && walletAddress;
+    
+    // Usa o matchId numérico para verificar a participação diretamente no contrato
     const { isParticipating, loading: participationLoading } = useIsParticipating(
-      walletAddress ? challenge.matchId : null,
-      walletAddress || null
+      shouldCheckParticipation ? challenge.matchId : null,
+      shouldCheckParticipation ? walletAddress : null
     );
 
     return (
@@ -60,7 +62,7 @@ export default function ChallengesView() {
         showResults={challenge.showResults}
         isParticipating={isParticipating}
         participationLoading={participationLoading}
-        onJoin={onJoin}
+        onJoin={challenge.status === 'completed' ? undefined : onJoin}
         onSeeResults={onSeeResults}
       />
     );
@@ -84,7 +86,7 @@ export default function ChallengesView() {
           />
           <div className={styles.loadingContainer}>
             <div className={styles.spinner}></div>
-            <p>{t("loading_challenges", { defaultValue: "Loading challenges from blockchain..." })}</p>
+            <p>{t("loading_challenges", { defaultValue: "Loading challenges from Worldchain..." })}</p>
           </div>
         </div>
       </main>

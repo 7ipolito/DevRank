@@ -12,7 +12,48 @@
 			},
 			{
 				"inputs": [],
+				"name": "Competition__AlreadyFinished",
+				"type": "error"
+			},
+			{
+				"inputs": [],
+				"name": "Competition__InvalidWinner",
+				"type": "error"
+			},
+			{
+				"inputs": [],
+				"name": "Competition__NoParticipants",
+				"type": "error"
+			},
+			{
+				"inputs": [],
+				"name": "Competition__NotActive",
+				"type": "error"
+			},
+			{
+				"inputs": [],
+				"name": "Competition__NotOpen",
+				"type": "error"
+			},
+			{
+				"inputs": [],
+				"name": "Competition__TransferFailed",
+				"type": "error"
+			},
+			{
+				"inputs": [],
 				"name": "ReentrancyGuardReentrantCall",
+				"type": "error"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "token",
+						"type": "address"
+					}
+				],
+				"name": "SafeERC20FailedOperation",
 				"type": "error"
 			},
 			{
@@ -66,6 +107,12 @@
 						"internalType": "uint256",
 						"name": "durationDays",
 						"type": "uint256"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "startTime",
+						"type": "uint256"
 					}
 				],
 				"name": "MatchCreated",
@@ -85,6 +132,12 @@
 						"internalType": "address",
 						"name": "player",
 						"type": "address"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "stakeAmount",
+						"type": "uint256"
 					}
 				],
 				"name": "PlayerJoined",
@@ -98,6 +151,19 @@
 						"internalType": "address",
 						"name": "",
 						"type": "address"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "PLATFORM_FEE_PERCENTAGE",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
 					}
 				],
 				"stateMutability": "view",
@@ -119,6 +185,53 @@
 				"name": "createMatch",
 				"outputs": [],
 				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "_matchId",
+						"type": "uint256"
+					},
+					{
+						"internalType": "address",
+						"name": "_winner",
+						"type": "address"
+					}
+				],
+				"name": "finalizeCompetition",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "_matchId",
+						"type": "uint256"
+					}
+				],
+				"name": "getCompetitionResult",
+				"outputs": [
+					{
+						"internalType": "enum Competition.CompetitionState",
+						"name": "state",
+						"type": "uint8"
+					},
+					{
+						"internalType": "address",
+						"name": "winner",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "totalStake",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
 				"type": "function"
 			},
 			{
@@ -322,6 +435,16 @@
 						"internalType": "bool",
 						"name": "active",
 						"type": "bool"
+					},
+					{
+						"internalType": "enum Competition.CompetitionState",
+						"name": "state",
+						"type": "uint8"
+					},
+					{
+						"internalType": "address",
+						"name": "winner",
+						"type": "address"
 					}
 				],
 				"stateMutability": "view",
@@ -360,10 +483,28 @@
 					{
 						"details": "Unauthorized reentrant call."
 					}
+				],
+				"SafeERC20FailedOperation(address)": [
+					{
+						"details": "An operation with an ERC-20 token failed."
+					}
 				]
 			},
 			"kind": "dev",
 			"methods": {
+				"finalizeCompetition(uint256,address)": {
+					"details": "Finalizar competição e distribuir prêmios",
+					"params": {
+						"_matchId": "ID da competição",
+						"_winner": "Endereço do vencedor"
+					}
+				},
+				"getCompetitionResult(uint256)": {
+					"details": "Obter informações sobre o vencedor e estado de uma competição",
+					"params": {
+						"_matchId": "ID da competição"
+					}
+				},
 				"getParticipantCount(uint256)": {
 					"details": "Obter o número de participantes de um match",
 					"params": {
@@ -476,11 +617,11 @@
 			]
 		},
 		"src/Competition.sol": {
-			"keccak256": "0xe9ae33dfa387a72788a9e48af10523776e9c442f3f251435bce1a86d1a652fac",
+			"keccak256": "0xecdb256204f59d23b3119146d9ef1108bbeb0a67e2252bc985681016593dc940",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://6722b77d36b64c7b644aff0b52051e284ac21bca8cbe03fce693a550ba54387f",
-				"dweb:/ipfs/QmVqaPpteVCNx5gq45sf2raWSB1aWs8gHED63idgHkZr7q"
+				"bzz-raw://6365422132ffdbbd83e7fdae803f0ff65ac8304128bdb9cad57a03fbb7647627",
+				"dweb:/ipfs/QmeshkNo5yLNezib7oTYeZmR45N2usXG8UFNdru45n8Trs"
 			]
 		}
 	},

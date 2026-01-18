@@ -11,8 +11,8 @@ contract CompetitionTest is Test {
     address player3;
     
     // Events para testar emissão
-    event MatchCreated(uint256 indexed matchId, string name, uint256 durationDays);
-    event PlayerJoined(uint256 indexed matchId, address indexed player);
+    event MatchCreated(uint256 indexed matchId, string name, uint256 durationDays, uint256 startTime);
+    event PlayerJoined(uint256 indexed matchId, address indexed player, uint256 stakeAmount);
     event MatchClosed(uint256 indexed matchId, address winner, uint256 reward, uint256 platformFee);
 
     function setUp() public {
@@ -27,7 +27,7 @@ contract CompetitionTest is Test {
     function test_createMatch_Success() public {
         // Verificar emissão de evento
         vm.expectEmit(true, false, false, true);
-        emit MatchCreated(1, "Test Match", 7);
+        emit MatchCreated(1, "Test Match", 7, block.timestamp);
         
         competition.createMatch("Test Match", 7);
         
@@ -41,7 +41,9 @@ contract CompetitionTest is Test {
             uint256 stake,
             uint256 startTime,
             uint256 durationDays,
-            bool active
+            bool active,
+            Competition.CompetitionState state,
+            address winner
         ) = competition.matches(1);
         
         assertEq(id, 1);
@@ -50,6 +52,8 @@ contract CompetitionTest is Test {
         assertEq(startTime, block.timestamp);
         assertEq(durationDays, 7);
         assertTrue(active);
+        assertEq(uint256(state), uint256(Competition.CompetitionState.OPEN));
+        assertEq(winner, address(0));
     }
     
     function test_createMatch_MultipleMatches() public {
@@ -59,9 +63,9 @@ contract CompetitionTest is Test {
         
         assertEq(competition.matchCount(), 3);
         
-        (, string memory name1,,,,) = competition.matches(1);
-        (, string memory name2,,,,) = competition.matches(2);
-        (, string memory name3,,,,) = competition.matches(3);
+        (, string memory name1,,,,,,) = competition.matches(1);
+        (, string memory name2,,,,,,) = competition.matches(2);
+        (, string memory name3,,,,,,) = competition.matches(3);
         
         assertEq(name1, "Match 1");
         assertEq(name2, "Match 2");
@@ -82,7 +86,7 @@ contract CompetitionTest is Test {
         string memory longName = "This is a very long match name that should still work fine";
         competition.createMatch(longName, 30);
         
-        (, string memory name,,,,) = competition.matches(1);
+        (, string memory name,,,,,,) = competition.matches(1);
         assertEq(name, longName);
     }
 
@@ -96,15 +100,15 @@ contract CompetitionTest is Test {
         assertEq(competition.getParticipantCount(1), 0);
         
         // Verificar emissão de evento
-        vm.expectEmit(true, true, false, false);
-        emit PlayerJoined(1, player1);
+        vm.expectEmit(true, true, false, true);
+        emit PlayerJoined(1, player1, 100 ether);
         
         // Player1 entra no challenge
         vm.prank(player1);
         competition.joinChallenge(1, 100 ether);
         
         // Verificar que o stake foi atualizado
-        (,, uint256 stake,,,) = competition.matches(1);
+        (,, uint256 stake,,,,,) = competition.matches(1);
         assertEq(stake, 100 ether);
         
         // Verificar que o participante foi adicionado
@@ -131,7 +135,7 @@ contract CompetitionTest is Test {
         competition.joinChallenge(1, 150 ether);
         
         // Verificar stake total
-        (,, uint256 stake,,,) = competition.matches(1);
+        (,, uint256 stake,,,,,) = competition.matches(1);
         assertEq(stake, 450 ether);
         
         // Verificar que todos os participantes foram adicionados
@@ -150,7 +154,7 @@ contract CompetitionTest is Test {
         
         // Obter storage do match e desativar (nota: precisaríamos de uma função no contrato para isso)
         // Por enquanto, vamos testar com um matchId que não existe
-        vm.expectRevert("Challenge is not active");
+        vm.expectRevert(Competition.Competition__NotActive.selector);
         vm.prank(player1);
         competition.joinChallenge(999, 100 ether);
     }
@@ -169,7 +173,7 @@ contract CompetitionTest is Test {
         
         // Verificar que apenas uma entrada foi registrada
         assertEq(competition.getParticipantCount(1), 1);
-        (,, uint256 stake,,,) = competition.matches(1);
+        (,, uint256 stake,,,,,) = competition.matches(1);
         assertEq(stake, 100 ether); // Apenas o primeiro stake
     }
     
@@ -183,8 +187,8 @@ contract CompetitionTest is Test {
         vm.prank(player2);
         competition.joinChallenge(2, 200 ether);
         
-        (,, uint256 stake1,,,) = competition.matches(1);
-        (,, uint256 stake2,,,) = competition.matches(2);
+        (,, uint256 stake1,,,,,) = competition.matches(1);
+        (,, uint256 stake2,,,,,) = competition.matches(2);
         
         assertEq(stake1, 100 ether);
         assertEq(stake2, 200 ether);
@@ -204,8 +208,8 @@ contract CompetitionTest is Test {
         assertTrue(competition.isParticipant(1, player1));
         assertTrue(competition.isParticipant(2, player1));
         
-        (,, uint256 stake1,,,) = competition.matches(1);
-        (,, uint256 stake2,,,) = competition.matches(2);
+        (,, uint256 stake1,,,,,) = competition.matches(1);
+        (,, uint256 stake2,,,,,) = competition.matches(2);
         
         assertEq(stake1, 100 ether);
         assertEq(stake2, 200 ether);

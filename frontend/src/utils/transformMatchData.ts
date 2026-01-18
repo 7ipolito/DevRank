@@ -1,18 +1,9 @@
 import { formatEther } from 'viem';
-
-interface Match {
-  id: string;
-  matchId: string; // matchId numérico (BigInt como string)
-  name: string;
-  durationDays: string;
-  stake: string; // Stake em Wei
-  participantCount: string;
-  active: boolean;
-}
+import type { ContractMatch } from '@/hooks/useContractMatches';
 
 interface ChallengeData {
   id: number; // ID numérico para uso interno
-  originalId: string; // ID original da blockchain para navegação (match.id)
+  originalId: string; // ID original da blockchain para navegação (match.id as string)
   matchId: string; // matchId numérico para verificação de participação
   title: string;
   participants: number;
@@ -70,29 +61,26 @@ const getStatus = (active: boolean): ChallengeData['status'] => {
   return active ? 'active' : 'completed';
 };
 
-// Função principal para transformar os dados do subgraph
-export const transformMatchesToChallenges = (matches: Match[]): ChallengeData[] => {
+// Função principal para transformar os dados do contrato
+export const transformMatchesToChallenges = (matches: ContractMatch[]): ChallengeData[] => {
   return matches.map((match) => {
-    const participants = parseInt(match.participantCount) || 0;
+    const participants = match.participantCount || 0;
     const status = getStatus(match.active);
     
-    // Usar hash do ID para gerar um número inteiro consistente
-    const hash = match.id.split('').reduce((a, b) => {
-      a = ((a << 5) - a) + b.charCodeAt(0);
-      return a & a;
-    }, 0);
+    // Use the match ID directly as a number
+    const matchIdString = match.id.toString();
     
     return {
-      id: Math.abs(hash), // Usar hash como ID numérico
-      originalId: match.id, // ID original da blockchain (usado para navegação)
-      matchId: match.matchId, // matchId numérico (usado para verificação de participação)
+      id: Number(match.id), // Convert BigInt to number for internal use
+      originalId: matchIdString, // Match ID as string for navigation
+      matchId: matchIdString, // Match ID for participation checks
       title: match.name,
       participants,
-      stake: formatStake(match.stake),
+      stake: formatStake(match.stake.toString()),
       icon: getIcon(match.name),
-      borderColor: getBorderColor(match.id),
+      borderColor: getBorderColor(matchIdString),
       status,
-      duration: `${match.durationDays} days`,
+      duration: `${match.durationDays.toString()} days`,
       showResults: status === 'completed',
     };
   });

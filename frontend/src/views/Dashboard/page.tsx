@@ -44,7 +44,7 @@ const languageBadges: Record<string, { color: string; logo?: string }> = {
   'Go': { color: '00ADD8', logo: 'go' },
   'C++': { color: '00599C', logo: 'cplusplus' },
   'C': { color: 'A8B9CC', logo: 'c' },
-  'C#': { color: '239120', logo: 'csharp' },
+  'C#': { color: '239120', logo: 'c#' },
   'PHP': { color: '777BB4', logo: 'php' },
   'Ruby': { color: 'CC342D', logo: 'ruby' },
   'Swift': { color: 'FA7343', logo: 'swift' },

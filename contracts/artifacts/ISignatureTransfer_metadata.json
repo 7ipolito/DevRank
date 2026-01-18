@@ -167,11 +167,11 @@
 			]
 		},
 		"src/Competition.sol": {
-			"keccak256": "0xe9ae33dfa387a72788a9e48af10523776e9c442f3f251435bce1a86d1a652fac",
+			"keccak256": "0xecdb256204f59d23b3119146d9ef1108bbeb0a67e2252bc985681016593dc940",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://6722b77d36b64c7b644aff0b52051e284ac21bca8cbe03fce693a550ba54387f",
-				"dweb:/ipfs/QmVqaPpteVCNx5gq45sf2raWSB1aWs8gHED63idgHkZr7q"
+				"bzz-raw://6365422132ffdbbd83e7fdae803f0ff65ac8304128bdb9cad57a03fbb7647627",
+				"dweb:/ipfs/QmeshkNo5yLNezib7oTYeZmR45N2usXG8UFNdru45n8Trs"
 			]
 		}
 	},
